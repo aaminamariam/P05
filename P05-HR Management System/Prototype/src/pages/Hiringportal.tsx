@@ -2,7 +2,7 @@ import { Box, Button, makeStyles, createStyles } from "@material-ui/core";
 
 import { NavLink } from "react-router-dom";
 
-import Card from "../components/Card";
+// import Card from "../components/HiringPOrtal";
 
 const drawerWidth = 240;
 const w = `calc(100% - ${drawerWidth}px)`;
@@ -55,7 +55,7 @@ export default function Hiringportal() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Box className={classes.box}>
+      {/* <Box className={classes.box}>
         <NavLink to="/addnewposting">
           <Button
             style={{
@@ -70,7 +70,7 @@ export default function Hiringportal() {
           </Button>
         </NavLink>
         <Card />
-      </Box>
+      </Box> */}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { Box, makeStyles, createStyles } from "@material-ui/core";
 
-import Card from "../components/Card";
+// import Card from "../components/HiringPOrtal";
 import Search from "../components/search";
 
 const drawerWidth = 240;
@@ -60,7 +60,7 @@ export default function AppPortal() {
         {/* <NavLink exact activeClassName="active_class" to="/addnewposting"> */}
 
         {/* </NavLink> */}
-        <Card />
+        {/* <Card /> */}
       </Box>
     </div>
   );
