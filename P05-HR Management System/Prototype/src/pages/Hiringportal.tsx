@@ -55,7 +55,7 @@ export default function Hiringportal() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      {/* <Box className={classes.box}>
+      <Box className={classes.box}>
         <NavLink to="/addnewposting">
           <Button
             style={{
@@ -69,8 +69,8 @@ export default function Hiringportal() {
             Add Posting
           </Button>
         </NavLink>
-        <Card />
-      </Box> */}
+        {/* <Card /> */}
+      </Box>
     </div>
   );
 }

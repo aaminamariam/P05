@@ -9,7 +9,8 @@ import { Typography } from "@material-ui/core";
 const useStyles = makeStyles({
   root: {
     minHeight: 300,
-    padding: 0,
+    // padding: 0,
+    width: "299px",
   },
   title: {
     fontSize: 14.4,

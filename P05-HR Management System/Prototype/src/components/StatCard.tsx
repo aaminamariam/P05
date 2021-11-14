@@ -4,24 +4,21 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-// import { ITestProp } from "../../ITestProps";
 import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
 
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
     boxShadow: "box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)",
-    minHeight: "1-0px",
+    width: "299px",
   },
   button: {
-    paddingTop: 14,
-    paddingBottom: 5,
-    // color: 'green',
+    paddingTop: 10,
+    // paddingBottom: 5,
   },
   icon: {
     color: "rgba(0, 82, 204, 1)",
     fontSize: 60,
-    // padding: 0,
   },
   title: {
     color: "rgba(0, 82, 204, 1)",

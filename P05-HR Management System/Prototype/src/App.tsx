@@ -20,10 +20,12 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
+      backgroundColor: "#EBECF0",
     },
 
     box: {
       display: "flex",
+      // flexDirection: "row",
       position: "relative",
       left: drawerWidth + 15,
       top: "100px",
@@ -31,7 +33,7 @@ const useStyles = makeStyles(() =>
       width: "82%",
       // height: window.innerHeight - appBarHeight - 60,
       height: "90%",
-      background: "red",
+      // background: "red",
     },
   })
 );
