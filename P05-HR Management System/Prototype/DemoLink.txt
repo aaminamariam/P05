@@ -2,8 +2,8 @@ https://pern-my.sharepoint.com/:v:/g/personal/22100062_lums_edu_pk/EfjUAsFJfq9Do
 
 
 Links to access website:
-52.91.138.50/
+52.91.138.50:3000/
 OR
-52.91.138.50/appportal
+52.91.138.50:3000/appportal
 OR
-52.91.138.50/hiringportal
+52.91.138.50:3000/hiringportal
