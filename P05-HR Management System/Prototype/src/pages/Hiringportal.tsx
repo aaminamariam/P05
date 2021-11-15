@@ -4,6 +4,7 @@ import {
   makeStyles,
   createStyles,
   Card,
+  Typography,
   Box,
 } from "@material-ui/core";
 
@@ -18,7 +19,7 @@ import EnhancedCard from "../components/EnhancedCard";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useState, useEffect } from "react";
 
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import CardContent from "@material-ui/core/CardContent";
 
@@ -38,7 +39,7 @@ const useStyles = makeStyles(() =>
       flexDirection: "row",
       flex: 0.2,
       width: "100%",
-      justifyContent: "flex-end",
+      justifyContent: "space-around",
     },
     listbody: {},
     menu: {
@@ -49,9 +50,7 @@ const useStyles = makeStyles(() =>
     addpostingButton: {
       backgroundColor: "#46b988",
       color: "blue",
-      down: "400px",
-      marginTop: "400px",
-      // left: "500%",
+      textDecoration: "none",
     },
 
     card: {
@@ -102,9 +101,20 @@ export default function Hiringportal() {
       <div className={classes.listheader}>
         {/* LIST HEADER */}
         {/* <div>Search Bar</div> */}
-        <NavLink to="/addnewposting">
-          <Button className={classes.addpostingButton}>Add Posting</Button>
-        </NavLink>
+        <Link
+          to="/addnewposting"
+          style={{ textDecoration: "none", textDecorationColor: "white" }}
+        >
+          <Button className={classes.addpostingButton}>
+            <Typography
+              style={{
+                textDecoration: "inherit",
+              }}
+            >
+              Add Posting
+            </Typography>
+          </Button>
+        </Link>
       </div>
 
       <div className={classes.listbody}>
