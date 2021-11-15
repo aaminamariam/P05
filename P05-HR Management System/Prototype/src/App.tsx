@@ -71,7 +71,7 @@ const useStyles = makeStyles(() =>
 function App() {
   const classes = useStyles();
   return (
-    <>
+    <div>
       <NavBar />
       <HeaderBar />
       <Routes>
@@ -89,7 +89,7 @@ function App() {
           }
         />
       </Routes>
-    </>
+    </div>
   );
 }
 

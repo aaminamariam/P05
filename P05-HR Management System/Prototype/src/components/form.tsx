@@ -2,6 +2,9 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
+import axios from "axios";
+import { NavLink } from "react-router-dom";
+// import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,11 +41,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 function Form() {
   const classes = useStyles();
+
+  // let history = useHistory();
+
   // create state variables for each input
   const [jobtitle, setJobtitle] = useState("");
   const [jobdescription, setJobdescription] = useState("");
   const [departmentname, setDepartmentname] = useState("");
   const [location, setLocation] = useState("");
+
+  const addNewJob = async () => {
+    let formField = new FormData();
+    formField.append("job_title", jobtitle);
+    formField.append("jd", jobdescription);
+    formField.append("dept_name", departmentname);
+    formField.append("location", location);
+
+    await axios({
+      method: "post",
+      url: "http://localhost:8000/jobs/jobpostings/",
+      data: formField,
+    }).then((response: { data: any }) => {
+      console.log(response.data);
+      // history.push('/')
+      alert("job posted");
+    });
+  };
 
   return (
     <Box className={classes.square}>
@@ -79,11 +103,14 @@ function Form() {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
-        <div>
-          <Button style={{ backgroundColor: "#46b988", color: "#FFFFFF" }}>
+        <NavLink to="/hiringportal">
+          <Button
+            style={{ backgroundColor: "#46b988", color: "#FFFFFF" }}
+            onClick={addNewJob}
+          >
             Upload
           </Button>
-        </div>
+        </NavLink>
       </form>
     </Box>
   );
