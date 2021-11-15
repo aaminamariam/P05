@@ -41,6 +41,7 @@ const useStyles = makeStyles(() =>
 
 export default function Addnewposting() {
   const classes = useStyles();
+  
   return (
     <div className={classes.root}>
       <Form />

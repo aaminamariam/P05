@@ -1,66 +1,85 @@
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Box,
-  CssBaseline,
-  makeStyles,
-  createStyles,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import { makeStyles, createStyles, Grid, Typography } from "@material-ui/core";
 
-import NavBar from "../navigation/NavBar";
+import StatCard from "../components/StatCard";
 
-const drawerWidth = 240;
-const w = `calc(100% - ${drawerWidth}px)`;
+import EnhancedCard from "../components/EnhancedCard";
+
+import GroupIcon from "@material-ui/icons/Group";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import PersonOffIcon from "@material-ui/icons/Home";
+// import { itemsArray } from "./HomeItems";
+
+import { CreatAnnouncement } from "../components/CreateAnnouncement";
+import RequestList from "../components/RequestList";
+
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
+      flexDirection: "column",
+      width: "100%",
     },
-    heading: {
-      flexGrow: 1,
+    stats: {
+      display: "flex",
     },
-    menu: {
-      position: "relative",
-      right: "0.1%",
-      transform: "scale(1.5)",
-    },
-
-    notification: {
-      position: "absolute",
-      left: "85%",
-      transform: "scale(1.5)",
-    },
-    appbar: {
-      background: "white",
-      color: "black",
-      variant: "permanent",
-      anchor: "left",
-      width: w,
-      height: 80,
-      boxSizing: "border-box",
-    },
-    typo: {
-      position: "relative",
-      left: "5%",
-    },
-    box: {
-      variant: "permanent",
-      position: "absolute",
-      left: "20%",
-      top: "20%",
-      width: 1000,
-      height: 480,
-      boxSizing: "border-box",
-      background: "#ffffff",
+    content: {
+      marginTop: "25px",
     },
   })
 );
 
 export default function Home() {
-  // const classes = useStyles();
-  return <div>HR DASHHHHHHHHHH</div>;
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+      <Grid container spacing={2} className={classes.stats}>
+        <Grid item>
+          <StatCard
+            icon={<GroupIcon />}
+            title="Number of EMployees"
+            data="678"
+          />
+        </Grid>
+        <Grid item>
+          <StatCard
+            icon={<PersonOffIcon />}
+            title="Number on Leave"
+            data="32"
+          />
+        </Grid>
+        <Grid item>
+          <StatCard icon={<PersonAddIcon />} title="New Employees" data="4" />
+        </Grid>
+        <Grid item>
+          <StatCard
+            icon={<MonetizationOnIcon />}
+            title="Next payroll"
+            data="25th August"
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} className={classes.content}>
+        <Grid item>
+          <EnhancedCard title="Employee Gender">SHOW</EnhancedCard>
+        </Grid>
+        <Grid item>
+          <EnhancedCard title="Requests">
+            <RequestList />
+          </EnhancedCard>
+        </Grid>
+        <Grid item>
+          <EnhancedCard title="Create Announcement">
+            <CreatAnnouncement />
+          </EnhancedCard>
+        </Grid>
+        <Grid item>
+          <EnhancedCard title="Employee Turnover">SHOW</EnhancedCard>
+        </Grid>
+        <Grid item>
+          <EnhancedCard title="Employee Retention">SHOW</EnhancedCard>
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
