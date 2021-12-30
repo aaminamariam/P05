@@ -23,8 +23,6 @@ import { Link } from "react-router-dom";
 
 import CardContent from "@material-ui/core/CardContent";
 
-import HiringPortalList from "./HiringPortalItems";
-
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
@@ -73,19 +71,21 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export default function Hiringportal() {
+const Hiringportal = () => {
   const classes = useStyles();
 
   const [HiringPortalListItems, setHiringPortalListItems] = useState<any[]>([]);
 
   const fetchJobs = async () => {
-    const result = await axios.get("http://localhost:8000/jobs/jobpostings/");
+    const result = await axios.get(
+      "http://52.91.138.50:8000/jobs/jobpostings/"
+    );
     // console.log(result.data)
     setHiringPortalListItems(result.data);
     // console.log(HiringPortalListItems)
   };
   const handleDelete = async (id: string) => {
-    const link = "http://localhost:8000/jobs/jobpostings/";
+    const link = "http://52.91.138.50:8000/jobs/jobpostings/";
     const clink = link.concat(id);
     const del_link = clink.concat("/");
     const result = await axios.delete(del_link);
@@ -155,7 +155,8 @@ export default function Hiringportal() {
       </div>
     </div>
   );
-}
+};
 function forceUpdate() {
   throw new Error("Function not implemented.");
 }
+export default Hiringportal;

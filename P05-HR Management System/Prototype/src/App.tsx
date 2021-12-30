@@ -11,6 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 
 import NavBar from "./navigation/NavBar";
+import JobApplication from "./pages/JobApplication";
 
 const drawerWidth = 240;
 const appBarHeight = 60;
@@ -50,6 +51,7 @@ function App() {
           <Route path="/hiringportal" element={<HiringPortal />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortal />} />
+          <Route path="/jobapplication" element={<JobApplication />} />
 
           <Route
             path="*"

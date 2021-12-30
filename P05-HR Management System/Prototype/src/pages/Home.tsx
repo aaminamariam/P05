@@ -8,7 +8,10 @@ import GroupIcon from "@material-ui/icons/Group";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonOffIcon from "@material-ui/icons/Home";
+import axios from "axios";
+import { Link } from "react-router-dom";
 // import { itemsArray } from "./HomeItems";
+import { useState, useEffect } from "react";
 
 import { CreatAnnouncement } from "../components/CreateAnnouncement";
 import RequestList from "../components/RequestList";
@@ -29,8 +32,24 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export default function Home() {
+const Home = () => {
   const classes = useStyles();
+  const [job_openeings, setjob_openeings] = useState("0");
+
+  const getUser = async () => {
+    try {
+      const response = await axios.get(
+        "http://52.91.138.50:8000/jobs/jobpostings/"
+      );
+      console.log(response.data.length);
+      setjob_openeings(response.data.length.toString());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
   return (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.stats}>
@@ -49,7 +68,19 @@ export default function Home() {
           />
         </Grid>
         <Grid item>
-          <StatCard icon={<PersonAddIcon />} title="New Employees" data="4" />
+          <Link
+            to="/hiringportal"
+            style={{
+              textDecoration: "none",
+              color: "white",
+            }}
+          >
+            <StatCard
+              icon={<PersonAddIcon />}
+              title="Job openings"
+              data={job_openeings}
+            />
+          </Link>
         </Grid>
         <Grid item>
           <StatCard
@@ -82,4 +113,5 @@ export default function Home() {
       </Grid>
     </div>
   );
-}
+};
+export default Home;
