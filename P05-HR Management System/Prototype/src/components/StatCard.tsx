@@ -54,7 +54,7 @@ export interface IStatCardProps {
 const StatCard: React.FC<IStatCardProps> = ({
   icon = <PermIdentityOutlinedIcon />,
   title = "Employees",
-  data = "0",
+  data = "",
 }: IStatCardProps) => {
   const classes = useStyles();
 

@@ -29,7 +29,7 @@ const useStyles = makeStyles(() =>
 
 export interface ICreatAnnouncementProps {}
 
-export function CreatAnnouncement(props: ICreatAnnouncementProps) {
+export const CreatAnnouncement = (props: ICreatAnnouncementProps) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -47,4 +47,4 @@ export function CreatAnnouncement(props: ICreatAnnouncementProps) {
       </CardActions>
     </div>
   );
-}
+};

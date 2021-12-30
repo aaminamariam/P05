@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#ffffff",
   },
 }));
-function Form() {
+const Form = () => {
   const classes = useStyles();
 
   // let history = useHistory();
@@ -59,10 +59,9 @@ function Form() {
 
     await axios({
       method: "post",
-      url: "http://localhost:8000/jobs/jobpostings/",
+      url: "http://52.91.138.50:8000/jobs/jobpostings/",
       data: formField,
     }).then((response: { data: any }) => {
-      console.log(response.data);
       // history.push('/')
       alert("job posted");
     });
@@ -114,6 +113,6 @@ function Form() {
       </form>
     </Box>
   );
-}
+};
 
 export default Form;
