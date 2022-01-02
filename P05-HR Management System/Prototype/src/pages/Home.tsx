@@ -8,10 +8,14 @@ import GroupIcon from "@material-ui/icons/Group";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonOffIcon from "@material-ui/icons/Home";
+<<<<<<< HEAD
 import axios from "axios";
 import { Link } from "react-router-dom";
 // import { itemsArray } from "./HomeItems";
 import { useState, useEffect } from "react";
+=======
+// import { itemsArray } from "./HomeItems";
+>>>>>>> develop
 
 import { CreatAnnouncement } from "../components/CreateAnnouncement";
 import RequestList from "../components/RequestList";
@@ -32,6 +36,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
+<<<<<<< HEAD
 const Home = () => {
   const classes = useStyles();
   const [job_openeings, setjob_openeings] = useState("0");
@@ -50,6 +55,10 @@ const Home = () => {
   useEffect(() => {
     getUser();
   }, []);
+=======
+export default function Home() {
+  const classes = useStyles();
+>>>>>>> develop
   return (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.stats}>
@@ -68,6 +77,7 @@ const Home = () => {
           />
         </Grid>
         <Grid item>
+<<<<<<< HEAD
           <Link
             to="/hiringportal"
             style={{
@@ -81,6 +91,9 @@ const Home = () => {
               data={job_openeings}
             />
           </Link>
+=======
+          <StatCard icon={<PersonAddIcon />} title="New Employees" data="4" />
+>>>>>>> develop
         </Grid>
         <Grid item>
           <StatCard
@@ -113,5 +126,9 @@ const Home = () => {
       </Grid>
     </div>
   );
+<<<<<<< HEAD
 };
 export default Home;
+=======
+}
+>>>>>>> develop

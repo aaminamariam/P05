@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import axios from "axios";
 import List from "@mui/material/List";
@@ -15,6 +16,10 @@ import {
   Typography,
   Box,
 } from "@material-ui/core";
+=======
+import { Box, makeStyles, createStyles } from "@material-ui/core";
+
+>>>>>>> develop
 // import Card from "../components/HiringPOrtal";
 import Search from "../components/search";
 
@@ -114,6 +119,7 @@ const AppPortal = () => {
     // {/* <Search /> */}
     // {/* <NavLink exact activeClassName="active_class" to="/addnewposting"> */}
 
+<<<<<<< HEAD
     // {/* </NavLink> */}
     // {/* <Card /> */}
     <div className={classes.root}>
@@ -156,6 +162,11 @@ const AppPortal = () => {
         </List>
       </div>
       {/* </Box> */}
+=======
+        {/* </NavLink> */}
+        {/* <Card /> */}
+      </Box>
+>>>>>>> develop
     </div>
   );
 };

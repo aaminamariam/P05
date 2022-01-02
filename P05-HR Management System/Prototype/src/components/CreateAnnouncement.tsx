@@ -29,7 +29,11 @@ const useStyles = makeStyles(() =>
 
 export interface ICreatAnnouncementProps {}
 
+<<<<<<< HEAD
 export const CreatAnnouncement = (props: ICreatAnnouncementProps) => {
+=======
+export function CreatAnnouncement(props: ICreatAnnouncementProps) {
+>>>>>>> develop
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -47,4 +51,8 @@ export const CreatAnnouncement = (props: ICreatAnnouncementProps) => {
       </CardActions>
     </div>
   );
+<<<<<<< HEAD
 };
+=======
+}
+>>>>>>> develop

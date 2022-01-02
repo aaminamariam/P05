@@ -67,9 +67,15 @@ export interface ISettingsItemCardProps {
   navigateTo: string;
 }
 
+<<<<<<< HEAD
 const handleClick = () => {
   console.log("Clicked");
 };
+=======
+function handleClick() {
+  console.log("Clicked");
+}
+>>>>>>> develop
 /**
  * The API documentation of the Settings Items card component. This component is the surface that displays contents and actions
  * of each of the menu items in the Settings page only. Each card will be a button that will be an entry point to its respective page

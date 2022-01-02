@@ -10,6 +10,7 @@ import {
 
 import axios from "axios";
 
+<<<<<<< HEAD
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -22,6 +23,9 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import CardContent from "@material-ui/core/CardContent";
+=======
+// import Card from "../components/HiringPOrtal";
+>>>>>>> develop
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -114,6 +118,7 @@ const Hiringportal = () => {
               Add Posting
             </Typography>
           </Button>
+<<<<<<< HEAD
         </Link>
       </div>
 
@@ -153,6 +158,11 @@ const Hiringportal = () => {
           ))}
         </List>
       </div>
+=======
+        </NavLink>
+        {/* <Card /> */}
+      </Box>
+>>>>>>> develop
     </div>
   );
 };

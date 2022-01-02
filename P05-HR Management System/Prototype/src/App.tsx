@@ -51,7 +51,10 @@ function App() {
           <Route path="/hiringportal" element={<HiringPortal />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortal />} />
+<<<<<<< HEAD
           <Route path="/jobapplication" element={<JobApplication />} />
+=======
+>>>>>>> develop
 
           <Route
             path="*"
