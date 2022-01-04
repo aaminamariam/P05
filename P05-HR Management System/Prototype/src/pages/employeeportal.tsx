@@ -41,21 +41,6 @@ const EmployeeDash = () => {
   const classes = useStyles();
   const [job_openeings, setjob_openeings] = useState("0");
 
-  //   const getUser = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://52.91.138.50:8000/jobs/jobpostings/"
-  //       );
-  //       console.log(response.data.length);
-  //       setjob_openeings(response.data.length.toString());
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     getUser();
-  //   }, []);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.stats}>
@@ -75,7 +60,7 @@ const EmployeeDash = () => {
           //     onMouseLeave={changeBackground_white}
         >
           <Link
-            to="/add_req"
+            to="/addreq"
             style={{
               textDecoration: "none",
               color: "white",

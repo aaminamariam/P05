@@ -20,7 +20,6 @@ import { styled } from "@mui/material/styles";
 import SendIcon from "@mui/icons-material/Send";
 import { purple } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
-
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -60,26 +59,11 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const AWS = require("aws-sdk");
-var express = require("express");
-var app = express();
-
-require("dotenv").config();
-
-AWS.config.update({
-  accessKeyId: process.env.AccessKeyId,
-  secretAccessKey: process.env.SecretAccessKey,
-  region: process.env.Region,
-});
-
-const dynamoClient = new AWS.DynamoDB.DocumentClient();
-const TABLE_NAME = "employee_table";
-
 const AddReq = () => {
   const classes = useStyles();
   const [option, set_option] = useState("");
   const [description, set_description] = useState("");
-
+  const [id, set_id] = useState("");
   const handleChange = (event: any) => {
     set_option(event.target.value);
   };
@@ -95,10 +79,10 @@ const AddReq = () => {
 
     await axios({
       method: "post",
-      url: "",
+      url: "localhost:5000/ids",
       data: formField,
     }).then((response: { data: any }) => {
-      console.log(response.data);
+      process.stdout.write(response.data);
       alert("Your Request has been submitted");
     });
   };
@@ -124,6 +108,16 @@ const AddReq = () => {
         <Typography className={classes.typo} variant="h5">
           Please provide the following information:
         </Typography>
+        <Typography className={classes.typo} variant="h6">
+          EmployeeID:
+        </Typography>
+        <TextField
+          id="outlined-multiline-flexible"
+          label="ID"
+          maxRows={4}
+          value={id}
+          onChange={(event: any) => set_id(event.target.value)}
+        />
         <Typography className={classes.typo} variant="h6">
           Reason:
         </Typography>
@@ -161,8 +155,9 @@ const AddReq = () => {
           className={classes.typo}
           variant="contained"
           endIcon={<SendIcon />}
+          onClick={submitRequest}
         >
-          Send
+          Submit
         </Button>
       </Box>
       <CssBaseline />
