@@ -79,7 +79,7 @@ const AddReq = () => {
 
     await axios({
       method: "post",
-      url: "localhost:5000/ids",
+      url: "localhost:5000/addreq",
       data: formField,
     }).then((response: { data: any }) => {
       process.stdout.write(response.data);
