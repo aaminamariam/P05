@@ -1,5 +1,5 @@
-import { ISettingsItemCardProps } from "./SettingsItemCard";
-import { IEnhancedCardProps } from "../components/EnhancedCard";
+import { ISettingsItemCardProps } from "../SettingsItemCard";
+import { IEnhancedCardProps } from "../../components/EnhancedCard";
 
 import SettingsIcon from "@material-ui/icons/Settings";
 import PaymentIcon from "@material-ui/icons/Payment";
