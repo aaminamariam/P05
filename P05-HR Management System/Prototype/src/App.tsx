@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import HiringPortal from "./pages/Hiringportal";
 import Addnewposting from "./pages/Addnewposting";
 import AppPortal from "./pages/AppPortal";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import HeaderBar from "./navigation/HeaderBar";
 import EmployeeDash from "./pages/employeeportal";
 import AddReq from "./pages/addrequest";
