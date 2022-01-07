@@ -66,9 +66,6 @@ const useStyles = makeStyles(() =>
     },
     submitbutton: {
       display: "flex",
-      // flexDirection: "row",
-      // // flex: 0.2,
-      // width: "100%",
       justifyContent: "space-around",
     },
   })
