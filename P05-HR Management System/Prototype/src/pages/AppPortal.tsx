@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import List from "@mui/material/List";
@@ -17,8 +16,7 @@ import {
   Box,
 } from "@material-ui/core";
 
-import { Box, makeStyles, createStyles } from "@material-ui/core";
-
+// import { Box, makeStyles, createStyles } from "@material-ui/core";
 
 // import Card from "../components/HiringPOrtal";
 import Search from "../components/search";
@@ -119,11 +117,8 @@ const AppPortal = () => {
     // {/* <Search /> */}
     // {/* <NavLink exact activeClassName="active_class" to="/addnewposting"> */}
 
-
-
     <div className={classes.root}>
-      <div className={classes.listheader}>
-      </div>
+      <div className={classes.listheader}></div>
       <div className={classes.listbody}>
         <List
           sx={{
@@ -159,7 +154,6 @@ const AppPortal = () => {
         </List>
       </div>
       {/* </Box> */}
-
     </div>
   );
 };
