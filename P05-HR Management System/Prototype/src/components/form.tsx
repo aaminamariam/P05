@@ -56,7 +56,7 @@ const Form = () => {
     formField.append("jd", jobdescription);
     formField.append("dept_name", departmentname);
     formField.append("location", location);
-
+    console.log(formField);
     await axios({
       method: "post",
       url: "http://52.91.138.50:8000/jobs/jobpostings/",
