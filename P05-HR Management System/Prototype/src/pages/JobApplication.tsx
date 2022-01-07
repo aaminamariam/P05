@@ -50,7 +50,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export default function JobApplication() {
+const JobApplication = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -75,4 +75,5 @@ export default function JobApplication() {
       <Jobform />
     </div>
   );
-}
+};
+export default JobApplication;
