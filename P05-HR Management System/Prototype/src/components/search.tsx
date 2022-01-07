@@ -2,7 +2,7 @@ import React from "react";
 import { InputAdornment, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
-export default function Search() {
+const Search = () => {
   return (
     <>
       <TextField
@@ -17,4 +17,5 @@ export default function Search() {
       ></TextField>
     </>
   );
-}
+};
+export default Search;

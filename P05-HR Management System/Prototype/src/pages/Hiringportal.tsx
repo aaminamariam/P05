@@ -1,76 +1,162 @@
-import { Box, Button, makeStyles, createStyles } from "@material-ui/core";
+import {
+  IconButton,
+  Button,
+  makeStyles,
+  createStyles,
+  Card,
+  Typography,
+  Box,
+} from "@material-ui/core";
 
-import { NavLink } from "react-router-dom";
+import axios from "axios";
 
-// import Card from "../components/HiringPOrtal";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListSubheader from "@mui/material/ListSubheader";
+import ListItemButton from "@mui/material/ListItemButton";
+import EnhancedCard from "../components/EnhancedCard";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useState, useEffect } from "react";
 
-const drawerWidth = 240;
-const w = `calc(100% - ${drawerWidth}px)`;
+import { Link } from "react-router-dom";
+
+import CardContent from "@material-ui/core/CardContent";
+
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      height: window.innerHeight - 150,
     },
-    heading: {
-      flexGrow: 1,
+
+    listheader: {
+      display: "flex",
+      flexDirection: "row",
+      flex: 0.2,
+      width: "100%",
+      justifyContent: "space-around",
     },
+    listbody: {},
     menu: {
       position: "relative",
       right: "0.1%",
       transform: "scale(1.5)",
     },
+    addpostingButton: {
+      backgroundColor: "#46b988",
+      color: "blue",
+      textDecoration: "none",
+    },
 
-    notification: {
-      position: "absolute",
-      left: "85%",
-      transform: "scale(1.5)",
+    card: {
+      backgroundColor: "#371BB1",
+      align: "inherit",
+      minWidth: "90%",
+      color: "#FFFFFF",
+      textAlign: "center",
+      borderRadius: "20px",
     },
-    appbar: {
-      background: "white",
-      color: "black",
-      variant: "permanent",
-      anchor: "left",
-      width: w,
-      height: 80,
-      boxSizing: "border-box",
+
+    del: {
+      color: "#ffffff",
+      postion: "relative",
     },
-    typo: {
-      position: "relative",
-      left: "5%",
-    },
-    box: {
-      variant: "permanent",
-      position: "absolute",
-      left: "20%",
-      top: "20%",
-      width: 1000,
-      height: 480,
-      boxSizing: "border-box",
-      background: "#ffffff",
+    header: {
+      fontWeight: "bold",
+      fontSize: "10rem",
     },
   })
 );
 
-export default function Hiringportal() {
+const Hiringportal = () => {
   const classes = useStyles();
+
+  const [HiringPortalListItems, setHiringPortalListItems] = useState<any[]>([]);
+
+  const fetchJobs = async () => {
+    const result = await axios.get(
+      "http://52.91.138.50:8000/jobs/jobpostings/"
+    );
+    // console.log(result.data)
+    setHiringPortalListItems(result.data);
+    // console.log(HiringPortalListItems)
+  };
+  const handleDelete = async (id: string) => {
+    const link = "http://52.91.138.50:8000/jobs/jobpostings/";
+    const clink = link.concat(id);
+    const del_link = clink.concat("/");
+    const result = await axios.delete(del_link);
+    fetchJobs();
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
   return (
     <div className={classes.root}>
-      <Box className={classes.box}>
-        <NavLink to="/addnewposting">
-          <Button
-            style={{
-              backgroundColor: "#46b988",
-              color: "#FFFFFF",
-              position: "absolute",
-              left: "85%",
-              top: "10%",
-            }}
-          >
-            Add Posting
+      <div className={classes.listheader}>
+        {/* LIST HEADER */}
+        {/* <div>Search Bar</div> */}
+        <Link
+          to="/addnewposting"
+          style={{ textDecoration: "none", textDecorationColor: "white" }}
+        >
+          <Button className={classes.addpostingButton}>
+            <Typography
+              style={{
+                textDecoration: "inherit",
+              }}
+            >
+              Add Posting
+            </Typography>
           </Button>
-        </NavLink>
-        {/* <Card /> */}
-      </Box>
+        </Link>
+      </div>
+
+      <div className={classes.listbody}>
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+            position: "relative",
+            overflow: "auto",
+            maxHeight: window.innerHeight - 150,
+            "& ul": { padding: 0 },
+          }}
+        >
+          {HiringPortalListItems.map((item) => (
+            <ListItem key={item}>
+              <Card className={classes.card}>
+                <CardContent>
+                  <ListItemText className={classes.header}>
+                    {item.job_title}
+                  </ListItemText>
+                  <ListItemText>{item.description}</ListItemText>
+                  <ListItemText>{item.location}</ListItemText>
+                  <Button
+                    component="div"
+                    onClick={() => {
+                      handleDelete(item.id);
+                    }}
+                    aria-label="delete"
+                    className={classes.del}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </CardContent>
+              </Card>
+            </ListItem>
+          ))}
+        </List>
+      </div>
     </div>
   );
+};
+function forceUpdate() {
+  throw new Error("Function not implemented.");
 }
+export default Hiringportal;

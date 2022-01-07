@@ -61,7 +61,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export default function HeaderBar() {
+const HeaderBar = () => {
   const classes = useStyles();
   return (
     <div>
@@ -83,4 +83,5 @@ export default function HeaderBar() {
       </Box>
     </div>
   );
-}
+};
+export default HeaderBar;
