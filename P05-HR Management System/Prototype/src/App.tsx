@@ -56,6 +56,7 @@ function App() {
           <Route path="/jobapplication" element={<JobApplication />} />
           <Route path="/employeedash" element={<EmployeeDash />} />
           <Route path="/addreq" element={<AddReq />} />
+
           <Route
             path="*"
             element={

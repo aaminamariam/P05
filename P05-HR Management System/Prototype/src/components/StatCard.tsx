@@ -55,6 +55,7 @@ const StatCard: React.FC<IStatCardProps> = ({
   icon = <PermIdentityOutlinedIcon />,
   title = "Employees",
   data = "",
+
 }: IStatCardProps) => {
   const classes = useStyles();
 
