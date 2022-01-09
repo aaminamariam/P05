@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     width: "280px",
   },
   title: {
-    fontSize: 14.4,
+    fontSize: 14,
     fontWeight: 600,
   },
   divider: {
