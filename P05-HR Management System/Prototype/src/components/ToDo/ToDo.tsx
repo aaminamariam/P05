@@ -1,19 +1,19 @@
-import * as React from "react";
+import React, { useState } from "react";
+
+import CommentIcon from "@mui/icons-material/Comment";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import CommentIcon from "@mui/icons-material/Comment";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { useState } from "react";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 
 export default function ToDo() {
   const [text, settext] = useState("");
