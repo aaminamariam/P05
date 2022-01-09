@@ -14,6 +14,7 @@ import EnhancedCard from "../../components/EnhancedCard";
 import RequestList from "../../components/RequestList";
 import StatCard from "../../components/StatCard";
 import EmployeeGenderCard from "../../components/EmployeeGenderCard";
+import ToDo from "../../components/ToDo/ToDo";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -101,10 +102,16 @@ const Home = () => {
           </EnhancedCard>
         </Grid>
         <Grid item>
+          <EnhancedCard title="To Do List">
+            <ToDo />
+          </EnhancedCard>
+        </Grid>
+        <Grid item>
           <EnhancedCard title="Create Announcement">
             <CreatAnnouncement />
           </EnhancedCard>
         </Grid>
+
         <Grid item>
           <EnhancedCard title="Employee Turnover">SHOW</EnhancedCard>
         </Grid>
