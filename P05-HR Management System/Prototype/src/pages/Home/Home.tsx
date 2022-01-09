@@ -13,6 +13,7 @@ import { CreatAnnouncement } from "../../components/CreateAnnouncement";
 import EnhancedCard from "../../components/EnhancedCard";
 import RequestList from "../../components/RequestList";
 import StatCard from "../../components/StatCard";
+import EmployeeGenderCard from "../../components/EmployeeGenderCard";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -90,7 +91,9 @@ const Home = () => {
       </Grid>
       <Grid container spacing={2} className={classes.content}>
         <Grid item>
-          <EnhancedCard title="Employee Gender">SHOW</EnhancedCard>
+          <EnhancedCard title="Employee Gender">
+            <EmployeeGenderCard />
+          </EnhancedCard>
         </Grid>
         <Grid item>
           <EnhancedCard title="Requests">
