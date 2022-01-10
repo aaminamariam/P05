@@ -2,6 +2,7 @@ const AWS = require("aws-sdk");
 
 require("dotenv").config();
 
+//env variables
 AWS.config.update({
   accessKeyId: process.env.AccessKeyId,
   secretAccessKey: process.env.SecretAccessKey,
