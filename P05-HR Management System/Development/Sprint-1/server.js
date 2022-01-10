@@ -1,12 +1,15 @@
 //require express and create instance
 var express = require("express");
 var app = express();
-//imprts form database module
+
 const {
   getEmployees,
   addOrUpdateEmployee,
   deleteEmployee,
   addrequest,
+  getEmployeeRequests,
+  getEmployeeReqbyID,
+  getEmployeeReqbystatus,
 } = require("./dynamo");
 
 const cors = require("cors");
@@ -67,7 +70,8 @@ app.post("/addreq", async (req, res) => {
     const newCharacter = await addrequest(
       data.option,
       data.description,
-      data.employeeID
+      data.employeeID,
+      data.status
     );
     res.json(newCharacter);
   } catch (err) {
@@ -75,6 +79,66 @@ app.post("/addreq", async (req, res) => {
     res.status(500).json({ err: "Something went wrong" });
   }
 });
+
+//get requests
+app.get("/getrequests", async (req, res) =>
+{
+  try{
+    const requests = await getEmployeeRequests();
+    res.json(requests);    
+  }
+  catch(err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+app.get("/getrequests/:id", async (req, res) =>
+{
+  const { id } = req.params;
+  try{
+    // const requests = await getEmployeeReqbyID(id, );
+    res.json( await getEmployeeReqbyID(id, "active"));    
+  }
+  catch(err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+app.get("/activereq/:id", async (req, res) =>
+{
+  const {id}  = req.params;
+  const rstatus = "active";
+  console.log(rstatus);
+  try{
+    // const requests = await getEmployeeReqbyID(id, );
+    res.json( await getEmployeeReqbystatus(id ,rstatus));    
+  }
+  catch(err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+
+//approve/deny requests
+// app.put("/getrequests", async (req, res) =>
+// {
+//   const data = req.body;
+//   try{
+//     const requestStatus = await approvedenyRequests(
+//       data.reqStatus,
+//     );
+//     res.json(requestStatus);    
+//   }
+//   catch(err) {
+//     console.error(err);
+//     res.status(500).json({ err: "Something went wrong" });
+//   }
+// });
+
+
 // start the server in the port 5000!
 app.listen(process.env.PORT || 5000, function () {
   console.log("Example app listening on port 5000.");
