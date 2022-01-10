@@ -46,8 +46,6 @@ const addrequest = async (option, des,id, rStatus) => {
     TableName: TABLE_NAME,
     Key: { employeeID: id,
       status:rStatus},
-    //UpdateExpression: "SET #opt = list_append(#opt, :option), #des = list_append(#des, :description)",
-    // UpdateExpression: `SET #option = :option , #description = :description, #stat = :status`,
     UpdateExpression: "SET #option = :option , #description = :description",
     ExpressionAttributeNames: {
       "#option": "option",
@@ -66,7 +64,7 @@ const addrequest = async (option, des,id, rStatus) => {
 const getEmployeeReqbyID = async (id, rstatus) => {
   const params = {
     TableName: TABLE_NAME,
-    // ProjectionExpression:"#id, #option, #description, #stat",
+    ProjectionExpression:"#id, #option, #des, #stat",
     KeyConditionExpression: "#id = :id",
     ExpressionAttributeNames:{
       "#id": "employeeID",
