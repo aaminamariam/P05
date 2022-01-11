@@ -23,7 +23,8 @@ const useStyles = makeStyles(() =>
     root: {
       display: "flex",
       flexDirection: "column",
-      width: "100%",
+      backgroundColor: "red",
+      maxWidth: "1200px",
     },
     stats: {
       display: "flex",
