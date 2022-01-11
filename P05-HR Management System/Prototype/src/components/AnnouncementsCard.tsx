@@ -15,6 +15,8 @@ import Divider from "@mui/material/Divider";
 
 import announcementListItems from "./announcementListItems";
 import { useState } from "react";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -52,10 +54,16 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
     <div className={classes.root}>
       {/* <CardMedia>
         <AnnouncementIcon fontSize="large" />
-      </CardMedia> */}
-      {/* <CardContent>
+      </CardMedia>
+      <CardContent>
         <Typography variant="subtitle2">Make an announcement</Typography>
       </CardContent> */}
+      <CardActions>
+        <Button color="primary" variant="outlined" size="medium">
+          <Typography>Create Announcement</Typography>
+        </Button>
+        <Button size="small">See History</Button>
+      </CardActions>
       <CardActions>
         <List
           sx={{
@@ -85,12 +93,6 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
             </ul>
           ))}
         </List>
-      </CardActions>
-      <CardActions>
-        <Button color="primary" variant="outlined" size="medium">
-          <Typography>Create Announcement</Typography>
-        </Button>
-        <Button size="small">See History</Button>
       </CardActions>
     </div>
   );
