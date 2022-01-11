@@ -9,8 +9,9 @@ import EmployeeDash from "./pages/employeeportal";
 import AddReq from "./pages/addrequest";
 
 import { Box, makeStyles, createStyles } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+// import MenuIcon from "@material-ui/icons/Menu";
+// import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import ToDo from "./components/ToDo/ToDo";
 
 import NavBar from "./navigation/NavBar";
 import JobApplication from "./pages/JobApplication";
@@ -56,6 +57,8 @@ function App() {
           <Route path="/jobapplication" element={<JobApplication />} />
           <Route path="/employeedash" element={<EmployeeDash />} />
           <Route path="/addreq" element={<AddReq />} />
+          <Route path="/todolist" element={<ToDo />} />
+
           <Route
             path="*"
             element={
