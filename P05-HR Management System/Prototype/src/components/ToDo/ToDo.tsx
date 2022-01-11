@@ -131,10 +131,12 @@ export default function ToDo() {
               bgcolor: "background.paper",
               position: "relative",
               overflow: "auto",
-              maxHeight: "100%",
+              maxHeight: "250px",
               paddingTop: "5px",
-              // marginTop: "5px",
+              paddingRight: "0px",
+              marginTop: "5px",
               marginBottom: "5px",
+              marginRight: "0px",
             }}
           >
             {/* list still ebign rendered */}

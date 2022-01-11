@@ -9,12 +9,13 @@ import PersonOffIcon from "@material-ui/icons/Home";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
-import { CreatAnnouncement } from "../../components/CreateAnnouncement";
+import AnnouncementsCard from "../../components/AnnouncementsCard";
 import EnhancedCard from "../../components/EnhancedCard";
 import RequestList from "../../components/RequestList";
 import StatCard from "../../components/StatCard";
 import EmployeeGenderCard from "../../components/EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
+import EmployeeTurnover from "../../components/EmployeeTurnoverCard";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -107,13 +108,14 @@ const Home = () => {
           </EnhancedCard>
         </Grid>
         <Grid item>
-          <EnhancedCard title="Create Announcement">
-            <CreatAnnouncement />
+          <EnhancedCard title="Announcements">
+            <AnnouncementsCard />
           </EnhancedCard>
         </Grid>
-
         <Grid item>
-          <EnhancedCard title="Employee Turnover">SHOW</EnhancedCard>
+          <EnhancedCard title="Employee Turnover">
+            <EmployeeTurnover />
+          </EnhancedCard>
         </Grid>
         <Grid item>
           <EnhancedCard title="Employee Retention">SHOW</EnhancedCard>
