@@ -60,7 +60,7 @@ const RequestList = (props: IRequestListProps) => {
         // bgcolor: "red",
         position: "relative",
         overflow: "auto",
-        maxHeight: 245,
+        maxHeight: 300,
         "& ul": { padding: 0 },
       }}
     >

@@ -27,6 +27,11 @@ const requestListItems = [
     description: "Customize your T4, T4A, and Filling Data Attributes",
     link: "link",
   },
+  {
+    title: "General Settings",
+    description: "Customize your T4, T4A, and Filling Data Attributes",
+    link: "link",
+  },
 ];
 
 export default requestListItems;
