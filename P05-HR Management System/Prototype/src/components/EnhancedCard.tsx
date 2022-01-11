@@ -8,16 +8,22 @@ import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
-    minHeight: 300,
-    // padding: 0,
-    width: "299px",
+    height: 400,
+    // maxHeight:
+
+    // paddingHorizontal: 0,
+    width: "280px",
   },
   title: {
-    fontSize: 14.4,
+    fontSize: 14,
     fontWeight: 600,
   },
   divider: {
-    width: "100%",
+    // width: "100%",
+  },
+  content: {
+    padding: 0,
+    paddingBottom: 0,
   },
 });
 
@@ -50,7 +56,7 @@ const EnhancedCard = (props: IEnhancedCardProps) => {
         data-testid="card-title"
       />
       <Divider className={classes.divider} />
-      <CardContent>{props.children}</CardContent>
+      <div className={classes.content}> {props.children}</div>
     </Card>
   );
 };

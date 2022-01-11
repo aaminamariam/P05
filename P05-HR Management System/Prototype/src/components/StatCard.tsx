@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   root: {
     textAlign: "center",
     boxShadow: "box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)",
-    width: "299px",
+    width: "280px",
   },
   button: {
     paddingTop: 10,

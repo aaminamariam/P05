@@ -3,14 +3,15 @@ import { Routes, Route } from "react-router-dom";
 import HiringPortal from "./pages/Hiringportal";
 import Addnewposting from "./pages/Addnewposting";
 import AppPortal from "./pages/AppPortal";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import HeaderBar from "./navigation/HeaderBar";
 import EmployeeDash from "./pages/employeeportal";
 import AddReq from "./pages/addrequest";
 
 import { Box, makeStyles, createStyles } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+// import MenuIcon from "@material-ui/icons/Menu";
+// import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import ToDo from "./components/ToDo/ToDo";
 
 import NavBar from "./navigation/NavBar";
 import JobApplication from "./pages/JobApplication";
@@ -56,6 +57,7 @@ function App() {
           <Route path="/jobapplication" element={<JobApplication />} />
           <Route path="/employeedash" element={<EmployeeDash />} />
           <Route path="/addreq" element={<AddReq />} />
+          <Route path="/todolist" element={<ToDo />} />
 
           <Route
             path="*"

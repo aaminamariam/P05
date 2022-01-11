@@ -12,7 +12,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import { CreatAnnouncement } from "../components/CreateAnnouncement";
+// import { CreatAnnouncement } from "../components/AnnouncementsCard";
 import RequestList from "../components/RequestList";
 
 const useStyles = makeStyles(() =>
@@ -88,7 +88,7 @@ const EmployeeDash = () => {
         </Grid>
         <Grid item>
           <EnhancedCard title="Create Announcement">
-            <CreatAnnouncement />
+            {/* <CreatAnnouncement /> */}
           </EnhancedCard>
         </Grid>
         <Grid item>

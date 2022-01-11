@@ -99,14 +99,18 @@ const AddReq = () => {
 
   //sub
   const submitRequest = async () => {
-    await axios
-      .post("http://localhost:5000/addreq", {
-        option: option,
-        description: description,
-        employeeID: id,
-      })
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
+    let formField = new FormData();
+    formField.append("Option", option);
+    formField.append("Description", description);
+
+    await axios({
+      method: "post",
+      url: "localhost:5000/addreq",
+      data: formField,
+    }).then((response: { data: any }) => {
+      process.stdout.write(response.data);
+      alert("Your Request has been submitted");
+    });
   };
   return (
     <div className={classes.root}>
