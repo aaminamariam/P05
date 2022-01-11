@@ -15,7 +15,8 @@ import RequestList from "../../components/RequestList";
 import StatCard from "../../components/StatCard";
 import EmployeeGenderCard from "../../components/EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
-import EmployeeTurnover from "../../components/EmployeeTurnoverCard";
+import EmployeeTurnoverCard from "../../components/EmployeeTurnoverCard";
+import EmployeeRetentionCard from "../../components/EmployeeRetentionCard";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -114,11 +115,13 @@ const Home = () => {
         </Grid>
         <Grid item>
           <EnhancedCard title="Employee Turnover">
-            <EmployeeTurnover />
+            <EmployeeTurnoverCard />
           </EnhancedCard>
         </Grid>
         <Grid item>
-          <EnhancedCard title="Employee Retention">SHOW</EnhancedCard>
+          <EnhancedCard title="Employee Retention">
+            <EmployeeRetentionCard />
+          </EnhancedCard>
         </Grid>
       </Grid>
     </div>
