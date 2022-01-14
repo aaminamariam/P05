@@ -17,6 +17,7 @@ const useStyles = makeStyles({
   title: {
     fontSize: 14,
     fontWeight: 600,
+    color: "rgba(0, 82, 204, 1)"
   },
   divider: {
     // width: "100%",

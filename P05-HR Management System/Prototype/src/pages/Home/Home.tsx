@@ -17,14 +17,15 @@ import EmployeeGenderCard from "../../components/EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "../../components/EmployeeTurnoverCard";
 import EmployeeRetentionCard from "../../components/EmployeeRetentionCard";
+import EmpStatsForm from "../../components/empStatsForm";
 
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
       flexDirection: "column",
-      backgroundColor: "red",
-      maxWidth: "1200px",
+      // backgroundColor: "#FD6A00",
+      // maxWidth: "1200px",
     },
     stats: {
       display: "flex",
@@ -59,7 +60,7 @@ const Home = () => {
         <Grid item>
           <StatCard
             icon={<GroupIcon />}
-            title="Number of EMployees"
+            title="Number of Employees"
             data="678"
           />
         </Grid>
@@ -92,6 +93,7 @@ const Home = () => {
             data="25th August"
           />
         </Grid>
+
       </Grid>
       <Grid container spacing={2} className={classes.content}>
         <Grid item>
@@ -123,6 +125,21 @@ const Home = () => {
           <EnhancedCard title="Employee Retention">
             <EmployeeRetentionCard />
           </EnhancedCard>
+        </Grid>
+        <Grid item>
+        <Link
+            to="/empstats"
+            style={{
+              textDecoration: "none",
+              color: "white",
+            }}
+          >
+          <StatCard
+            icon={<GroupIcon />}
+            title="Add Employee Statics"
+            // backgroundColor= "#FD6A00"
+          />
+          </Link>
         </Grid>
       </Grid>
     </div>

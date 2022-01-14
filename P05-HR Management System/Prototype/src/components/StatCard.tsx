@@ -14,10 +14,9 @@ const useStyles = makeStyles({
   },
   button: {
     paddingTop: 10,
-    // paddingBottom: 5,
   },
   icon: {
-    color: "rgba(0, 82, 204, 1)",
+    color: "rgba(253, 106, 0, 1)",
     fontSize: 60,
   },
   title: {

@@ -1,4 +1,5 @@
 //require express and create instance
+// this file contains all rest apis
 var express = require("express");
 var app = express();
 
@@ -10,6 +11,9 @@ const {
   getEmployeeRequests,
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
+  approvedenyRequests,
+  // addstats,
+  addcomments,
 } = require("./dynamo");
 
 const cors = require("cors");
@@ -27,7 +31,7 @@ app.get("/", (req, res) => {
 
 // rest apis
 //post
-app.post("/characters", async (req, res) => {
+app.post("/employee", async (req, res) => {
   const employee = req.body;
   try {
     const newEmployee = await addOrUpdateEmployee(employee);
@@ -68,10 +72,25 @@ app.post("/addreq", async (req, res) => {
     const newCharacter = await addrequest(
       data.option,
       data.description,
-      data.employeeID,
-      "active"
+      data.employeeID
     );
     res.json(newCharacter);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+// approve requests for HR
+app.post("/approverequests", async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  try {
+    const requestStatus = await approvedenyRequests(
+      data.employeeID,
+      data.approval
+    );
+    res.json(requestStatus);
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
@@ -93,41 +112,38 @@ app.get("/getrequests/:id", async (req, res) => {
   const { id } = req.params;
   try {
     // const requests = await getEmployeeReqbyID(id, );
-    res.json(await getEmployeeReqbyID(id, "active"));
+    res.json(await getEmployeeReqbyID(id));
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
   }
 });
 
-app.get("/activereq/:id", async (req, res) => {
-  const { id } = req.params;
-  const rstatus = "active";
-  console.log(rstatus);
-  try {
-    // const requests = await getEmployeeReqbyID(id, );
-    res.json(await getEmployeeReqbystatus(id, rstatus));
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ err: "Something went wrong" });
-  }
-});
-
-//approve/deny requests
-// app.put("/getrequests", async (req, res) =>
-// {
-//   const data = req.body;
-//   try{
-//     const requestStatus = await approvedenyRequests(
-//       data.reqStatus,
-//     );
-//     res.json(requestStatus);
-//   }
-//   catch(err) {
+// app.get("/activereq/:id", async (req, res) => {
+//   const { id } = req.params;
+//   const rstatus = "Null";
+//   console.log(rstatus);
+//   try {
+//     // const requests = await getEmployeeReqbyID(id, );
+//     res.json(await getEmployeeReqbystatus(id, rstatus));
+//   } catch (err) {
 //     console.error(err);
 //     res.status(500).json({ err: "Something went wrong" });
 //   }
 // });
+
+//add employee statistics
+//rating, comments, teamwork score
+//no of projects/tasks, no of leaves->from db
+app.put("/addstats", async (req, res) => {
+  const data = req.body;
+  try {
+    res.json(await addcomments(id, comments, rating, teamworkScore));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
 
 // start the server in the port 5000!
 app.listen(process.env.PORT || 5000, function () {

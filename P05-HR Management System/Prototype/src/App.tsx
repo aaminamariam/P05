@@ -7,6 +7,7 @@ import Home from "./pages/Home/Home";
 import HeaderBar from "./navigation/HeaderBar";
 import EmployeeDash from "./pages/employeeportal";
 import AddReq from "./pages/addrequest";
+import EmpStatsForm from "./components/empStatsForm";
 
 import { Box, makeStyles, createStyles } from "@material-ui/core";
 // import MenuIcon from "@material-ui/icons/Menu";
@@ -58,6 +59,7 @@ function App() {
           <Route path="/employeedash" element={<EmployeeDash />} />
           <Route path="/addreq" element={<AddReq />} />
           <Route path="/todolist" element={<ToDo />} />
+          <Route path="/empstats" element={<EmpStatsForm />} />
 
           <Route
             path="*"
