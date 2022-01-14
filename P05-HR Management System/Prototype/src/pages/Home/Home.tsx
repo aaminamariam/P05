@@ -17,7 +17,7 @@ import EmployeeGenderCard from "../../components/EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "../../components/EmployeeTurnoverCard";
 import EmployeeRetentionCard from "../../components/EmployeeRetentionCard";
-import EmpStatsForm from "../../components/empStatsForm";
+import EmpStatsForm from "../empStatsForm";
 
 const useStyles = makeStyles(() =>
   createStyles({

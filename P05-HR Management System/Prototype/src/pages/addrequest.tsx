@@ -68,6 +68,17 @@ const useStyles = makeStyles(() =>
       display: "flex",
       justifyContent: "space-around",
     },
+    sqr: {
+      color: "black",
+      variant: "permanent",
+      position: "absolute",
+      left: "23%",
+      top: "20%",
+      width: "75%",
+      height: "120%",
+      boxSizing: "border-box",
+      background: "#c4c4c4",
+    }
   })
 );
 const BootstrapButton = styled(Button)({
@@ -99,23 +110,22 @@ const AddReq = () => {
 
   //sub
   const submitRequest = async () => {
-    let formField = new FormData();
-    formField.append("Option", option);
-    formField.append("Description", description);
 
     await axios({
       method: "post",
-      url: "localhost:5000/addreq",
-      data: formField,
+      url:"http://localhost:5000/addreq",
+      data: {"option":option,
+        "description": description,
+        "employeeID":id }
     }).then((response: { data: any }) => {
-      process.stdout.write(response.data);
+      console.log(response.data);
       alert("Your Request has been submitted");
     });
   };
   return (
     <div className={classes.root}>
+      <Box className={classes.sqr}>
       <Sidebarofapplication />
-      <Box>
         <CssBaseline />
         <AppBar className={classes.appbar}>
           <Toolbar>
@@ -184,7 +194,7 @@ const AddReq = () => {
             to="/employeedash"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
-            <BootstrapButton variant="contained" onClick={submitRequest}>
+            <BootstrapButton variant="contained" >
               Back
             </BootstrapButton>
           </Link>

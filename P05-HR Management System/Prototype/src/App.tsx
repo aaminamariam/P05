@@ -7,7 +7,7 @@ import Home from "./pages/Home/Home";
 import HeaderBar from "./navigation/HeaderBar";
 import EmployeeDash from "./pages/employeeportal";
 import AddReq from "./pages/addrequest";
-import EmpStatsForm from "./components/empStatsForm";
+import EmpStatsForm from "./pages/empStatsForm";
 
 import { Box, makeStyles, createStyles } from "@material-ui/core";
 // import MenuIcon from "@material-ui/icons/Menu";

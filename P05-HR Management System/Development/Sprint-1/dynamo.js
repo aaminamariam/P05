@@ -134,37 +134,41 @@ const approvedenyRequests = async (employeeID, approve) => {
 };
 
 //add employee statics
-const addcomments = async (employeeID, comments, rating, teamworkScore) => {
+const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
   const status = "inactive";
   const params = {
     TableName: TABLE_NAME,
-    Key: { employeeID: employeeID, status: "active" },
-    UpdateExpression: "SET #comments = :vals , #rating = :rating, #teamscore = :tscore",
+    Key: { employeeID: employeeID },
+    UpdateExpression: "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
     //#count = :counter",
     ExpressionAttributeNames: {
       "#comments": "comments",
-      "#rating":"rate",
-      "#teamscore" :" teamworkScore"
+      "#rating":"rating",
+      "#teamscore" :"teamworkScore",
+      "#hoursworked":"hoursworked"
     },
     ExpressionAttributeValues: {
       ":vals": [comments],
       ":rating": [rating], 
-      ":tscore":[teamworkScore]
+      ":tscore":[teamworkScore],
+      ":hours":[hours]
       },
   };
   const params2 = {
     TableName: TABLE_NAME,
-    Key: { employeeID: employeeID, status: "active" },
-    UpdateExpression: "SET #com = list_append(#com,:vals), SET #rating = list_append(#rating,:rating), SET #teamscore = list_append(#teamscore,:tscore)",
+    Key: { employeeID: employeeID },
+    UpdateExpression: "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
     ExpressionAttributeNames: {
       "#com": "comments",
       "#rating":"rating",
-      "#teamscore":"teamworkScore"
+      "#teamscore":"teamworkScore",
+      "#hoursworked":"hoursworked"
     },
     ExpressionAttributeValues: {
       ":vals": [comments],
       ":rating":[rating], 
-      ":tscore":[teamworkScore]
+      ":tscore":[teamworkScore],
+      ":hours":[hours]
     },
   };
   try {
@@ -177,6 +181,26 @@ const addcomments = async (employeeID, comments, rating, teamworkScore) => {
     }
   }
 };
+
+const getEmployeeStatsbyID = async (id) => {
+  const params = {
+    TableName: TABLE_NAME,
+    ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
+    KeyConditionExpression: "#id = :id",
+    ExpressionAttributeNames: {
+      "#id": "employeeID",
+      "#Rating": "rating",
+      "#teamscore": "teamworkScore",
+      "#hoursWorked": "hoursworked",
+      "#comments": "comments"
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
+  const statsbyID = await dynamoClient.query(params).promise();
+  return statsbyID;
+};
 module.exports = {
   dynamoClient,
   getEmployees,
@@ -186,8 +210,7 @@ module.exports = {
   getEmployeeRequests,
   getEmployeeReqbyID,
   approvedenyRequests,
-  // addstats,
-  addcomments,
+  addstats,
+  getEmployeeStatsbyID
 };
 
-addcomments("98","good job","4.5","4");
