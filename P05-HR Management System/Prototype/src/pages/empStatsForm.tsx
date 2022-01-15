@@ -65,88 +65,91 @@ const EmpStatsForm = () => {
     backgroundColor: "rgba(253, 106, 0, 1)",
     textTransform: "none",
     fontSize: 16,
-    color: '#ffffff'
+    color: "#ffffff",
   });
-  const check = () =>
-  {
-    if (id =="" || rating =="" || hoursworked =="" || teamscore == "" || hoursworked == "" )
-    {
-      alert("a field is empty")
-      return 1
+  const check = () => {
+    if (
+      id == "" ||
+      rating == "" ||
+      hoursworked == "" ||
+      teamscore == "" ||
+      hoursworked == ""
+    ) {
+      alert("a field is empty");
+      return 1;
     }
-    return 0
-  }
+    return 0;
+  };
   const submission = async () => {
     const checker = check();
-    if (checker==0) {
-    await axios({
-      method: "put",
-      url: "http://localhost:5000/addstats",
-      data: {
-        "employeeID":id,
-        "rating": rating,
-        "hoursworked":hoursworked,
-        "comments":comments,
-        "teamworkScore":teamscore     
-      },
-    }).then((response: { data: any }) => {
-      console.log(response.data);
-      var today = new Date().toLocaleDateString();
-      console.log(today);
-      alert("Employee stats have been submitted");
-    });
-  }
+    if (checker == 0) {
+      await axios({
+        method: "put",
+        url: "http://52.91.138.50:5000/addstats",
+        data: {
+          employeeID: id,
+          rating: rating,
+          hoursworked: hoursworked,
+          comments: comments,
+          teamworkScore: teamscore,
+        },
+      }).then((response: { data: any }) => {
+        console.log(response.data);
+        var today = new Date().toLocaleDateString();
+        console.log(today);
+        alert("Employee stats have been submitted");
+      });
+    }
   };
   return (
     <>
       <Box className={classes.sqr}>
-      <form className={classes.rot}>
+        <form className={classes.rot}>
+          <TextField
+            className={classes.text}
+            label="Employee ID"
+            variant="outlined"
+            required
+            value={id}
+            onChange={(e) => setID(e.target.value)}
+            id="outlined-multiline-flexible"
+            maxRows={4}
+          />
 
-        <TextField
-          className={classes.text}
-          label="Employee ID"
-          variant="outlined"
-          required
-          value={id}
-          onChange={(e) => setID(e.target.value)}
-          id="outlined-multiline-flexible"
-          maxRows={4}
-        />
-        
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Rating</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={rating}
-            label="Rating"
-            onChange={(e) => setRating(e.target.value)}
-          >
-            <MenuItem value={"1"}>1</MenuItem>
-            <MenuItem value={"2"}>2</MenuItem>
-            <MenuItem value={"3"}>3</MenuItem>
-            <MenuItem value={"4"}>4</MenuItem>
-            <MenuItem value={"5"}>5</MenuItem>
-            <MenuItem value={"6"}>6</MenuItem>
-            <MenuItem value={"7"}>7</MenuItem>
-            <MenuItem value={"8"}>8</MenuItem>
-            <MenuItem value={"9"}>9</MenuItem>
-            <MenuItem value={"10"}>10</MenuItem>
-          </Select>
-        </FormControl>
-        
-        <TextField
-          className={classes.text}
-          id="outlined-multiline-flexible"
-          maxRows={4}
-          label="Team Score"
-          variant="outlined"
-          required
-          value={teamscore}
-          onChange={(e) => setTeamScore(e.target.value)}
-        />
-        
-        {/* <TextField
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Rating</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={rating}
+              label="Rating"
+              onChange={(e) => setRating(e.target.value)}
+            >
+              <MenuItem value={"1"}>1</MenuItem>
+              <MenuItem value={"2"}>2</MenuItem>
+              <MenuItem value={"3"}>3</MenuItem>
+              <MenuItem value={"4"}>4</MenuItem>
+              <MenuItem value={"5"}>5</MenuItem>
+              <MenuItem value={"6"}>6</MenuItem>
+              <MenuItem value={"7"}>7</MenuItem>
+              <MenuItem value={"8"}>8</MenuItem>
+              <MenuItem value={"9"}>9</MenuItem>
+              <MenuItem value={"10"}>10</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            className={classes.text}
+            id="outlined-multiline-flexible"
+            maxRows={4}
+            label="Team Score"
+            variant="outlined"
+            required
+            value={teamscore}
+            onChange={(e) => setTeamScore(e.target.value)}
+          />
+
+          {/* <TextField
           className={classes.text}
           label="Number of Leaves"
           variant="filled"
@@ -154,49 +157,49 @@ const EmpStatsForm = () => {
           value={leaves}
           onChange={(e) => setLeaves(e.target.value)}
         /> */}
-        <TextField
-          className={classes.text}
-          id="outlined-multiline-flexible"
-          maxRows={4}
-          label="Hours Worked"
-          variant="outlined"
-          required
-          value={hoursworked}
-          onChange={(e) => setHoursWorked(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          id="outlined-multiline-static"
-          label="Comments"
-          required
-          value={comments}
-          onChange={(e) => setComments(e.target.value)}
-          multiline
-          rows={8}
-          variant="outlined"
-          fullWidth={true}
-        />
-        <div>
-        <Stack className={classes.buttons} direction="row" spacing={50}>
-          <NavLink to="/"
-                      style={{
-                        textDecoration: "none",
-                        color: "white",
-                      }}>
-            <BootstrapButton variant="contained">
-              Back
-            </BootstrapButton>
-          </NavLink>
-          <BootstrapButton
-            variant="contained"
-            endIcon={<SendIcon />}
-            onClick={submission}
-          >
-            Submit
-          </BootstrapButton>
-          </Stack>
-        </div>
-      </form>
+          <TextField
+            className={classes.text}
+            id="outlined-multiline-flexible"
+            maxRows={4}
+            label="Hours Worked"
+            variant="outlined"
+            required
+            value={hoursworked}
+            onChange={(e) => setHoursWorked(e.target.value)}
+          />
+          <TextField
+            className={classes.text}
+            id="outlined-multiline-static"
+            label="Comments"
+            required
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+            multiline
+            rows={8}
+            variant="outlined"
+            fullWidth={true}
+          />
+          <div>
+            <Stack className={classes.buttons} direction="row" spacing={50}>
+              <NavLink
+                to="/"
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                }}
+              >
+                <BootstrapButton variant="contained">Back</BootstrapButton>
+              </NavLink>
+              <BootstrapButton
+                variant="contained"
+                endIcon={<SendIcon />}
+                onClick={submission}
+              >
+                Submit
+              </BootstrapButton>
+            </Stack>
+          </div>
+        </form>
       </Box>
     </>
   );

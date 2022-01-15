@@ -78,7 +78,7 @@ const useStyles = makeStyles(() =>
       height: "120%",
       boxSizing: "border-box",
       background: "#c4c4c4",
-    }
+    },
   })
 );
 const BootstrapButton = styled(Button)({
@@ -110,13 +110,10 @@ const AddReq = () => {
 
   //sub
   const submitRequest = async () => {
-
     await axios({
       method: "post",
-      url:"http://localhost:5000/addreq",
-      data: {"option":option,
-        "description": description,
-        "employeeID":id }
+      url: "http://52.91.138.50:5000/addreq",
+      data: { option: option, description: description, employeeID: id },
     }).then((response: { data: any }) => {
       console.log(response.data);
       alert("Your Request has been submitted");
@@ -125,7 +122,7 @@ const AddReq = () => {
   return (
     <div className={classes.root}>
       <Box className={classes.sqr}>
-      <Sidebarofapplication />
+        <Sidebarofapplication />
         <CssBaseline />
         <AppBar className={classes.appbar}>
           <Toolbar>
@@ -194,9 +191,7 @@ const AddReq = () => {
             to="/employeedash"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
-            <BootstrapButton variant="contained" >
-              Back
-            </BootstrapButton>
+            <BootstrapButton variant="contained">Back</BootstrapButton>
           </Link>
           <BootstrapButton
             variant="contained"
