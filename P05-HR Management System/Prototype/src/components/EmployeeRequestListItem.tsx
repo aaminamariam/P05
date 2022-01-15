@@ -54,11 +54,13 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>{title}</Typography>
-          <Typography sx={{ color: "text.secondary" }}>{type}</Typography>
+          <Typography sx={{ width: "100%", flexShrink: 1 }}>{title}</Typography>
+          <Typography sx={{ width: "100%", color: "text.secondary" }}>
+            {type}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{data}</Typography>
+          <Typography sx={{ width: "100%" }}>{data}</Typography>
           <Button onClick={handleApprove}>Approve</Button>
           <Button onClick={handleApprove}>Deny</Button>
         </AccordionDetails>

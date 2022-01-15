@@ -33,10 +33,13 @@ const getEmployeeRequests = async (id) => {
 };
 
 // add to database
-const addOrUpdateEmployee = async (employee) => {
+const addOrUpdateEmployee = async (employee, name) => {
   const params = {
     TableName: TABLE_NAME,
-    Item: employee,
+    Item: {
+      employeeID: employee,
+      name: name,
+    },
   };
   return await dynamoClient.put(params).promise();
 };
@@ -139,36 +142,38 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
   const params = {
     TableName: TABLE_NAME,
     Key: { employeeID: employeeID },
-    UpdateExpression: "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
+    UpdateExpression:
+      "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
     //#count = :counter",
     ExpressionAttributeNames: {
       "#comments": "comments",
-      "#rating":"rating",
-      "#teamscore" :"teamworkScore",
-      "#hoursworked":"hoursworked"
+      "#rating": "rating",
+      "#teamscore": "teamworkScore",
+      "#hoursworked": "hoursworked",
     },
     ExpressionAttributeValues: {
       ":vals": [comments],
-      ":rating": [rating], 
-      ":tscore":[teamworkScore],
-      ":hours":[hours]
-      },
+      ":rating": [rating],
+      ":tscore": [teamworkScore],
+      ":hours": [hours],
+    },
   };
   const params2 = {
     TableName: TABLE_NAME,
     Key: { employeeID: employeeID },
-    UpdateExpression: "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
+    UpdateExpression:
+      "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
     ExpressionAttributeNames: {
       "#com": "comments",
-      "#rating":"rating",
-      "#teamscore":"teamworkScore",
-      "#hoursworked":"hoursworked"
+      "#rating": "rating",
+      "#teamscore": "teamworkScore",
+      "#hoursworked": "hoursworked",
     },
     ExpressionAttributeValues: {
       ":vals": [comments],
-      ":rating":[rating], 
-      ":tscore":[teamworkScore],
-      ":hours":[hours]
+      ":rating": [rating],
+      ":tscore": [teamworkScore],
+      ":hours": [hours],
     },
   };
   try {
@@ -192,7 +197,7 @@ const getEmployeeStatsbyID = async (id) => {
       "#Rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursWorked": "hoursworked",
-      "#comments": "comments"
+      "#comments": "comments",
     },
     ExpressionAttributeValues: {
       ":id": id,
@@ -211,6 +216,5 @@ module.exports = {
   getEmployeeReqbyID,
   approvedenyRequests,
   addstats,
-  getEmployeeStatsbyID
+  getEmployeeStatsbyID,
 };
-
