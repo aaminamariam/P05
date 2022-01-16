@@ -186,7 +186,7 @@ const AddReq = () => {
             fullWidth={true}
           />
         </div>
-        <Stack className={classes.buttons} direction="row" spacing={32}>
+        <Stack className={classes.buttons} direction="row" spacing={"80%"}>
           <Link
             to="/employeedash"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
