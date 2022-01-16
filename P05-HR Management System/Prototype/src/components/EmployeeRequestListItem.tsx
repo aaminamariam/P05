@@ -48,7 +48,7 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
   const handleApprove = async (x: any, id: any, type: any, data: any) => {
     await axios({
       method: "post",
-      url: "http://localhost:5000/approverequests/",
+      url: "http://52.91.138.50:5000/approverequests/",
       data: {
         employeeID: id,
         approval: x,
