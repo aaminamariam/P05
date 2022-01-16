@@ -5,6 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button } from "@material-ui/core";
+import axios from "axios";
 
 export interface IEmployeeListItemProps {
   /**
@@ -27,12 +28,15 @@ export interface IEmployeeListItemProps {
    * the number to be displayed in the card component
    */
   active?: string;
+
+  id?: string;
 }
 
 const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
   title = "Title",
   type = "type",
   data = "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat Aliquam eget maximus est, id dignissim quam.",
+  id = "0",
 }: IEmployeeListItemProps) => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -41,7 +45,21 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
       setExpanded(isExpanded ? panel : false);
     };
 
-  const handleApprove = () => {};
+  const handleApprove = async (x: any, id: any, type: any, data: any) => {
+    await axios({
+      method: "post",
+      url: "http://localhost:5000/approverequests/",
+      data: {
+        employeeID: id,
+        approval: x,
+        description: data,
+        option: type,
+      },
+    }).then((response: { data: any }) => {
+      console.log(response.data);
+      alert("Your Job application has been submitted");
+    });
+  };
 
   return (
     <div>
@@ -58,11 +76,18 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
           <Typography sx={{ width: "100%", color: "text.secondary" }}>
             {type}
           </Typography>
+          <Typography sx={{ width: "100%", color: "text.secondary" }}>
+            {id}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography sx={{ width: "100%" }}>{data}</Typography>
-          <Button onClick={handleApprove}>Approve</Button>
-          <Button onClick={handleApprove}>Deny</Button>
+          <Button onClick={(e) => handleApprove("yes", id, type, data)}>
+            Approve
+          </Button>
+          <Button onClick={(e) => handleApprove("no", id, type, data)}>
+            Deny
+          </Button>
         </AccordionDetails>
       </Accordion>
     </div>

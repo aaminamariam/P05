@@ -11,6 +11,7 @@ import { Box, Typography } from "@mui/material";
 import axios from "axios";
 
 import { IEmployeeListItemProps } from "../../components/EmployeeRequestListItem";
+import requestListItems from "../../components/requestListItems";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -40,7 +41,7 @@ export default function EmployeeRequestsList() {
   const getreq = async () => {
     let x: any = [];
     try {
-      const response = await axios.get("http://52.91.138.50:5000/getrequests");
+      const response = await axios.get("http://52.91.138.50:5000/activereq");
       // console.log(response.data.Items[0].comments);
       const li = response.data.Items;
       x = li;
@@ -48,14 +49,14 @@ export default function EmployeeRequestsList() {
     } catch (error) {
       console.error(error);
     }
+    let a = [];
     for (let i = 0; i < x.length; i++) {
-      const a = {
+      a.push({
         title: x[i].name,
         type: x[i].option,
         data: x[i].description,
-      };
-      console.log(a);
-      console.log(x);
+        id: x[i].employeeID,
+      });
       setList([...list, a]);
     }
   };
@@ -75,17 +76,23 @@ export default function EmployeeRequestsList() {
           "& ul": { padding: 0 },
         }}
       >
-        {list.map((item) => (
-          // <li key={`section-${item}`}>
-          <ul>
-            <EmployeeRequestListItem
-              title={item.title}
-              type={item.type}
-              data={item.data}
-            />
-          </ul>
-        ))}
+        {list.map((item) =>
+          // <li key={`section-${i}`}>
+          // {console.log(item);}
+          item.map((i: any) => (
+            <ul>
+              <EmployeeRequestListItem
+                title={i.title}
+                type={i.type}
+                data={i.data}
+                id={i.id}
+              />
+            </ul>
+            // </li>
+          ))
+        )}
       </List>
+      {/* <h1>{list[0].title}</h1> */}
     </Box>
   );
 }

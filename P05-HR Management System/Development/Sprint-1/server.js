@@ -90,7 +90,9 @@ app.post("/approverequests", async (req, res) => {
   try {
     const requestStatus = await approvedenyRequests(
       data.employeeID,
-      data.approval
+      data.approval,
+      data.description,
+      data.option
     );
     res.json(requestStatus);
   } catch (err) {
@@ -132,16 +134,16 @@ app.get("/getrequests", async (req, res) => {
   }
 });
 
-app.get("/getrequests/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    // const requests = await getEmployeeReqbyID(id, );
-    res.json(await getEmployeeReqbyID(id));
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ err: "Something went wrong" });
-  }
-});
+// app.get("/getrequests/:id", async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     // const requests = await getEmployeeReqbyID(id, );
+//     res.json(await getEmployeeReqbyID(id));
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ err: "Something went wrong" });
+//   }
+// });
 
 //display stats of employee
 app.get("/getstats/:id", async (req, res) => {
@@ -155,18 +157,15 @@ app.get("/getstats/:id", async (req, res) => {
   }
 });
 
-// app.get("/activereq/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const rstatus = "Null";
-//   console.log(rstatus);
-//   try {
-//     // const requests = await getEmployeeReqbyID(id, );
-//     res.json(await getEmployeeReqbystatus(id, rstatus));
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ err: "Something went wrong" });
-//   }
-// });
+app.get("/activereq", async (req, res) => {
+  try {
+    // const requests = await getEmployeeReqbyID(id, );
+    res.json(await getEmployeeReqbystatus());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
 
 // start the server in the port 5000!
 app.listen(process.env.PORT || 5000, function () {
