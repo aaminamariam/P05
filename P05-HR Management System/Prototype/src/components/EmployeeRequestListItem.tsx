@@ -57,7 +57,7 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
       },
     }).then((response: { data: any }) => {
       console.log(response.data);
-      alert("Your Job application has been submitted");
+      alert("success");
     });
   };
 
