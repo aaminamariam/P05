@@ -108,8 +108,19 @@ const AddReq = () => {
     set_description(event.target.value);
   };
 
+  const is_empty = (option:string,description:string,id:string) =>
+  {
+    if (option =="" || description =="" || id =="")
+    {
+      alert("a field is empty")
+      return 1
+    }
+    return 0
+  }
   //sub
   const submitRequest = async () => {
+    const check = is_empty(option,description,id)
+    if (check ==0){
     await axios({
       method: "post",
       url: "http://52.91.138.50:5000/addreq",
@@ -118,6 +129,8 @@ const AddReq = () => {
       console.log(response.data);
       alert("Your Request has been submitted");
     });
+  }
+
   };
   return (
     <div className={classes.root}>
