@@ -17,7 +17,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
-      justifyContent: "center",
+      // justifyContent: "center",
     },
     sqr: {
       color: "black",
@@ -33,18 +33,19 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export default function EmployeeRequestsList() {
+const ReqHist = () => {
   const classes = useStyles();
   const [list, setList] = useState<any[]>([]);
-
+  const [id, getID] = useState<any>("99");
+  const link = "http://localhost:5000/getrequests/" + id;
   const getreq = async () => {
     let x: any = [];
     try {
-      const response = await axios.get("http://52.91.138.50:5000/activereq");
+      const response = await axios.get(link);
       // console.log(response.data.Items[0].comments);
       const li = response.data.Items;
       x = li;
-      // console.log(li[0]);
+      console.log(li[0]);
     } catch (error) {
       console.error(error);
     }
@@ -94,4 +95,5 @@ export default function EmployeeRequestsList() {
       {/* <h1>{list[0].title}</h1> */}
     </Box>
   );
-}
+};
+export default ReqHist;

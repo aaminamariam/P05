@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     width: "75%",
     height: "120%",
     boxSizing: "border-box",
-    background: "#c4c4c4",
   },
   text: {
     background: "#ffffff",
@@ -149,14 +148,6 @@ const EmpStatsForm = () => {
             onChange={(e) => setTeamScore(e.target.value)}
           />
 
-          {/* <TextField
-          className={classes.text}
-          label="Number of Leaves"
-          variant="filled"
-          required
-          value={leaves}
-          onChange={(e) => setLeaves(e.target.value)}
-        /> */}
           <TextField
             className={classes.text}
             id="outlined-multiline-flexible"

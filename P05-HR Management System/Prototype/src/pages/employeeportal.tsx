@@ -45,7 +45,18 @@ const EmployeeDash = () => {
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.stats}>
         <Grid item>
-          <StatCard icon={<LeaderboardIcon />} title="Performance statistics" />
+          <Link
+            to="/employeesanalytics"
+            style={{
+              textDecoration: "none",
+              color: "white",
+            }}
+          >
+            <StatCard
+              icon={<LeaderboardIcon />}
+              title="Performance statistics"
+            />
+          </Link>
         </Grid>
         <Grid item>
           <StatCard

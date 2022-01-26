@@ -134,16 +134,16 @@ app.get("/getrequests", async (req, res) => {
   }
 });
 
-// app.get("/getrequests/:id", async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     // const requests = await getEmployeeReqbyID(id, );
-//     res.json(await getEmployeeReqbyID(id));
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ err: "Something went wrong" });
-//   }
-// });
+app.get("/getrequests/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    // const requests = await getEmployeeReqbyID(id, );
+    res.json(await getEmployeeReqbyID(id));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
 
 //display stats of employee
 app.get("/getstats/:id", async (req, res) => {

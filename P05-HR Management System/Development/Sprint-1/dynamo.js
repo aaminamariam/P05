@@ -64,7 +64,7 @@ const addrequest = async (option, des, id) => {
   };
   return await dynamoClient.update(params).promise();
 };
-
+// fetch employee requests by status active or inactive
 const getEmployeeReqbystatus = async () => {
   const params = {
     TableName: TABLE_NAME,
@@ -87,26 +87,29 @@ const getEmployeeReqbystatus = async () => {
   return reqbyStatus;
 };
 
-//query by status
-// const getEmployeeReqbystatus = async (id, status) => {
-//   const params = {
-//     TableName: TABLE_NAME,
-//     Key: { employeeID: id },
-//     ProjectionExpression: "#id, #stat, #option ,#des",
-//     KeyConditionExpression: "#stat = :status",
-//     ExpressionAttributeNames: {
-//       "#id": "employeeID",
-//       "#stat": "status",
-//       "#option": "option",
-//       "#des": "description",
-//     },
-//     ExpressionAttributeValues: {
-//       ":status": status,
-//     },
-//   };
-//   const reqbyID = await dynamoClient.query(params).promise();
-//   return reqbyID;
-// };
+// fetch employee requests by id
+const getEmployeeReqbyID = async (id) => {
+  const params = {
+    TableName: TABLE_NAME,
+    ProjectionExpression: "#id, #option, #des, #name,#popt,#papprove,#pdes",
+    KeyConditionExpression: "#id = :empid",
+    ExpressionAttributeNames: {
+      "#id": "employeeID",
+      "#option": "option",
+      "#des": "description",
+      "#name": "name",
+      "#popt": "previous_options",
+      "#papprove": "previous_approve",
+      "#pdes": "previous_description",
+    },
+    ExpressionAttributeValues: {
+      ":empid": id,
+    },
+  };
+  const employees = await dynamoClient.query(params).promise();
+  console.log(employees);
+  return employees;
+};
 //delete employee from the database
 const deleteEmployee = async (employeeID) => {
   const params = {
@@ -230,9 +233,9 @@ const getEmployeeStatsbyID = async (id) => {
   const params = {
     TableName: TABLE_NAME,
     ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
-    KeyConditionExpression: "#id = :id",
+    KeyConditionExpression: "#ids = :id",
     ExpressionAttributeNames: {
-      "#id": "employeeID",
+      "#ids": "employeeID",
       "#Rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursWorked": "hoursworked",
@@ -252,8 +255,10 @@ module.exports = {
   deleteEmployee,
   addrequest,
   getEmployeeRequests,
+  getEmployeeReqbyID,
   getEmployeeReqbystatus,
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
 };
+getEmployeeReqbyID("16");
