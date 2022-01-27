@@ -4,8 +4,6 @@ import EmployeeRequestListItem from "../../components/EmployeeRequestListItem";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createStyles, makeStyles } from "@mui/styles";
-import EmployeeRequestListItem from "../../components/EmployeeRequestListItem";
+import HistoryListItem from "../../components/histlist";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -55,7 +55,7 @@ const ReqHist = () => {
         title: x[i].name,
         type: x[i].option,
         data: x[i].description,
-        id: x[i].employeeID,
+        active: x[i].status,
       });
       setList([...list, a]);
     }
@@ -81,11 +81,11 @@ const ReqHist = () => {
           // {console.log(item);}
           item.map((i: any) => (
             <ul>
-              <EmployeeRequestListItem
+              <HistoryListItem
                 title={i.title}
                 type={i.type}
                 data={i.data}
-                id={i.id}
+                active={i.active}
               />
             </ul>
             // </li>

@@ -91,13 +91,14 @@ const getEmployeeReqbystatus = async () => {
 const getEmployeeReqbyID = async (id) => {
   const params = {
     TableName: TABLE_NAME,
-    ProjectionExpression: "#id, #option, #des, #name,#popt,#papprove,#pdes",
+    ProjectionExpression: "#id, #option, #des, #name,#popt,#papprove,#pdes,#st",
     KeyConditionExpression: "#id = :empid",
     ExpressionAttributeNames: {
       "#id": "employeeID",
       "#option": "option",
       "#des": "description",
       "#name": "name",
+      "#st": "status",
       "#popt": "previous_options",
       "#papprove": "previous_approve",
       "#pdes": "previous_description",
