@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 import HistoryListItem from "../../components/histlist";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
-import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
