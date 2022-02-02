@@ -77,7 +77,6 @@ const useStyles = makeStyles(() =>
       width: "75%",
       height: "120%",
       boxSizing: "border-box",
-      background: "#c4c4c4",
     },
   })
 );
@@ -108,29 +107,26 @@ const AddReq = () => {
     set_description(event.target.value);
   };
 
-  const is_empty = (option:string,description:string,id:string) =>
-  {
-    if (option =="" || description =="" || id =="")
-    {
-      alert("a field is empty")
-      return 1
+  const is_empty = (option: string, description: string, id: string) => {
+    if (option == "" || description == "" || id == "") {
+      alert("a field is empty");
+      return 1;
     }
-    return 0
-  }
+    return 0;
+  };
   //sub
   const submitRequest = async () => {
-    const check = is_empty(option,description,id)
-    if (check ==0){
-    await axios({
-      method: "post",
-      url: "http://52.91.138.50:5000/addreq",
-      data: { option: option, description: description, employeeID: id },
-    }).then((response: { data: any }) => {
-      console.log(response.data);
-      alert("Your Request has been submitted");
-    });
-  }
-
+    const check = is_empty(option, description, id);
+    if (check == 0) {
+      await axios({
+        method: "post",
+        url: "http://localhost:5000/addreq",
+        data: { option: option, description: description, employeeID: id },
+      }).then((response: { data: any }) => {
+        console.log(response.data);
+        alert("Your Request has been submitted");
+      });
+    }
   };
   return (
     <div className={classes.root}>

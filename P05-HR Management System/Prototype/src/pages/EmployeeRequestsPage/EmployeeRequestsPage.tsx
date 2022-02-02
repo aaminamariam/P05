@@ -8,7 +8,6 @@ import ListItemText from "@mui/material/ListItemText";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 
-import { IEmployeeListItemProps } from "../../components/EmployeeRequestListItem";
 import requestListItems from "../../components/requestListItems";
 
 const useStyles = makeStyles(() =>
@@ -38,7 +37,7 @@ export default function EmployeeRequestsList() {
   const getreq = async () => {
     let x: any = [];
     try {
-      const response = await axios.get("http://52.91.138.50:5000/activereq");
+      const response = await axios.get("http://localhost:5000/activereq");
       // console.log(response.data.Items[0].comments);
       const li = response.data.Items;
       x = li;

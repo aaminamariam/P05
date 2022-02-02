@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 import HistoryListItem from "../../components/histlist";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+// import ListItem from "@mui/material/ListItem";
+// import ListItemButton from "@mui/material/ListItemButton";
+// import ListItemText from "@mui/material/ListItemText";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 
@@ -34,7 +34,7 @@ const useStyles = makeStyles(() =>
 const ReqHist = () => {
   const classes = useStyles();
   const [list, setList] = useState<any[]>([]);
-  const [id, getID] = useState<any>("99");
+  const [id, getID] = useState<any>("2");
   const link = "http://localhost:5000/getrequests/" + id;
   const getreq = async () => {
     let x: any = [];
@@ -55,6 +55,7 @@ const ReqHist = () => {
         data: x[i].description,
         active: x[i].status,
       });
+
       setList([...list, a]);
     }
   };
@@ -75,8 +76,6 @@ const ReqHist = () => {
         }}
       >
         {list.map((item) =>
-          // <li key={`section-${i}`}>
-          // {console.log(item);}
           item.map((i: any) => (
             <ul>
               <HistoryListItem

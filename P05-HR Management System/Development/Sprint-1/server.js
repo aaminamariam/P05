@@ -88,13 +88,14 @@ app.post("/approverequests", async (req, res) => {
   const data = req.body;
   console.log(data);
   try {
-    const requestStatus = await approvedenyRequests(
-      data.employeeID,
-      data.approval,
-      data.description,
-      data.option
+    res.json(
+      await approvedenyRequests(
+        data.employeeID,
+        data.approval,
+        data.description,
+        data.option
+      )
     );
-    res.json(requestStatus);
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
