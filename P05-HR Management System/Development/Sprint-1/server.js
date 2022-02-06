@@ -14,6 +14,8 @@ const {
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
+  addAnnouncements,
+  getAnnouncements
 } = require("./dynamo");
 
 const cors = require("cors");
@@ -152,6 +154,33 @@ app.get("/getstats/:id", async (req, res) => {
   try {
     //const stats = await getEmployeeStatsbyID(id);
     res.json(await getEmployeeStatsbyID(id));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+//add announcements
+app.put("/addAnnouncements", async(req, res) => {
+  const data = req.body;
+  console.log(data);
+  try {
+    res.json(
+      await addAnnouncements(
+        data.employeeID,
+        data.aData
+      )
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" })
+  }
+});
+
+//get announcements
+app.get("/getAnnouncements", async (req, res) => {
+  try {
+    res.json(await getAnnouncements());
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });

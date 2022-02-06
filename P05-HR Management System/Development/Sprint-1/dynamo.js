@@ -134,7 +134,7 @@ const approvedenyRequests = async (
     TableName: TABLE_NAME,
     Key: { employeeID: employeeID },
     UpdateExpression:
-      "SET #approve = :approval, #status = :stat, #popt = :pOpt, #papprove = :pApprove, #pdes = :pDes",
+      "SET #approve = :approval, #status = :stat, #popt = :poption, #papprove = :pApp, #pdes = :pd",
     //#count = :counter",
     ExpressionAttributeNames: {
       "#approve": "approval",
@@ -144,18 +144,18 @@ const approvedenyRequests = async (
       "#pdes": "previous_description",
     },
     ExpressionAttributeValues: {
-      ":approval": approval,
-      ":stat": "inactive",
-      ":pOpt": [option],
-      ":pApprove": [approval],
-      ":pDes": [description],
+      ":approval": [approval],
+      ":stat": ["inactive"],
+      ":poption": [option],
+      ":pApp": [approval],
+      ":pd": [description],
     },
   };
   const params2 = {
     TableName: TABLE_NAME,
     Key: { employeeID: employeeID },
     UpdateExpression:
-      "SET #status = :stat ,#approve = :approval, #popt = list.append(#popt,:pOpt), #papprove = list.append(#papprove,:pApprove), #pdes = list.append(#pdes,:pDes)",
+      "SET #status = list.append(#status:stat), #approve = list.append(#approve:approval), #popt = list.append(#popt,:poption), #papprove = list.append(#papprove,:pApp), #pdes = list.append(#pdes,:pd)",
     ExpressionAttributeNames: {
       "#approve": "approval",
       "#status": "status",
@@ -164,11 +164,11 @@ const approvedenyRequests = async (
       "#pdes": "previous_description",
     },
     ExpressionAttributeValues: {
-      ":approval": approval,
-      ":stat": "inactive",
-      ":pOpt": [option],
-      ":pApprove": [approval],
-      ":pDes": [description],
+      ":approval": [approval],
+      ":stat": ["inactive"],
+      ":poption": [option],
+      ":pApp": [approval],
+      ":pd": [description],
     },
   };
 
@@ -177,7 +177,7 @@ const approvedenyRequests = async (
     console.log("yay");
   } catch (err) {
     try {
-      console.log("hii");
+      console.log("joj");
       c2 = await dynamoClient.update(params).promise();
     } catch (err2) {
       console.log(err2);
@@ -307,6 +307,40 @@ const getEmployeeStatsbyID = async (id) => {
   const statsbyID = await dynamoClient.query(params).promise();
   return statsbyID;
 };
+
+const addAnnouncements = async (employeeID, aData) => {
+  const params = {
+    TableName: TABLE_NAME,
+    Key:{employeeID: employeeID },
+    UpdateExpression:
+      "SET #aData = :val",
+    ExpressionAttributeNames: {
+      "#aData": "announcements",
+    },
+    ExpressionAttributeValues: {
+      ":vals": [aData],
+    }
+  }
+  c1 = await dynamoClient.update(params).promise();
+};
+
+const getAnnouncements = async () => {
+  const params = {
+    TableName: TABLE_NAME,
+    ProjectionExpression: "#id, #aData ",
+    //KeyConditionExpression: "#ids = :id",
+    ExpressionAttributeNames: {
+     // "#ids": "employeeID",
+      "#aData": "announcements",
+    },
+    // ExpressionAttributeValues: {
+    //   ":id": id,
+    // },
+  };
+  const getannoun = await dynamoClient.query(params).promise();
+  return getannoun;
+};
+
 module.exports = {
   dynamoClient,
   getEmployees,
@@ -319,6 +353,8 @@ module.exports = {
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
+  addAnnouncements,
+  getAnnouncements
 };
-approvedenyRequests("2", "yes", "des", "other");
-approvedenyRequests("2", "yes", "des9", "other");
+approvedenyRequests("4", "yes", "des", "other");
+approvedenyRequests("4", "yes", "des9", "other");
