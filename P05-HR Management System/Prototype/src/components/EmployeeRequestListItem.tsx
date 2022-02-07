@@ -4,8 +4,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import { Button } from "@material-ui/core";
-import { Button } from "@mui/material";
+import { Button } from "@material-ui/core";
 import axios from "axios";
 
 export interface IEmployeeListItemProps {
@@ -81,13 +80,15 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
             {id}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails
-          sx={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <Typography>{data}</Typography>
+        <AccordionDetails sx={{ display: "flex" }}>
+          <Typography sx={{ width: "100%" }}>{data}</Typography>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button onClick={handleApprove}>Approve</Button>
-            <Button onClick={handleApprove}>Deny</Button>
+            <Button onClick={(e) => handleApprove("yes", id, type, data)}>
+              Approve
+            </Button>
+            <Button onClick={(e) => handleApprove("no", id, type, data)}>
+              Deny
+            </Button>
           </div>
         </AccordionDetails>
       </Accordion>
