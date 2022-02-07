@@ -18,6 +18,7 @@ import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "../../components/EmployeeTurnoverCard";
 import EmployeeRetentionCard from "../../components/EmployeeRetentionCard";
 import EmpStatsForm from "../empStatsForm";
+import EmployeeRequestsList from "../EmployeeRequestsPage/EmployeeRequestsPage";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -51,9 +52,11 @@ const Home = () => {
       console.error(error);
     }
   };
+
   useEffect(() => {
     getUser();
   }, []);
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.stats}>
@@ -93,7 +96,6 @@ const Home = () => {
             data="25th August"
           />
         </Grid>
-
       </Grid>
       <Grid container spacing={2} className={classes.content}>
         <Grid item>
@@ -101,44 +103,55 @@ const Home = () => {
             <EmployeeGenderCard />
           </EnhancedCard>
         </Grid>
+
         <Grid item>
-          <EnhancedCard title="Requests">
-            <RequestList />
-          </EnhancedCard>
+          <Link
+            to="/employeerequests"
+            style={{ textDecoration: "none", textDecorationColor: "white" }}
+          >
+            <EnhancedCard title="Requests">
+              <RequestList />
+            </EnhancedCard>
+          </Link>
         </Grid>
+
         <Grid item>
           <EnhancedCard title="To Do List">
             <ToDo />
           </EnhancedCard>
         </Grid>
+
         <Grid item>
           <EnhancedCard title="Announcements">
             <AnnouncementsCard />
           </EnhancedCard>
         </Grid>
+
         <Grid item>
           <EnhancedCard title="Employee Turnover">
             <EmployeeTurnoverCard />
           </EnhancedCard>
         </Grid>
+
         <Grid item>
           <EnhancedCard title="Employee Retention">
             <EmployeeRetentionCard />
           </EnhancedCard>
         </Grid>
+
         <Grid item>
-        <Link
+          <Link
             to="/empstats"
             style={{
               textDecoration: "none",
               color: "white",
             }}
           >
-          <StatCard
-            icon={<GroupIcon />}
-            title="Add Employee Statics"
-            // backgroundColor= "#FD6A00"
-          />
+            <StatCard
+              icon={<GroupIcon />}
+              title="Add Employee Statics"
+              // backgroundColor= "#FD6A00"
+            />
           </Link>
         </Grid>
       </Grid>

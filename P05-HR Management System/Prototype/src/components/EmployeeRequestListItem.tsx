@@ -4,7 +4,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button } from "@material-ui/core";
+// import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
+import axios from "axios";
 
 export interface IEmployeeListItemProps {
   /**
@@ -27,12 +29,15 @@ export interface IEmployeeListItemProps {
    * the number to be displayed in the card component
    */
   active?: string;
+
+  id?: string;
 }
 
 const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
   title = "Title",
   type = "type",
   data = "Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat Aliquam eget maximus est, id dignissim quam.",
+  id = "0",
 }: IEmployeeListItemProps) => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -41,7 +46,21 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
       setExpanded(isExpanded ? panel : false);
     };
 
-  const handleApprove = () => {};
+  const handleApprove = async (x: any, id: any, type: any, data: any) => {
+    await axios({
+      method: "post",
+      url: "http://52.91.138.50:5000/approverequests/",
+      data: {
+        employeeID: id,
+        approval: x,
+        description: data,
+        option: type,
+      },
+    }).then((response: { data: any }) => {
+      console.log(response.data);
+      alert("success");
+    });
+  };
 
   return (
     <div>
@@ -54,8 +73,13 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>{title}</Typography>
-          <Typography sx={{ color: "text.secondary" }}>{type}</Typography>
+          <Typography sx={{ width: "100%", flexShrink: 1 }}>{title}</Typography>
+          <Typography sx={{ width: "100%", color: "text.secondary" }}>
+            {type}
+          </Typography>
+          <Typography sx={{ width: "100%", color: "text.secondary" }}>
+            {id}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails
           sx={{ display: "flex", justifyContent: "space-between" }}

@@ -33,10 +33,13 @@ const getEmployeeRequests = async (id) => {
 };
 
 // add to database
-const addOrUpdateEmployee = async (employee) => {
+const addOrUpdateEmployee = async (employee, name) => {
   const params = {
     TableName: TABLE_NAME,
-    Item: employee,
+    Item: {
+      employeeID: employee,
+      name: name,
+    },
   };
   return await dynamoClient.put(params).promise();
 };
@@ -62,23 +65,26 @@ const addrequest = async (option, des, id) => {
   return await dynamoClient.update(params).promise();
 };
 
-const getEmployeeReqbyID = async (id) => {
+const getEmployeeReqbystatus = async () => {
   const params = {
     TableName: TABLE_NAME,
-    ProjectionExpression: "#id, #option, #des, #stat",
-    KeyConditionExpression: "#id = :id",
+    ProjectionExpression: "#id, #option, #des, #status, #name",
+    IndexName: "status-index",
+    KeyConditionExpression: "#status = :status",
     ExpressionAttributeNames: {
       "#id": "employeeID",
-      "#stat": "status",
+      "#status": "status",
       "#option": "option",
       "#des": "description",
+      "#name": "name",
     },
     ExpressionAttributeValues: {
-      ":id": id,
+      ":status": "active",
     },
   };
-  const reqbyID = await dynamoClient.query(params).promise();
-  return reqbyID;
+  const reqbyStatus = await dynamoClient.query(params).promise();
+  console.log(reqbyStatus);
+  return reqbyStatus;
 };
 
 //query by status
@@ -114,61 +120,99 @@ const deleteEmployee = async (employeeID) => {
 };
 
 // approval of request
-const approvedenyRequests = async (employeeID, approve) => {
+const approvedenyRequests = async (employeeID, approve, option, des) => {
   const status = "inactive";
   const params = {
     TableName: TABLE_NAME,
     Key: { employeeID: employeeID },
-    UpdateExpression: "SET #approve = :approval, #status = :stat",
+    UpdateExpression:
+      "SET #approve = :approval, #status = :stat, #popt = :pOpt, #papprove = :pApprove, #pdes = :pDes",
     //#count = :counter",
     ExpressionAttributeNames: {
       "#approve": "approval",
       "#status": "status",
+      "#popt": "previous_options",
+      "#papprove": "previous_approve",
+      "#pdes": "previous_description",
     },
     ExpressionAttributeValues: {
       ":approval": approve,
       ":stat": "inactive",
+      ":pOpt": option,
+      ":pApprove": approve,
+      ":pDes": des,
     },
-  };
-  return await dynamoClient.update(params).promise();
-};
-
-//add employee statics
-const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
-  const status = "inactive";
-  const params = {
-    TableName: TABLE_NAME,
-    Key: { employeeID: employeeID },
-    UpdateExpression: "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
-    //#count = :counter",
-    ExpressionAttributeNames: {
-      "#comments": "comments",
-      "#rating":"rating",
-      "#teamscore" :"teamworkScore",
-      "#hoursworked":"hoursworked"
-    },
-    ExpressionAttributeValues: {
-      ":vals": [comments],
-      ":rating": [rating], 
-      ":tscore":[teamworkScore],
-      ":hours":[hours]
-      },
   };
   const params2 = {
     TableName: TABLE_NAME,
     Key: { employeeID: employeeID },
-    UpdateExpression: "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
+    UpdateExpression:
+      "SET #approve = :approval, #status = :stat, #popt = list.append(#popt,:pOpt), #papprove = list.append(#papprove,:pApprove), #pdes = list.append(#pdes,:pDes)",
+    //#count = :counter",
     ExpressionAttributeNames: {
-      "#com": "comments",
-      "#rating":"rating",
-      "#teamscore":"teamworkScore",
-      "#hoursworked":"hoursworked"
+      "#approve": "approval",
+      "#status": "status",
+      "#popt": "previous_options",
+      "#papprove": "previous_approve",
+      "#pdes": "previous_description",
+    },
+    ExpressionAttributeValues: {
+      ":approval": approve,
+      ":stat": "inactive",
+      ":pOpt": [option],
+      ":pApprove": [approve],
+      ":pDes": [des],
+    },
+  };
+
+  try {
+    c1 = await dynamoClient.update(params2).promise();
+  } catch (err) {
+    try {
+      return await dynamoClient.update(params).promise();
+    } catch (err2) {
+      console.log(err2);
+    }
+  }
+};
+
+//add employee statics
+const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
+  const params = {
+    TableName: TABLE_NAME,
+    Key: { employeeID: employeeID },
+    UpdateExpression:
+      "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
+    //#count = :counter",
+    ExpressionAttributeNames: {
+      "#comments": "comments",
+      "#rating": "rating",
+      "#teamscore": "teamworkScore",
+      "#hoursworked": "hoursworked",
     },
     ExpressionAttributeValues: {
       ":vals": [comments],
-      ":rating":[rating], 
-      ":tscore":[teamworkScore],
-      ":hours":[hours]
+      ":rating": [rating],
+      ":tscore": [teamworkScore],
+      ":hours": [hours],
+    },
+  };
+  const params2 = {
+    TableName: TABLE_NAME,
+    Key: { employeeID: employeeID },
+    UpdateExpression:
+      "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
+    ExpressionAttributeNames: {
+      "#com": "comments",
+      "#rating": "rating",
+      "#teamscore": "teamworkScore",
+      "#hoursworked": "hoursworked",
+    },
+    ExpressionAttributeValues: {
+      ":vals": [comments],
+      ":rating": [rating],
+      ":tscore": [teamworkScore],
+      ":hours": [hours],
     },
   };
   try {
@@ -192,7 +236,7 @@ const getEmployeeStatsbyID = async (id) => {
       "#Rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursWorked": "hoursworked",
-      "#comments": "comments"
+      "#comments": "comments",
     },
     ExpressionAttributeValues: {
       ":id": id,
@@ -208,9 +252,8 @@ module.exports = {
   deleteEmployee,
   addrequest,
   getEmployeeRequests,
-  getEmployeeReqbyID,
+  getEmployeeReqbystatus,
   approvedenyRequests,
   addstats,
-  getEmployeeStatsbyID
+  getEmployeeStatsbyID,
 };
-
