@@ -18,7 +18,8 @@ import DashCharts from "../components/DashCharts";
 
 const EmployeeReview = withStyles({
   root: {
-    color: "white",
+
+    background: "#c4c4c4",
     backgroundColor: green[500],
     "&:hover": {
       backgroundColor: green[700],

@@ -354,10 +354,11 @@ const addAnnouncements = async (employeeID, title, aData, date) => {
 const getAnnouncements = async () => {
   const params = {
     TableName: TABLE_NAME,
-    ProjectionExpression: " #aData ,#title, #date",
+    ProjectionExpression: " #aData ,#name,#title, #date",
     ExpressionAttributeNames: {
       "#aData": "announcements",
       "#title": "title",
+      "#name": "name",
       "#date": "date",
     },
   };
