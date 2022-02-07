@@ -15,7 +15,7 @@ const {
   addstats,
   getEmployeeStatsbyID,
   addAnnouncements,
-  getAnnouncements
+  getAnnouncements,
 } = require("./dynamo");
 
 const cors = require("cors");
@@ -161,19 +161,15 @@ app.get("/getstats/:id", async (req, res) => {
 });
 
 //add announcements
-app.put("/addAnnouncements", async(req, res) => {
+app.put("/addAnnouncements", async (req, res) => {
   const data = req.body;
+  const today = new Date().toISOString().slice(0, 10);
   console.log(data);
   try {
-    res.json(
-      await addAnnouncements(
-        data.employeeID,
-        data.aData
-      )
-    );
+    res.json(await addAnnouncements(data.employeeID, data.aData, title, today));
   } catch (err) {
     console.error(err);
-    res.status(500).json({ err: "Something went wrong" })
+    res.status(500).json({ err: "Something went wrong" });
   }
 });
 

@@ -177,7 +177,7 @@ const approvedenyRequests = async (
     console.log("yay");
   } catch (err) {
     try {
-      console.log("joj");
+      // console.log("joj");
       c2 = await dynamoClient.update(params).promise();
     } catch (err2) {
       console.log(err2);
@@ -308,36 +308,60 @@ const getEmployeeStatsbyID = async (id) => {
   return statsbyID;
 };
 
-const addAnnouncements = async (employeeID, aData) => {
+const addAnnouncements = async (employeeID, title, aData, date) => {
   const params = {
     TableName: TABLE_NAME,
-    Key:{employeeID: employeeID },
-    UpdateExpression:
-      "SET #aData = :val",
+    Key: { employeeID: employeeID },
+    UpdateExpression: "SET #aData = :vals, #aDate = :dt, #title  = :tit",
     ExpressionAttributeNames: {
       "#aData": "announcements",
+      "#aDate": "date",
+      "#title": "title",
     },
     ExpressionAttributeValues: {
       ":vals": [aData],
+      ":dt": [date],
+      ":tit": [title],
+    },
+  };
+  const params2 = {
+    TableName: TABLE_NAME,
+    Key: { employeeID: employeeID },
+    UpdateExpression:
+      "SET #aData = list_append(#aData,:vals), #aDate = list_append(#aDate,:dt), #title  = list_append(#title,:tit)",
+    ExpressionAttributeNames: {
+      "#aData": "announcements",
+      "#aDate": "date",
+      "#title": "title",
+    },
+    ExpressionAttributeValues: {
+      ":vals": [aData],
+      ":dt": [date],
+      ":tit": [title],
+    },
+  };
+  try {
+    c1 = await dynamoClient.update(params2).promise();
+  } catch (err) {
+    try {
+      c2 = await dynamoClient.update(params).promise();
+    } catch (err2) {
+      console.log(err2);
     }
   }
-  c1 = await dynamoClient.update(params).promise();
 };
 
 const getAnnouncements = async () => {
   const params = {
     TableName: TABLE_NAME,
-    ProjectionExpression: "#id, #aData ",
-    //KeyConditionExpression: "#ids = :id",
+    ProjectionExpression: " #aData ,#title, #date",
     ExpressionAttributeNames: {
-     // "#ids": "employeeID",
       "#aData": "announcements",
+      "#title": "title",
+      "#date": "date",
     },
-    // ExpressionAttributeValues: {
-    //   ":id": id,
-    // },
   };
-  const getannoun = await dynamoClient.query(params).promise();
+  const getannoun = await dynamoClient.scan(params).promise();
   return getannoun;
 };
 
@@ -354,7 +378,5 @@ module.exports = {
   addstats,
   getEmployeeStatsbyID,
   addAnnouncements,
-  getAnnouncements
+  getAnnouncements,
 };
-approvedenyRequests("4", "yes", "des", "other");
-approvedenyRequests("4", "yes", "des9", "other");
