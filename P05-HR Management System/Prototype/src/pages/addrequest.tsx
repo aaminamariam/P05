@@ -23,6 +23,8 @@ import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Popover from '@mui/material/Popover';
+// import Typography from '@mui/material/Typography';
 
 const drawerWidth = 240;
 const w = `calc(100% - ${drawerWidth}px)`;
@@ -99,6 +101,7 @@ const AddReq = () => {
   const [option, set_option] = useState("");
   const [description, set_description] = useState("");
   const [id, set_id] = useState("");
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleChange = (event: any) => {
     set_option(event.target.value);
   };
@@ -115,7 +118,8 @@ const AddReq = () => {
     return 0;
   };
   //sub
-  const submitRequest = async () => {
+  const submitRequest = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
     const check = is_empty(option, description, id);
     if (check == 0) {
       await axios({
@@ -128,6 +132,14 @@ const AddReq = () => {
       });
     }
   };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const o = open ? 'simple-popover' : undefined;
+
   return (
     <div className={classes.root}>
       <Box className={classes.sqr}>
@@ -202,13 +214,28 @@ const AddReq = () => {
           >
             <BootstrapButton variant="contained">Back</BootstrapButton>
           </Link>
-          <BootstrapButton
+          {/* <BootstrapButton
             variant="contained"
             endIcon={<SendIcon />}
             onClick={submitRequest}
           >
             Submit
-          </BootstrapButton>
+          </BootstrapButton> */}
+          <Button aria-describedby={id} variant="contained" onClick={submitRequest}>
+            Submit
+          </Button>
+          <Popover
+            id={o}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <Typography>Request has been posted</Typography>
+          </Popover>
         </Stack>
       </Box>
       <CssBaseline />
