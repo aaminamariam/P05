@@ -16,6 +16,7 @@ const useStyles = makeStyles(() =>
     root: {
       display: "flex",
       justifyContent: "center",
+      // minWidth: 800,
     },
   })
 );
@@ -48,7 +49,8 @@ export default function EmployeeRequestsList() {
           //   bgcolor: "red",
           position: "relative",
           overflow: "auto",
-          //   maxHeight: 300,
+          maxHeight: 800,
+          minWidth: 1200,
           "& ul": { padding: 0 },
         }}
       >

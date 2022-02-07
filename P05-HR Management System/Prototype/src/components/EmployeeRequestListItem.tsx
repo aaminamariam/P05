@@ -57,10 +57,14 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
           <Typography sx={{ width: "33%", flexShrink: 0 }}>{title}</Typography>
           <Typography sx={{ color: "text.secondary" }}>{type}</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
           <Typography>{data}</Typography>
-          <Button onClick={handleApprove}>Approve</Button>
-          <Button onClick={handleApprove}>Deny</Button>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Button onClick={handleApprove}>Approve</Button>
+            <Button onClick={handleApprove}>Deny</Button>
+          </div>
         </AccordionDetails>
       </Accordion>
     </div>
