@@ -128,7 +128,7 @@ const AddReq = () => {
         data: { option: option, description: description, employeeID: id },
       }).then((response: { data: any }) => {
         console.log(response.data);
-        alert("Your Request has been submitted");
+        //alert("Your Request has been submitted");
       });
     }
   };
