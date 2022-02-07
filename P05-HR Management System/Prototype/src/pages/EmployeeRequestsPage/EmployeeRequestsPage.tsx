@@ -23,7 +23,6 @@ const useStyles = makeStyles(() =>
       position: "absolute",
       left: "25%",
       right: "25%",
-      top: "20%",
       width: "50%",
       height: "120%",
       boxSizing: "border-box",
@@ -69,7 +68,8 @@ export default function EmployeeRequestsList() {
           //   bgcolor: "red",
           position: "relative",
           overflow: "auto",
-          // maxHeight: 300,
+          maxHeight: 800,
+          minWidth: 1200,
           "& ul": { padding: 0 },
         }}
       >
