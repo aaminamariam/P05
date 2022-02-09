@@ -64,12 +64,14 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
       console.error(error);
     }
     let a = [];
-    for (let i = 0; i < x.title.length; i++) {
-      a.push({
-        title: x.title[i],
-      });
-      setList([...list, a]);
-    }
+    try {
+      for (let i = 0; i < x.title.length; i++) {
+        a.push({
+          title: x.title[i],
+        });
+        setList([...list, a]);
+      }
+    } catch (err) {}
   };
 
   useEffect(() => {

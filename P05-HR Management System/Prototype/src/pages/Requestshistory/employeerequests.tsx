@@ -34,7 +34,7 @@ const useStyles = makeStyles(() =>
 const ReqHist = () => {
   const classes = useStyles();
   const [list, setList] = useState<any[]>([]);
-  const [id, getID] = useState<any>("2");
+  const [id, getID] = useState<any>("110");
   const link = "http://localhost:5000/getrequests/" + id;
   const getreq = async () => {
     let x: any = [];
