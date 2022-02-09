@@ -21,6 +21,7 @@ import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsP
 import React from "react";
 import EmployeesAnalytics from "./pages/employeesanalytics";
 import AddAnnouncements from "./pages/addAnnouncements";
+import EmployeeDirectory from "./pages/EmployeeDirectory/EmployeeDirectory";
 
 const drawerWidth = 240;
 
@@ -89,6 +90,7 @@ function App() {
           <Route path="/hiringportal" element={<HiringPortal />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortal />} />
+          <Route path="/employee-directory" element={<EmployeeDirectory />} />
           <Route path="/employeerequests" element={<EmployeeRequestsList />} />
           <Route path="/jobapplication" element={<JobApplication />} />
           <Route path="/employeedash" element={<EmployeeDash />} />
@@ -97,7 +99,7 @@ function App() {
           <Route path="/todolist" element={<ToDo />} />
           <Route path="/empstats" element={<EmpStatsForm />} />
           <Route path="/reqhist" element={<ReqHist />} />
-          <Route path = "/addAnnouncements" element={<AddAnnouncements/>}/>
+          <Route path="/addAnnouncements" element={<AddAnnouncements />} />
           <Route
             path="*"
             element={

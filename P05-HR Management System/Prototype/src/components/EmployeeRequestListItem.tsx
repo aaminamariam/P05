@@ -80,14 +80,16 @@ const EmployeeListItem: React.FC<IEmployeeListItemProps> = ({
             {id}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{ display: "flex" }}>
           <Typography sx={{ width: "100%" }}>{data}</Typography>
-          <Button onClick={(e) => handleApprove("yes", id, type, data)}>
-            Approve
-          </Button>
-          <Button onClick={(e) => handleApprove("no", id, type, data)}>
-            Deny
-          </Button>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Button onClick={(e) => handleApprove("yes", id, type, data)}>
+              Approve
+            </Button>
+            <Button onClick={(e) => handleApprove("no", id, type, data)}>
+              Deny
+            </Button>
+          </div>
         </AccordionDetails>
       </Accordion>
     </div>
