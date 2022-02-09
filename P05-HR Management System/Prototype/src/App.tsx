@@ -17,10 +17,11 @@ import ToDo from "./components/ToDo/ToDo";
 import NavBar from "./navigation/NavBar";
 import JobApplication from "./pages/JobApplication";
 import ReqHist from "./pages/Requestshistory/employeerequests";
-import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsPage";
+import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsList";
 import React from "react";
 import EmployeesAnalytics from "./pages/employeesanalytics";
-import AddAnnouncements from "./pages/addAnnouncements";
+import AnnouncementsList from "./pages/AnnouncementsPage/AnnouncementsList";
+// import AddAnnouncements from "./pages/addAnnouncements";
 import EmployeeDirectory from "./pages/EmployeeDirectory/EmployeeDirectory";
 
 const drawerWidth = 240;
@@ -99,7 +100,7 @@ function App() {
           <Route path="/todolist" element={<ToDo />} />
           <Route path="/empstats" element={<EmpStatsForm />} />
           <Route path="/reqhist" element={<ReqHist />} />
-          <Route path="/addAnnouncements" element={<AddAnnouncements />} />
+          <Route path="/announcements" element={<AnnouncementsList />} />
           <Route
             path="*"
             element={

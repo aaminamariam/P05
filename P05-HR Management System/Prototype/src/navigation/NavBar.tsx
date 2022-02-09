@@ -60,23 +60,20 @@ const NavBar = (props: any) => {
       <ListItem button component={Link} to="/">
         Home
       </ListItem>
-      <ListItem button component={Link} to="/hiringportal">
-        Hiring Portal
+      <ListItem button component={Link} to="/announcements">
+        Announcements
+      </ListItem>
+      <ListItem button component={Link} to="/employeerequests">
+        Requests
       </ListItem>
       <ListItem button component={Link} to="/employee-directory">
         Staff Directory
       </ListItem>
-      <ListItem button component={Link} to="/">
-        Requests
+      <ListItem button component={Link} to="/hiringportal">
+        Hiring Portal
       </ListItem>
       <ListItem button component={Link} to="/apportal">
         App Portal
-      </ListItem>
-      <ListItem button component={Link} to="/">
-        Announcements
-      </ListItem>
-      <ListItem button component={Link} to="/">
-        Announcements
       </ListItem>
     </React.Fragment>
   );
