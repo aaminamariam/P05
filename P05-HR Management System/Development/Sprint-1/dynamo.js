@@ -10,12 +10,15 @@ AWS.config.update({
 });
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
-const TABLE_NAME = "employee_table";
+// const TABLE_NAME = "employee_table";
+const EMPLOYEE_TABLE = "employee_table";
+const REQUESTS_TABLE = "requests_table";
+const ANNOUNCEMENTS_TABLE = "announcements_table";
 
 // fetch from database
 const getEmployees = async () => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
   };
   const employees = await dynamoClient.scan(params).promise();
   return employees;
@@ -24,7 +27,7 @@ const getEmployees = async () => {
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     //Key: {reqStatus: rStatus},
     Key: { employeeID: id },
   };
@@ -35,7 +38,7 @@ const getEmployeeRequests = async (id) => {
 // add to database
 const addOrUpdateEmployee = async (employee, name) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     Item: {
       employeeID: employee,
       name: name,
@@ -45,12 +48,12 @@ const addOrUpdateEmployee = async (employee, name) => {
 };
 
 //add request to database
-const addrequest = async (option, des, id) => {
+const addrequest = async (option, des, id,date) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     Key: { employeeID: id },
     UpdateExpression:
-      "SET #option = :option , #description = :description, #stat = :status",
+      "SET #option = :option , #description = :description, #stat = :status",,
     ExpressionAttributeNames: {
       "#option": "option",
       "#description": "description",
@@ -67,7 +70,7 @@ const addrequest = async (option, des, id) => {
 // fetch employee requests by status active or inactive
 const getEmployeeReqbystatus = async () => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     ProjectionExpression: "#id, #option, #des, #status, #name",
     IndexName: "status-index",
     KeyConditionExpression: "#status = :status",
@@ -90,7 +93,7 @@ const getEmployeeReqbystatus = async () => {
 // fetch employee requests by id
 const getEmployeeReqbyID = async (id) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     ProjectionExpression: "#id, #option, #des, #name,#popt,#papprove,#pdes,#st",
     KeyConditionExpression: "#id = :empid",
     ExpressionAttributeNames: {
@@ -114,7 +117,7 @@ const getEmployeeReqbyID = async (id) => {
 //delete employee from the database
 const deleteEmployee = async (employeeID) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
 
     Key: { employeeID },
   };
@@ -131,7 +134,7 @@ const approvedenyRequests = async (
   option
 ) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #apv = :approvals, #status = :stat, #popt = :poption, #papprove = :pApp, #pdes = :pd",
@@ -152,7 +155,7 @@ const approvedenyRequests = async (
     },
   };
   const params2 = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #com = list_append(#com,:vals), #popt = list_append(#popt,:poption), #papprove = list_append(#papprove,:pApp),#pdes = list_append(#pdes,:pd)",
@@ -187,7 +190,7 @@ const approvedenyRequests = async (
 //add employee statics
 const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
@@ -205,7 +208,7 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
     },
   };
   const params2 = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
@@ -235,7 +238,7 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
 
 const getEmployeeStatsbyID = async (id) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
     KeyConditionExpression: "#ids = :id",
     ExpressionAttributeNames: {
@@ -256,7 +259,7 @@ const getEmployeeStatsbyID = async (id) => {
 // adding announcements
 const addAnnouncements = async (employeeID, title, aData, date) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: ANNOUNCEMENTS_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression: "SET #aData = :vals, #aDate = :dt, #title  = :tit",
     ExpressionAttributeNames: {
@@ -271,7 +274,7 @@ const addAnnouncements = async (employeeID, title, aData, date) => {
     },
   };
   const params2 = {
-    TableName: TABLE_NAME,
+    TableName: ANNOUNCEMENTS_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #aData = list_append(#aData,:vals), #aDate = list_append(#aDate,:dt), #title  = list_append(#title,:tit)",
@@ -299,7 +302,7 @@ const addAnnouncements = async (employeeID, title, aData, date) => {
 
 const getAnnouncements = async () => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: ANNOUNCEMENTS_TABLE,
     ProjectionExpression: " #aData ,#name,#title, #date",
     ExpressionAttributeNames: {
       "#aData": "announcements",

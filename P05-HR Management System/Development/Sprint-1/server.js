@@ -71,12 +71,14 @@ app.delete("/ids/:id", async (req, res) => {
 //add request
 app.post("/addreq", async (req, res) => {
   const data = req.body;
+  const postdate = new Date().toISOString().slice(0, 10)
   console.log(data);
   try {
     const newCharacter = await addrequest(
       data.option,
       data.description,
-      data.employeeID
+      data.employeeID,
+      postdate
     );
     res.json(newCharacter);
   } catch (err) {
@@ -164,7 +166,7 @@ app.get("/getstats/:id", async (req, res) => {
 //add announcements
 app.put("/addAnnouncements", async (req, res) => {
   const data = req.body;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date().toISOString().slice(0, 10)
   console.log(data);
   try {
     res.json(await addAnnouncements(data.employeeID, data.aData, title, today));
@@ -195,7 +197,7 @@ app.get("/activereq", async (req, res) => {
 });
 
 // start the server in the port 5000!
-app.listen(process.env.PORT || 5000, function () {
+app.listen(process.env.PORT || 5001, function () {
   console.log("Example app listening on port 5000.");
 });
 //page doesnt exist
