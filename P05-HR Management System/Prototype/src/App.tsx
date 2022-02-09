@@ -20,6 +20,7 @@ import ReqHist from "./pages/Requestshistory/employeerequests";
 import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsPage";
 import React from "react";
 import EmployeesAnalytics from "./pages/employeesanalytics";
+import AddAnnouncements from "./pages/addAnnouncements";
 
 const drawerWidth = 240;
 
@@ -96,6 +97,7 @@ function App() {
           <Route path="/todolist" element={<ToDo />} />
           <Route path="/empstats" element={<EmpStatsForm />} />
           <Route path="/reqhist" element={<ReqHist />} />
+          <Route path = "/addAnnouncements" element={<AddAnnouncements/>}/>
           <Route
             path="*"
             element={
