@@ -300,11 +300,12 @@ const addAnnouncements = async (employeeID, title, aData, date) => {
 const getAnnouncements = async () => {
   const params = {
     TableName: TABLE_NAME,
-    ProjectionExpression: " #aData ,#title, #date",
+    ProjectionExpression: " #aData ,#name,#title, #date",
     ExpressionAttributeNames: {
       "#aData": "announcements",
       "#title": "title",
-      "#date": "date_posted",
+      "#name": "name",
+      "#date": "date",
     },
   };
   const getannoun = await dynamoClient.scan(params).promise();

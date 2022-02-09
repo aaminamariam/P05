@@ -123,6 +123,7 @@ const Form = () => {
           </Button>
         </NavLink> */}
         <div>
+        <NavLink to="/hiringportal">
           <Button aria-describedby={id} variant="contained" onClick={addNewJob}>
             Upload
           </Button>
@@ -138,6 +139,7 @@ const Form = () => {
           >
             <Typography sx={{ p: 2 }}>Job has been posted</Typography>
           </Popover>
+          </NavLink>
         </div>
       </form>
     </Box>
