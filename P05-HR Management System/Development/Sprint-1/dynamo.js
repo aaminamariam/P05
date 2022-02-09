@@ -48,7 +48,7 @@ const addOrUpdateEmployee = async (employee, name) => {
 };
 
 //add request to database
-const addrequest = async (option, des, id,date) => {
+const addrequest = async (option, des, id, date) => {
   const params = {
     TableName: REQUESTS_TABLE,
     Key: { employeeID: id },
