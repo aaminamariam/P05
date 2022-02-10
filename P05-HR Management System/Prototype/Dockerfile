@@ -1,21 +1,14 @@
-FROM node:17
-
-# Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+FROM node:16
+ENV NODE_ENV development
+# Add a work directory
+WORKDIR /app
+# Cache and Install dependencies
 COPY package*.json ./
-
+COPY yarn.lock .
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
+# Copy app files
 COPY . .
-
-EXPOSE 5000
+# Expose port
+EXPOSE 3000
+# Start the app
 CMD [ "npm", "start" ]
-# CMD [ "npm", "run","build" ]
-# CMD [ "serve", "-s","build","-l","4000" ]
