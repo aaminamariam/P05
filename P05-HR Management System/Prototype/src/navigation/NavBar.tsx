@@ -42,7 +42,6 @@ import { Link } from "react-router-dom";
 //   })
 // );
 
-
 const NavBar = (props: any) => {
   const { window, customClass, handleDrawerToggle, mobileOpen } = props;
   // const classes = useStyles();
@@ -53,34 +52,31 @@ const NavBar = (props: any) => {
   //   setMobileOpen(!mobileOpen);
   // };
 
-  const container = window !== undefined ? () => window().document.body : undefined;
-
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   const links = (
     <React.Fragment>
       <ListItem button component={Link} to="/">
         Home
       </ListItem>
-      <ListItem button component={Link} to="/hiringportal">
-        Hiring Portal
+      <ListItem button component={Link} to="/announcements">
+        Announcements
       </ListItem>
-      <ListItem button component={Link} to="/">
+      <ListItem button component={Link} to="/employeerequests">
+        Requests
+      </ListItem>
+      <ListItem button component={Link} to="/employee-directory">
         Staff Directory
       </ListItem>
-      <ListItem button component={Link} to="/">
-        Requests
+      <ListItem button component={Link} to="/hiringportal">
+        Hiring Portal
       </ListItem>
       <ListItem button component={Link} to="/apportal">
         App Portal
       </ListItem>
-      <ListItem button component={Link} to="/">
-        Announcements
-      </ListItem>
-      <ListItem button component={Link} to="/">
-        Announcements
-      </ListItem>
     </React.Fragment>
-  )
+  );
 
   const drawer = (
     <React.Fragment>
@@ -100,9 +96,7 @@ const NavBar = (props: any) => {
         <div className="navbar">icon + heading</div>
       </Toolbar>
       <Divider />
-      <List>
-        {links}
-      </List>
+      <List>{links}</List>
     </React.Fragment>
   );
 

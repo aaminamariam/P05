@@ -260,32 +260,32 @@ const getEmployeeStatsbyID = async (id) => {
 const addAnnouncements = async (employeeID, title, aData, date) => {
   const params = {
     TableName: ANNOUNCEMENTS_TABLE,
-    Key: { employeeID: employeeID },
-    UpdateExpression: "SET #aData = :vals, #aDate = :dt, #title  = :tit",
+    Key: { announcement_id: announcement_id },
+    UpdateExpression: "SET #aData = :vals, #aDatePosted = :dt, #title  = :tit",
     ExpressionAttributeNames: {
       "#aData": "announcements",
-      "#aDate": "date",
+      "#aDatePosted": "date",
       "#title": "title",
     },
     ExpressionAttributeValues: {
       ":vals": [aData],
-      ":dt": [date],
+      ":dt": [dateposted],
       ":tit": [title],
     },
   };
   const params2 = {
     TableName: ANNOUNCEMENTS_TABLE,
-    Key: { employeeID: employeeID },
+    Key: { announcement_id: announcement_id },
     UpdateExpression:
-      "SET #aData = list_append(#aData,:vals), #aDate = list_append(#aDate,:dt), #title  = list_append(#title,:tit)",
+      "SET #aData = list_append(#aData,:vals), #aDatePosted = list_append(#aDatePosted,:dt), #title  = list_append(#title,:tit)",
     ExpressionAttributeNames: {
       "#aData": "announcements",
-      "#aDate": "date",
+      "#aDatePosted": "dateposted",
       "#title": "title",
     },
     ExpressionAttributeValues: {
       ":vals": [aData],
-      ":dt": [date],
+      ":dt": [dateposted],
       ":tit": [title],
     },
   };
@@ -308,7 +308,7 @@ const getAnnouncements = async () => {
       "#aData": "announcements",
       "#title": "title",
       "#name": "name",
-      "#date": "date",
+      "#dateposted": "dateposted",
     },
   };
   const getannoun = await dynamoClient.scan(params).promise();
@@ -330,4 +330,3 @@ module.exports = {
   addAnnouncements,
   getAnnouncements,
 };
-approvedenyRequests("100", "yes", "abcs", "others");
