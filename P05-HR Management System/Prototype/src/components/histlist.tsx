@@ -56,16 +56,19 @@ const HistoryListItem: React.FC<IEmployeeListItemProps> = ({
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography sx={{ width: "100%", flexShrink: 1 }}>{title}</Typography>
-          <Typography sx={{ width: "100%", color: "text.secondary" }}>
-            {type}
+          <Typography sx={{ width: "100%", flexShrink: 1 }}>
+            Name: {title}
           </Typography>
+          <Typography sx={{ width: "100%", color: "text.secondary" }}>
+            Option:{type}
+          </Typography>
+
           <Typography sx={{ width: "100%", scolor: "text.secondary" }}>
-            {active}
+            Status: {active}
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{ width: "100%" }}>{data}</Typography>
+          <Typography sx={{ width: "100%" }}>Description: {data}</Typography>
         </AccordionDetails>
       </Accordion>
     </div>

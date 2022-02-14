@@ -34,8 +34,9 @@ const useStyles = makeStyles(() =>
 const ReqHist = () => {
   const classes = useStyles();
   const [list, setList] = useState<any[]>([]);
-  const [id, getID] = useState<any>("110");
+  const [id, getID] = useState<any>("4");
   const link = "http://localhost:5000/getrequests/" + id;
+
   const getreq = async () => {
     let x: any = [];
     try {
@@ -48,16 +49,34 @@ const ReqHist = () => {
       console.error(error);
     }
     let a = [];
-    for (let i = 0; i < x.length; i++) {
-      a.push({
-        title: x[i].name,
-        type: x[i].option,
-        data: x[i].description,
-        active: x[i].status,
-      });
+    let b = [];
+    const c = x[0].previous_description.length;
+    const popts = x[0].previous_options;
+    const pdes = x[0].previous_description;
+    const papv = x[0].previous_description;
+    const des = x[0].description;
+    const opt = x[0].option;
+    const name = x[0].name;
 
-      setList([...list, a]);
+    // setList([...list, b]);
+
+    for (let i = 0; i < c; i++) {
+      a.push({
+        title: name,
+        type: popts[i],
+        data: pdes[i],
+        //pdata : x[i].previous_description
+        active: "inactive",
+      });
     }
+    a.push({
+      title: name,
+      type: opt,
+      data: pdes,
+      //pdata : x[i].previous_description
+      active: "active",
+    });
+    setList([...list, a]);
   };
 
   useEffect(() => {
@@ -81,15 +100,14 @@ const ReqHist = () => {
               <HistoryListItem
                 title={i.title}
                 type={i.type}
-                data={i.data}
                 active={i.active}
+                data={i.data}
               />
             </ul>
             // </li>
           ))
         )}
       </List>
-      {/* <h1>{list[0].title}</h1> */}
     </Box>
   );
 };
