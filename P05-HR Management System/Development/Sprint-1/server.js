@@ -16,6 +16,7 @@ const {
   getEmployeeStatsbyID,
   addAnnouncements,
   getAnnouncements,
+  addNewEmployee,
 } = require("./dynamo");
 
 const cors = require("cors");
@@ -43,6 +44,31 @@ app.post("/employee", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+//post
+app.post("/addnewemployee", async (req, res) => {
+  const data = req.body;
+
+  const id = data.employeeID;
+  const name = data.name;
+  const department = data.department;
+  const designation = data. designation;
+  const level = data.level;
+  const dateJoined = data.dateJoined;
+  const email = data.email;
+  const contact = data.contact;
+  const address = data.address;
+  const remainingLeaves = data.remainingLeaves;
+  const twRating = data.twRating;
+
+  try {
+    const newEmployee = await addNewEmployee(id, name, department, designation, level, dateJoined, email, contact, address, remainingLeaves, twRating);
+    res.json(newEmployee);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong in addnewemployee" });
   }
 });
 

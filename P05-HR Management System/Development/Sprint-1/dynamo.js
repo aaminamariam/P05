@@ -35,6 +35,27 @@ const getEmployeeRequests = async (id) => {
   return requests;
 };
 
+//add new employee
+const addNewEmployee = async (_id, _name, _department, _designation, _level, _dateJoined, _email, _contact, _address, _remainingLeaves, _twRating) =>{
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    Item: {
+      employeeID: _id, 
+      name: _name, 
+      department: _department, 
+      designation: _designation, 
+      level: _level, 
+      dateJoined: _dateJoined, 
+      email: _email, 
+      contact: _contact, 
+      address: _address, 
+      remainingLeaves: _remainingLeaves, 
+      twRating: _twRating,
+    }
+  }
+  return await dynamoClient.put(params).promise();
+}
+
 // add to database
 const addOrUpdateEmployee = async (employee, name) => {
   const params = {
@@ -318,6 +339,7 @@ const getAnnouncements = async () => {
 module.exports = {
   dynamoClient,
   getEmployees,
+  addNewEmployee,
   addOrUpdateEmployee,
   deleteEmployee,
   addrequest,
