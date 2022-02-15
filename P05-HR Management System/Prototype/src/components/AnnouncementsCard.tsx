@@ -12,6 +12,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
+import { NavLink } from "react-router-dom";
 
 // import announcementListItems from "./announcementListItems";
 import { useEffect, useState } from "react";
@@ -80,9 +81,11 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
   return (
     <div className={classes.root}>
       <CardActions>
+      <NavLink to ="/addAnnouncements">
         <Button color="primary" variant="outlined" size="medium">
           <Typography>Create Announcement</Typography>
         </Button>
+        </NavLink>
         <Button size="small">See History</Button>
       </CardActions>
       <CardActions>
