@@ -11,7 +11,7 @@ AWS.config.update({
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
 // const TABLE_NAME = "employee_table";
-const EMPLOYEE_TABLE = "employee_table";
+const EMPLOYEE_TABLE = "employee_directory";
 const REQUESTS_TABLE = "requests_table";
 const ANNOUNCEMENTS_TABLE = "announcements_table";
 
@@ -40,7 +40,7 @@ const addNewEmployee = async (_id, _name, _department, _designation, _level, _da
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
-      employeeID: _id, 
+      id: _id, 
       name: _name, 
       department: _department, 
       designation: _designation, 
