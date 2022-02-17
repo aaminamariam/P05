@@ -1,19 +1,17 @@
-import { makeStyles, createStyles, Grid, Typography } from "@material-ui/core";
+import { makeStyles, createStyles, Grid } from "@material-ui/core";
 
-import StatCard from "../components/StatCard";
+import StatCard from "../../components/StatCard";
 
-import EnhancedCard from "../components/EnhancedCard";
+import EnhancedCard from "../../components/EnhancedCard";
 
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonOffIcon from "@material-ui/icons/Home";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-// import { CreatAnnouncement } from "../components/AnnouncementsCard";
-import RequestList from "../components/RequestList";
+import RequestList from "../EmployeeRequestsPage/RequestList";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -31,13 +29,8 @@ const useStyles = makeStyles(() =>
     },
   })
 );
-// function changeBackground(e: any) {
-//   e.target.style.background = "black";
-// }
-// const changeBackground_white(e: any) {
-//     e.target.style.background = "green";
-//   }
-const EmployeeDash = () => {
+
+const EmployeePortalPage = () => {
   const classes = useStyles();
   const [job_openeings, setjob_openeings] = useState("0");
 
@@ -112,4 +105,4 @@ const EmployeeDash = () => {
     </div>
   );
 };
-export default EmployeeDash;
+export default EmployeePortalPage;

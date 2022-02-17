@@ -5,6 +5,9 @@ import { Box, Button } from "@material-ui/core";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
+import Popoverfunc from "../pages/EmployeeRequestsPage/Popup";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: "75%",
     height: "75%",
     boxSizing: "border-box",
-    background: "#c4c4c4",
+    //background: "#c4c4c4",
   },
   text: {
     background: "#ffffff",
@@ -49,8 +52,10 @@ const Form = () => {
   const [jobdescription, setJobdescription] = useState("");
   const [departmentname, setDepartmentname] = useState("");
   const [location, setLocation] = useState("");
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const addNewJob = async () => {
+  const addNewJob = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
     let formField = new FormData();
     formField.append("job_title", jobtitle);
     formField.append("jd", jobdescription);
@@ -61,11 +66,15 @@ const Form = () => {
       method: "post",
       url: "http://52.91.138.50:8000/jobs/jobpostings/",
       data: formField,
-    }).then((response: { data: any }) => {
-      // history.push('/')
-      alert("job posted");
-    });
+    }).then((response: { data: any }) => {});
   };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <Box className={classes.square}>
@@ -102,14 +111,37 @@ const Form = () => {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
-        <NavLink to="/hiringportal">
+        {/* <NavLink to="/hiringportal">
           <Button
             style={{ backgroundColor: "#46b988", color: "#FFFFFF" }}
             onClick={addNewJob}
           >
             Upload
           </Button>
-        </NavLink>
+        </NavLink> */}
+        <div>
+          <NavLink to="/hiringportal">
+            <Button
+              aria-describedby={id}
+              variant="contained"
+              onClick={addNewJob}
+            >
+              Upload
+            </Button>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <Typography sx={{ p: 2 }}>Job has been posted</Typography>
+            </Popover>
+          </NavLink>
+        </div>
       </form>
     </Box>
   );

@@ -3,22 +3,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { createStyles, Grid, makeStyles, Typography } from "@material-ui/core";
+import { createStyles, Grid, makeStyles } from "@material-ui/core";
 import GroupIcon from "@material-ui/icons/Group";
 import PersonOffIcon from "@material-ui/icons/Home";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
-import AnnouncementsCard from "../../components/AnnouncementsCard";
+import AnnouncementsCard from "./AnnouncementsCard";
 import EnhancedCard from "../../components/EnhancedCard";
-import RequestList from "../../components/RequestList";
+import RequestList from "../EmployeeRequestsPage/RequestList";
 import StatCard from "../../components/StatCard";
-import EmployeeGenderCard from "../../components/EmployeeGenderCard";
+import EmployeeGenderCard from "./EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
-import EmployeeTurnoverCard from "../../components/EmployeeTurnoverCard";
-import EmployeeRetentionCard from "../../components/EmployeeRetentionCard";
-import EmpStatsForm from "../empStatsForm";
-import EmployeeRequestsList from "../EmployeeRequestsPage/EmployeeRequestsPage";
+import EmployeeTurnoverCard from "./EmployeeTurnoverCard";
+import EmployeeRetentionCard from "./EmployeeRetentionCard";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -37,7 +35,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const Home = () => {
+const HomePage = () => {
   const classes = useStyles();
   const [job_openeings, setjob_openeings] = useState("0");
 
@@ -158,4 +156,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default HomePage;

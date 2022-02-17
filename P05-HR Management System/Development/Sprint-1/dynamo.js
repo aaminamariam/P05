@@ -10,12 +10,15 @@ AWS.config.update({
 });
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
-const TABLE_NAME = "employee_table";
+// const TABLE_NAME = "employee_table";
+const EMPLOYEE_TABLE = "employee_directory";
+const REQUESTS_TABLE = "requests_table";
+const ANNOUNCEMENTS_TABLE = "announcements_table";
 
 // fetch from database
 const getEmployees = async () => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
   };
   const employees = await dynamoClient.scan(params).promise();
   return employees;
@@ -24,7 +27,7 @@ const getEmployees = async () => {
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     //Key: {reqStatus: rStatus},
     Key: { employeeID: id },
   };
@@ -32,10 +35,31 @@ const getEmployeeRequests = async (id) => {
   return requests;
 };
 
+//add new employee
+const addNewEmployee = async (_id, _name, _department, _designation, _level, _dateJoined, _email, _contact, _address, _remainingLeaves, _twRating) =>{
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    Item: {
+      id: _id, 
+      name: _name, 
+      department: _department, 
+      designation: _designation, 
+      level: _level, 
+      dateJoined: _dateJoined, 
+      email: _email, 
+      contact: _contact, 
+      address: _address, 
+      remainingLeaves: _remainingLeaves, 
+      twRating: _twRating,
+    }
+  }
+  return await dynamoClient.put(params).promise();
+}
+
 // add to database
 const addOrUpdateEmployee = async (employee, name) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     Item: {
       employeeID: employee,
       name: name,
@@ -45,9 +69,9 @@ const addOrUpdateEmployee = async (employee, name) => {
 };
 
 //add request to database
-const addrequest = async (option, des, id) => {
+const addrequest = async (option, des, id, date) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     Key: { employeeID: id },
     UpdateExpression:
       "SET #option = :option , #description = :description, #stat = :status",
@@ -67,7 +91,7 @@ const addrequest = async (option, des, id) => {
 // fetch employee requests by status active or inactive
 const getEmployeeReqbystatus = async () => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     ProjectionExpression: "#id, #option, #des, #status, #name",
     IndexName: "status-index",
     KeyConditionExpression: "#status = :status",
@@ -90,7 +114,7 @@ const getEmployeeReqbystatus = async () => {
 // fetch employee requests by id
 const getEmployeeReqbyID = async (id) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     ProjectionExpression: "#id, #option, #des, #name,#popt,#papprove,#pdes,#st",
     KeyConditionExpression: "#id = :empid",
     ExpressionAttributeNames: {
@@ -114,7 +138,7 @@ const getEmployeeReqbyID = async (id) => {
 //delete employee from the database
 const deleteEmployee = async (employeeID) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
 
     Key: { employeeID },
   };
@@ -124,48 +148,51 @@ const deleteEmployee = async (employeeID) => {
 };
 
 // approval of request
-const approvedenyRequests = async (employeeID, approve, option, des) => {
-  const status = "inactive";
+const approvedenyRequests = async (
+  employeeID,
+  approval,
+  description,
+  option
+) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
-      "SET #approve = :approval, #status = :stat, #popt = :pOpt, #papprove = :pApprove, #pdes = :pDes",
+      "SET #apv = :approvals, #status = :stat, #popt = :poption, #papprove = :pApp, #pdes = :pd",
     //#count = :counter",
     ExpressionAttributeNames: {
-      "#approve": "approval",
+      "#apv": "approval",
       "#status": "status",
       "#popt": "previous_options",
       "#papprove": "previous_approve",
       "#pdes": "previous_description",
     },
     ExpressionAttributeValues: {
-      ":approval": approve,
+      ":approvals": [approval],
       ":stat": "inactive",
-      ":pOpt": option,
-      ":pApprove": approve,
-      ":pDes": des,
+      ":poption": [option],
+      ":pApp": [approval],
+      ":pd": [description],
     },
   };
   const params2 = {
-    TableName: TABLE_NAME,
+    TableName: REQUESTS_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
-      "SET #approve = :approval, #status = :stat, #popt = list.append(#popt,:pOpt), #papprove = list.append(#papprove,:pApprove), #pdes = list.append(#pdes,:pDes)",
-    //#count = :counter",
+      "SET #com = list_append(#com,:vals), #popt = list_append(#popt,:poption), #papprove = list_append(#papprove,:pApp),#pdes = list_append(#pdes,:pd)",
     ExpressionAttributeNames: {
-      "#approve": "approval",
-      "#status": "status",
+      "#com": "approval",
+      // "#status": "status",
       "#popt": "previous_options",
       "#papprove": "previous_approve",
       "#pdes": "previous_description",
     },
     ExpressionAttributeValues: {
-      ":approval": approve,
-      ":stat": "inactive",
-      ":pOpt": [option],
-      ":pApprove": [approve],
-      ":pDes": [des],
+      ":vals": [approval],
+      // ":stat": "inactive",
+      ":poption": [option],
+      ":pApp": [approval],
+      ":pd": [description],
     },
   };
 
@@ -173,7 +200,8 @@ const approvedenyRequests = async (employeeID, approve, option, des) => {
     c1 = await dynamoClient.update(params2).promise();
   } catch (err) {
     try {
-      return await dynamoClient.update(params).promise();
+      console.log(err);
+      c2 = await dynamoClient.update(params).promise();
     } catch (err2) {
       console.log(err2);
     }
@@ -183,11 +211,10 @@ const approvedenyRequests = async (employeeID, approve, option, des) => {
 //add employee statics
 const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
-    //#count = :counter",
     ExpressionAttributeNames: {
       "#comments": "comments",
       "#rating": "rating",
@@ -202,7 +229,7 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
     },
   };
   const params2 = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
@@ -223,7 +250,7 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
     c1 = await dynamoClient.update(params2).promise();
   } catch (err) {
     try {
-      return await dynamoClient.update(params).promise();
+      c2 = await dynamoClient.update(params).promise();
     } catch (err2) {
       console.log(err2);
     }
@@ -232,7 +259,7 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
 
 const getEmployeeStatsbyID = async (id) => {
   const params = {
-    TableName: TABLE_NAME,
+    TableName: EMPLOYEE_TABLE,
     ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
     KeyConditionExpression: "#ids = :id",
     ExpressionAttributeNames: {
@@ -249,9 +276,102 @@ const getEmployeeStatsbyID = async (id) => {
   const statsbyID = await dynamoClient.query(params).promise();
   return statsbyID;
 };
+
+// adding announcements
+// const addAnnouncements = async (employeeID, title, aData, date) => {
+//   const params = {
+//     TableName: ANNOUNCEMENTS_TABLE,
+//     Key: { announcement_id: announcement_id },
+//     UpdateExpression: "SET #aData = :vals, #aDatePosted = :dt, #title  = :tit",
+//     ExpressionAttributeNames: {
+//       "#aData": "announcements",
+//       "#aDatePosted": "date",
+//       "#title": "title",
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": [aData],
+//       ":dt": [dateposted],
+//       ":tit": [title],
+//     },
+//   };
+//   const params2 = {
+//     TableName: ANNOUNCEMENTS_TABLE,
+//     Key: { announcement_id: announcement_id },
+//     UpdateExpression:
+//       "SET #aData = list_append(#aData,:vals), #aDatePosted = list_append(#aDatePosted,:dt), #title  = list_append(#title,:tit)",
+//     ExpressionAttributeNames: {
+//       "#aData": "announcements",
+//       "#aDatePosted": "dateposted",
+//       "#title": "title",
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": [aData],
+//       ":dt": [dateposted],
+//       ":tit": [title],
+//     },
+//   };
+//   try {
+//     c1 = await dynamoClient.update(params2).promise();
+//   } catch (err) {
+//     try {
+//       c2 = await dynamoClient.update(params).promise();
+//     } catch (err2) {
+//       console.log(err2);
+//     }
+//   }
+// };
+
+const addNewAnnouncement = async (id, postedBy, title, department, data, datePosted) => {
+  
+  const params = {
+    TableName: ANNOUNCEMENTS_TABLE,
+    Item: {
+      id: id, 
+      title: title,
+      postedBy: postedBy,
+      department: department,
+      data: data,
+      datePosted: datePosted,
+    }
+  }
+  console.log("Dynamo recieved: ", params.Item)
+  try{
+    newAnnouncement = await dynamoClient.put(params).promise();
+  }
+  catch (error){
+    console.error(error)
+  }
+ 
+  return newAnnouncement;
+};
+
+const getAnnouncements = async () => {
+  const params = {
+    TableName: ANNOUNCEMENTS_TABLE,
+  };
+  const announcements = await dynamoClient.scan(params).promise();
+  return announcements;
+};
+
+// const getAnnouncements = async () => {
+//   const params = {
+//     TableName: ANNOUNCEMENTS_TABLE,
+//     ProjectionExpression: " #aData ,#name,#title, #date",
+//     ExpressionAttributeNames: {
+//       "#aData": "announcements",
+//       "#title": "title",
+//       "#name": "name",
+//       "#dateposted": "dateposted",
+//     },
+//   };
+//   const getannoun = await dynamoClient.scan(params).promise();
+//   return getannoun;
+// };
+
 module.exports = {
   dynamoClient,
   getEmployees,
+  addNewEmployee,
   addOrUpdateEmployee,
   deleteEmployee,
   addrequest,
@@ -261,5 +381,7 @@ module.exports = {
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
+  // addAnnouncements,
+  addNewAnnouncement,
+  getAnnouncements,
 };
-getEmployeeReqbyID("16");

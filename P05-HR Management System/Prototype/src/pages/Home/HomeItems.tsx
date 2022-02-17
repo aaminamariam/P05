@@ -1,4 +1,4 @@
-import { ISettingsItemCardProps } from "../SettingsItemCard";
+import { ISettingsItemCardProps } from "../../components/SettingsItemCard";
 import { IEnhancedCardProps } from "../../components/EnhancedCard";
 
 import SettingsIcon from "@material-ui/icons/Settings";

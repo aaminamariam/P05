@@ -14,6 +14,10 @@ const {
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
+  addNewAnnouncement,
+  addAnnouncements,
+  getAnnouncements,
+  addNewEmployee,
 } = require("./dynamo");
 
 const cors = require("cors");
@@ -44,6 +48,31 @@ app.post("/employee", async (req, res) => {
   }
 });
 
+//post
+app.post("/addnewemployee", async (req, res) => {
+  const data = req.body;
+
+  const id = data.employeeID;
+  const name = data.name;
+  const department = data.department;
+  const designation = data. designation;
+  const level = data.level;
+  const dateJoined = data.dateJoined;
+  const email = data.email;
+  const contact = data.contact;
+  const address = data.address;
+  const remainingLeaves = data.remainingLeaves;
+  const twRating = data.twRating;
+
+  try {
+    const newEmployee = await addNewEmployee(id, name, department, designation, level, dateJoined, email, contact, address, remainingLeaves, twRating);
+    res.json(newEmployee);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong in addnewemployee" });
+  }
+});
+
 //get all items
 app.get("/ids", async (req, res) => {
   try {
@@ -69,12 +98,14 @@ app.delete("/ids/:id", async (req, res) => {
 //add request
 app.post("/addreq", async (req, res) => {
   const data = req.body;
+  const postdate = new Date().toISOString().slice(0, 10)
   console.log(data);
   try {
     const newCharacter = await addrequest(
       data.option,
       data.description,
-      data.employeeID
+      data.employeeID,
+      postdate
     );
     res.json(newCharacter);
   } catch (err) {
@@ -88,13 +119,14 @@ app.post("/approverequests", async (req, res) => {
   const data = req.body;
   console.log(data);
   try {
-    const requestStatus = await approvedenyRequests(
-      data.employeeID,
-      data.approval,
-      data.description,
-      data.option
+    res.json(
+      await approvedenyRequests(
+        data.employeeID,
+        data.approval,
+        data.description,
+        data.option
+      )
     );
-    res.json(requestStatus);
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
@@ -124,6 +156,7 @@ app.put("/addstats", async (req, res) => {
 });
 
 //get requests
+
 app.get("/getrequests", async (req, res) => {
   try {
     const requests = await getEmployeeRequests();
@@ -157,6 +190,30 @@ app.get("/getstats/:id", async (req, res) => {
   }
 });
 
+//add announcements
+app.post("/addNewAnnouncement", async (req, res) => {
+  const data = req.body;
+  const today = new Date().toISOString().slice(0, 10)
+  const id = today
+  console.log("date recieved by server: ", data);
+  try {
+    res.json(await addNewAnnouncement(id, data.postedBy, data.title, data.department, data.data, today));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong while adding announcements in server" });
+  }
+});
+
+//get announcements
+app.get("/getAnnouncements", async (req, res) => {
+  try {
+    res.json(await getAnnouncements());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
 app.get("/activereq", async (req, res) => {
   try {
     // const requests = await getEmployeeReqbyID(id, );
@@ -168,7 +225,7 @@ app.get("/activereq", async (req, res) => {
 });
 
 // start the server in the port 5000!
-app.listen(process.env.PORT || 5000, function () {
+app.listen(process.env.PORT || 5001, function () {
   console.log("Example app listening on port 5000.");
 });
 //page doesnt exist

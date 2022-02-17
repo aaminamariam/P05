@@ -5,10 +5,9 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
 
-import requestListItems from "./requestListItems";
+// import requestListItems from "../../components/requestListItems";
 import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() =>
@@ -45,13 +44,13 @@ const RequestList = (props: IRequestListProps) => {
   const classes = useStyles();
 
   const getRequestList = () => {
-    setrequestList(requestListItems);
+    // setrequestList(requestListItems);
   };
 
   const getreq = async () => {
     let x: any = [];
     try {
-      const response = await axios.get("http://52.91.138.50:5000/activereq");
+      const response = await axios.get("http://localhost:5000/activereq");
       // console.log(response.data.Items[0].comments);
       const li = response.data.Items;
       x = li;

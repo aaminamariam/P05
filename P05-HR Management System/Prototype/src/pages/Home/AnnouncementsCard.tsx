@@ -12,11 +12,11 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
+import { NavLink } from "react-router-dom";
 
-import announcementListItems from "./announcementListItems";
-import { useState } from "react";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
+// import announcementListItems from "./announcementListItems";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -45,23 +45,47 @@ export interface IAnnouncementListProps {
 
 export const AnnouncementCard = (props: IAnnouncementListProps) => {
   const classes = useStyles();
-  // const [announcementList, setannouncementList] = useState([
-  //   {
-  //     title: "",
-  //   },
-  // ]);
+  const [announcementList, setannouncementList] = useState([
+    {
+      title: "",
+    },
+  ]);
+  const [list, setList] = useState<any[]>([]);
+
+  const getreq = async () => {
+    let x: any = [];
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/getAnnouncements"
+      );
+      const li = response.data.Items;
+      x = li[0];
+      // console.log(li[0].title);
+    } catch (error) {
+      console.error(error);
+    }
+    let a = [];
+    try {
+      for (let i = 0; i < x.title.length; i++) {
+        a.push({
+          title: x.title[i],
+        });
+        setList([...list, a]);
+      }
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    getreq();
+  }, []);
   return (
     <div className={classes.root}>
-      {/* <CardMedia>
-        <AnnouncementIcon fontSize="large" />
-      </CardMedia>
-      <CardContent>
-        <Typography variant="subtitle2">Make an announcement</Typography>
-      </CardContent> */}
       <CardActions>
+        <NavLink to ="/addAnnouncements">
         <Button color="primary" variant="outlined" size="medium">
           <Typography>Create Announcement</Typography>
         </Button>
+        </NavLink>
         <Button size="small">See History</Button>
       </CardActions>
       <CardActions>
@@ -70,28 +94,29 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
             width: "100%",
             maxWidth: 360,
             bgcolor: "background.paper",
-            // bgcolor: "red",
             position: "relative",
             overflow: "auto",
             maxHeight: 300,
             "& ul": { padding: 0 },
           }}
         >
-          {announcementListItems.map((item) => (
+          {list.map((item) =>
             // <li key={`section-${item}`}>
-            <ul>
-              <ListItem disableGutters key={`item-${item}`}>
-                <ListItemButton
-                  className={classes.listbutton}
-                  key={`section-${item}`}
-                >
-                  <AnnouncementIcon />
-                  <Typography variant="subtitle2">{item.title}</Typography>
-                </ListItemButton>
-                <Divider />
-              </ListItem>
-            </ul>
-          ))}
+            item.map((i: any) => (
+              <ul>
+                <ListItem disableGutters key={`item-${item}`}>
+                  <ListItemButton
+                    className={classes.listbutton}
+                    key={`section-${item}`}
+                  >
+                    <AnnouncementIcon />
+                    <Typography variant="subtitle2">{i.title}</Typography>
+                  </ListItemButton>
+                  <Divider />
+                </ListItem>
+              </ul>
+            ))
+          )}
         </List>
       </CardActions>
     </div>
