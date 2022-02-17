@@ -5,21 +5,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import CardContent from "@material-ui/core/CardContent";
 import { Link } from "react-router-dom";
-import JobApplication from "./JobApplication";
-import {
-  IconButton,
-  Button,
-  makeStyles,
-  createStyles,
-  Card,
-  Typography,
-  Box,
-} from "@material-ui/core";
+// import JobApplication from "./JobApplication";
+import { makeStyles, createStyles, Card } from "@material-ui/core";
 
-// import { Box, makeStyles, createStyles } from "@material-ui/core";
-
-// import Card from "../components/HiringPOrtal";
-import Search from "../components/search";
+// import Search from "../../components/search";
 
 const drawerWidth = 240;
 const w = `calc(100% - ${drawerWidth}px)`;

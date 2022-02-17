@@ -5,11 +5,11 @@ import List from "@mui/material/List";
 // import ListItem from "@mui/material/ListItem";
 // import ListItemButton from "@mui/material/ListItemButton";
 // import ListItemText from "@mui/material/ListItemText";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import axios from "axios";
 
-import { IEmployeeListItemProps } from "../../components/EmployeeRequestListItem";
-import requestListItems from "../../components/requestListItems";
+// import { IEmployeeListItemProps } from "../../components/EmployeeRequestListItem";
+// import requestListItems from "../../components/requestListItems";
 
 const useStyles = makeStyles(() =>
   createStyles({

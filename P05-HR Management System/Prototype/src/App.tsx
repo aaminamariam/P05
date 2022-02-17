@@ -1,28 +1,17 @@
-// import React from "react";
-import { Routes, Route } from "react-router-dom";
-import HiringPortal from "./pages/Hiringportal";
-import Addnewposting from "./pages/Addnewposting";
-import AppPortal from "./pages/AppPortal";
-import Home from "./pages/Home/Home";
-import HeaderBar from "./navigation/HeaderBar";
-import EmployeeDash from "./pages/employeeportal";
-import AddReq from "./pages/addrequest";
-import EmpStatsForm from "./pages/empStatsForm";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 
 import { makeStyles, Toolbar } from "@material-ui/core";
-// import MenuIcon from "@material-ui/icons/Menu";
-// import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import ToDo from "./components/ToDo/ToDo";
 
+import HeaderBar from "./navigation/HeaderBar";
 import NavBar from "./navigation/NavBar";
+import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
+import AppPortalPage from "./pages/AppPortalPage/AppPortalPage";
+import EmployeeDirectoryPage from "./pages/EmployeeDirectory/EmployeeDirectoryPage";
+import EmployeeRequestsPage from "./pages/EmployeeRequestsPage/EmployeeRequestsPage";
+import HiringPortalPage from "./pages/Hiring Portal/HiringPortalPage";
+import HomePage from "./pages/Home/HomePage";
 import JobApplication from "./pages/JobApplication";
-import ReqHist from "./pages/Requestshistory/employeerequests";
-import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsList";
-import React from "react";
-import EmployeesAnalytics from "./pages/employeesanalytics";
-import AnnouncementsList from "./pages/AnnouncementsPage/AnnouncementsList";
-// import AddAnnouncements from "./pages/addAnnouncements";
-import EmployeeDirectory from "./pages/EmployeeDirectory/EmployeeDirectory";
 
 const drawerWidth = 240;
 
@@ -87,20 +76,16 @@ function App() {
       <main className={classes.content}>
         <Toolbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/hiringportal" element={<HiringPortal />} />
-          <Route path="/addnewposting" element={<Addnewposting />} />
-          <Route path="/apportal" element={<AppPortal />} />
-          <Route path="/employee-directory" element={<EmployeeDirectory />} />
-          <Route path="/employeerequests" element={<EmployeeRequestsList />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/hiringportal" element={<HiringPortalPage />} />
+          <Route path="/apportal" element={<AppPortalPage />} />
+          <Route path="/announcements" element={<AnnouncementsPage />} />
+          <Route
+            path="/employeedirectory"
+            element={<EmployeeDirectoryPage />}
+          />
+          <Route path="/employeerequests" element={<EmployeeRequestsPage />} />
           <Route path="/jobapplication" element={<JobApplication />} />
-          <Route path="/employeedash" element={<EmployeeDash />} />
-          <Route path="/employeesanalytics" element={<EmployeesAnalytics />} />
-          <Route path="/addreq" element={<AddReq />} />
-          <Route path="/todolist" element={<ToDo />} />
-          <Route path="/empstats" element={<EmpStatsForm />} />
-          <Route path="/reqhist" element={<ReqHist />} />
-          <Route path="/announcements" element={<AnnouncementsList />} />
           <Route
             path="*"
             element={

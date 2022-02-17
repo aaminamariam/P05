@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { createStyles, makeStyles } from "@mui/styles";
-import EmployeeRequestListItem from "../../components/EmployeeRequestListItem";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItemText from "@mui/material/ListItemText";
-import { Box, Typography } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-import requestListItems from "../../components/requestListItems";
+import { Box } from "@mui/material";
+import List from "@mui/material/List";
+import { createStyles, makeStyles } from "@mui/styles";
+
+import EmployeeRequestListItem from "../../components/EmployeeRequestListItem";
 
 const useStyles = makeStyles(() =>
   createStyles({

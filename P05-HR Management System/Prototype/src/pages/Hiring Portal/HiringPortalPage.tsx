@@ -1,11 +1,9 @@
 import {
-  IconButton,
   Button,
   makeStyles,
   createStyles,
   Card,
   Typography,
-  Box,
 } from "@material-ui/core";
 
 import axios from "axios";
@@ -13,9 +11,6 @@ import axios from "axios";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListSubheader from "@mui/material/ListSubheader";
-import ListItemButton from "@mui/material/ListItemButton";
-import EnhancedCard from "../components/EnhancedCard";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useState, useEffect } from "react";
 
@@ -156,7 +151,7 @@ const Hiringportal = () => {
     </div>
   );
 };
-function forceUpdate() {
-  throw new Error("Function not implemented.");
-}
+// function forceUpdate() {
+//   throw new Error("Function not implemented.");
+// }
 export default Hiringportal;

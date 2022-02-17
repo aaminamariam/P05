@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import Sidebarofapplication from "../components/Sidebarofapplication";
 import Jobform from "../components/Jobform";
 
 const drawerWidth = 240;
@@ -54,7 +53,6 @@ const JobApplication = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Sidebarofapplication />
       <Box>
         <CssBaseline />
         <AppBar className={classes.appbar}>

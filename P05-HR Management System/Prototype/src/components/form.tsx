@@ -5,9 +5,9 @@ import { Box, Button } from "@material-ui/core";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
-import Popoverfunc from "./Popup";
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
+import Popoverfunc from "../pages/EmployeeRequestsPage/Popup";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,18 +66,15 @@ const Form = () => {
       method: "post",
       url: "http://52.91.138.50:8000/jobs/jobpostings/",
       data: formField,
-    }).then((response: { data: any }) => {
- 
-    });
+    }).then((response: { data: any }) => {});
   };
-
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <Box className={classes.square}>
@@ -123,22 +120,26 @@ const Form = () => {
           </Button>
         </NavLink> */}
         <div>
-        <NavLink to="/hiringportal">
-          <Button aria-describedby={id} variant="contained" onClick={addNewJob}>
-            Upload
-          </Button>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-          >
-            <Typography sx={{ p: 2 }}>Job has been posted</Typography>
-          </Popover>
+          <NavLink to="/hiringportal">
+            <Button
+              aria-describedby={id}
+              variant="contained"
+              onClick={addNewJob}
+            >
+              Upload
+            </Button>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <Typography sx={{ p: 2 }}>Job has been posted</Typography>
+            </Popover>
           </NavLink>
         </div>
       </form>

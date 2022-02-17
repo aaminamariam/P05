@@ -14,6 +14,7 @@ const {
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
+  addNewAnnouncement,
   addAnnouncements,
   getAnnouncements,
   addNewEmployee,
@@ -190,15 +191,16 @@ app.get("/getstats/:id", async (req, res) => {
 });
 
 //add announcements
-app.put("/addAnnouncements", async (req, res) => {
+app.post("/addNewAnnouncement", async (req, res) => {
   const data = req.body;
   const today = new Date().toISOString().slice(0, 10)
-  console.log(data);
+  const id = today
+  console.log("date recieved by server: ", data);
   try {
-    res.json(await addAnnouncements(data.employeeID, data.aData, title, today));
+    res.json(await addNewAnnouncement(id, data.postedBy, data.title, data.department, data.data, today));
   } catch (err) {
     console.error(err);
-    res.status(500).json({ err: "Something went wrong" });
+    res.status(500).json({ err: "Something went wrong while adding announcements in server" });
   }
 });
 

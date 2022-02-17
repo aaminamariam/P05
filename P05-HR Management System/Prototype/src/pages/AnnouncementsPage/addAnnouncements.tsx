@@ -1,30 +1,19 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
   Box,
+  createStyles,
   CssBaseline,
   makeStyles,
-  createStyles,
+  Typography,
 } from "@material-ui/core";
-import Button, { ButtonProps } from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import axios from "axios";
-import Sidebarofapplication from "../components/Sidebarofapplication";
-import MenuIcon from "@material-ui/icons/Menu";
-import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
 import Stack from "@mui/material/Stack";
-import SendIcon from "@mui/icons-material/Send";
-import { Link } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Popover from '@mui/material/Popover';
-// import Typography from '@mui/material/Typography';
 
 const drawerWidth = 240;
 const w = `calc(100% - ${drawerWidth}px)`;
@@ -89,57 +78,56 @@ const BootstrapButton = styled(Button)({
   backgroundColor: "#371BB1",
 });
 
-const BackButton = styled(Button)({
-  boxShadow: "none",
-  textTransform: "none",
-  fontSize: 16,
-  backgroundColor: "#371BB1",
-});
+// const BackButton = styled(Button)({
+//   boxShadow: "none",
+//   textTransform: "none",
+//   fontSize: 16,
+//   backgroundColor: "#371BB1",
+// });
 
 const AddAnnouncements = () => {
   const classes = useStyles();
-  const [id, set_id] = useState(""); 
+  const [id, set_id] = useState("");
   const [title, set_title] = useState("");
   const [aData, set_aData] = useState("");
-  const [date, set_date] = useState("");
- 
+  // const [date, set_date] = useState("");
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleChange = (event: any) => {
-    set_id(event.target.value);
-  };
+  // const handleChange = (event: any) => {
+  //   set_id(event.target.value);
+  // };
 
-  const handleChangeTitle = (event: any) => {
-    set_title(event.target.value);
-  };
+  // const handleChangeTitle = (event: any) => {
+  //   set_title(event.target.value);
+  // };
 
   const handleChangeData = (event: any) => {
     set_aData(event.target.value);
   };
 
   const is_empty = (option: string, description: string, id: string) => {
-    if (title == "" || aData == "" || id =="") {
-      if (title == "")
-      {
-          alert("title is empty")
+    if (title === "" || aData === "" || id === "") {
+      if (title === "") {
+        alert("title is empty");
       }
-      if (aData == "")
-      {
-          alert("title is empty")
+      if (aData === "") {
+        alert("title is empty");
       }
-      if (id = "")
-      {
-          alert("id is empty")
+      if (id === "") {
+        alert("id is empty");
       }
       return 1;
     }
     return 0;
   };
   //sub
-  const submitAnnouncement = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const submitAnnouncement = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     setAnchorEl(event.currentTarget);
     const check = is_empty(title, aData, id);
-    if (check == 0) {
+    if (check === 0) {
       await axios({
         method: "post",
         url: "http://localhost:5000/addAnnouncements",
@@ -156,28 +144,11 @@ const AddAnnouncements = () => {
   };
 
   const open = Boolean(anchorEl);
-  const o = open ? 'simple-popover' : undefined;
+  const o = open ? "simple-popover" : undefined;
 
   return (
     <div className={classes.root}>
       <Box className={classes.sqr}>
-        <Sidebarofapplication />
-        <CssBaseline />
-        <AppBar className={classes.appbar}>
-          <Toolbar>
-            <IconButton className={classes.menu}>
-              <MenuIcon />
-            </IconButton>
-            <Typography className={classes.typo} variant="h6">
-              Add Announcements
-            </Typography>
-            <IconButton className={classes.notification}>
-              <NotificationsNoneIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-
-
         <Typography className={classes.typo} variant="h6">
           EmployeeID:
         </Typography>
@@ -200,7 +171,7 @@ const AddAnnouncements = () => {
           fullWidth={true}
           onChange={(event: any) => set_title(event.target.value)}
         />
-        
+
         <div>
           <Typography className={classes.typo} variant="h6">
             Description:
@@ -230,7 +201,11 @@ const AddAnnouncements = () => {
           >
             Submit
           </BootstrapButton> */}
-          <Button aria-describedby={id} variant="contained" onClick={submitAnnouncement}>
+          <Button
+            aria-describedby={id}
+            variant="contained"
+            onClick={submitAnnouncement}
+          >
             Submit
           </Button>
           <Popover
@@ -239,8 +214,8 @@ const AddAnnouncements = () => {
             anchorEl={anchorEl}
             onClose={handleClose}
             anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
+              vertical: "bottom",
+              horizontal: "left",
             }}
           >
             <Typography>Announcement has been posted</Typography>

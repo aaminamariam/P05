@@ -278,63 +278,95 @@ const getEmployeeStatsbyID = async (id) => {
 };
 
 // adding announcements
-const addAnnouncements = async (employeeID, title, aData, date) => {
+// const addAnnouncements = async (employeeID, title, aData, date) => {
+//   const params = {
+//     TableName: ANNOUNCEMENTS_TABLE,
+//     Key: { announcement_id: announcement_id },
+//     UpdateExpression: "SET #aData = :vals, #aDatePosted = :dt, #title  = :tit",
+//     ExpressionAttributeNames: {
+//       "#aData": "announcements",
+//       "#aDatePosted": "date",
+//       "#title": "title",
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": [aData],
+//       ":dt": [dateposted],
+//       ":tit": [title],
+//     },
+//   };
+//   const params2 = {
+//     TableName: ANNOUNCEMENTS_TABLE,
+//     Key: { announcement_id: announcement_id },
+//     UpdateExpression:
+//       "SET #aData = list_append(#aData,:vals), #aDatePosted = list_append(#aDatePosted,:dt), #title  = list_append(#title,:tit)",
+//     ExpressionAttributeNames: {
+//       "#aData": "announcements",
+//       "#aDatePosted": "dateposted",
+//       "#title": "title",
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": [aData],
+//       ":dt": [dateposted],
+//       ":tit": [title],
+//     },
+//   };
+//   try {
+//     c1 = await dynamoClient.update(params2).promise();
+//   } catch (err) {
+//     try {
+//       c2 = await dynamoClient.update(params).promise();
+//     } catch (err2) {
+//       console.log(err2);
+//     }
+//   }
+// };
+
+const addNewAnnouncement = async (id, postedBy, title, department, data, datePosted) => {
+  
   const params = {
     TableName: ANNOUNCEMENTS_TABLE,
-    Key: { announcement_id: announcement_id },
-    UpdateExpression: "SET #aData = :vals, #aDatePosted = :dt, #title  = :tit",
-    ExpressionAttributeNames: {
-      "#aData": "announcements",
-      "#aDatePosted": "date",
-      "#title": "title",
-    },
-    ExpressionAttributeValues: {
-      ":vals": [aData],
-      ":dt": [dateposted],
-      ":tit": [title],
-    },
-  };
-  const params2 = {
-    TableName: ANNOUNCEMENTS_TABLE,
-    Key: { announcement_id: announcement_id },
-    UpdateExpression:
-      "SET #aData = list_append(#aData,:vals), #aDatePosted = list_append(#aDatePosted,:dt), #title  = list_append(#title,:tit)",
-    ExpressionAttributeNames: {
-      "#aData": "announcements",
-      "#aDatePosted": "dateposted",
-      "#title": "title",
-    },
-    ExpressionAttributeValues: {
-      ":vals": [aData],
-      ":dt": [dateposted],
-      ":tit": [title],
-    },
-  };
-  try {
-    c1 = await dynamoClient.update(params2).promise();
-  } catch (err) {
-    try {
-      c2 = await dynamoClient.update(params).promise();
-    } catch (err2) {
-      console.log(err2);
+    Item: {
+      id: id, 
+      title: title,
+      postedBy: postedBy,
+      department: department,
+      data: data,
+      datePosted: datePosted,
     }
   }
+  console.log("Dynamo recieved: ", params.Item)
+  try{
+    newAnnouncement = await dynamoClient.put(params).promise();
+  }
+  catch (error){
+    console.error(error)
+  }
+ 
+  return newAnnouncement;
 };
 
 const getAnnouncements = async () => {
   const params = {
     TableName: ANNOUNCEMENTS_TABLE,
-    ProjectionExpression: " #aData ,#name,#title, #date",
-    ExpressionAttributeNames: {
-      "#aData": "announcements",
-      "#title": "title",
-      "#name": "name",
-      "#dateposted": "dateposted",
-    },
   };
-  const getannoun = await dynamoClient.scan(params).promise();
-  return getannoun;
+  const announcements = await dynamoClient.scan(params).promise();
+  return announcements;
 };
+
+// const getAnnouncements = async () => {
+//   const params = {
+//     TableName: ANNOUNCEMENTS_TABLE,
+//     ProjectionExpression: " #aData ,#name,#title, #date",
+//     ExpressionAttributeNames: {
+//       "#aData": "announcements",
+//       "#title": "title",
+//       "#name": "name",
+//       "#dateposted": "dateposted",
+//     },
+//   };
+//   const getannoun = await dynamoClient.scan(params).promise();
+//   return getannoun;
+// };
 
 module.exports = {
   dynamoClient,
@@ -349,6 +381,7 @@ module.exports = {
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
-  addAnnouncements,
+  // addAnnouncements,
+  addNewAnnouncement,
   getAnnouncements,
 };

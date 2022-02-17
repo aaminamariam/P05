@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core";
-import Form from "../components/form";
+import Form from "../../components/form";
 
 const drawerWidth = 240;
 const w = `calc(100% - ${drawerWidth}px)`;

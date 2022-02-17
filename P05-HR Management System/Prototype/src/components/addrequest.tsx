@@ -1,30 +1,22 @@
 import React, { useState } from "react";
 import {
-  AppBar,
-  Toolbar,
   Typography,
-  IconButton,
   Box,
   CssBaseline,
   makeStyles,
   createStyles,
 } from "@material-ui/core";
-import Button, { ButtonProps } from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import axios from "axios";
-import Sidebarofapplication from "../components/Sidebarofapplication";
-import MenuIcon from "@material-ui/icons/Menu";
 import { styled } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
-import SendIcon from "@mui/icons-material/Send";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Popover from '@mui/material/Popover';
-// import Typography from '@mui/material/Typography';
+import Popover from "@mui/material/Popover";
 
 const drawerWidth = 240;
 const w = `calc(100% - ${drawerWidth}px)`;
@@ -89,12 +81,12 @@ const BootstrapButton = styled(Button)({
   backgroundColor: "#371BB1",
 });
 
-const BackButton = styled(Button)({
-  boxShadow: "none",
-  textTransform: "none",
-  fontSize: 16,
-  backgroundColor: "#371BB1",
-});
+// const BackButton = styled(Button)({
+//   boxShadow: "none",
+//   textTransform: "none",
+//   fontSize: 16,
+//   backgroundColor: "#371BB1",
+// });
 
 const AddReq = () => {
   const classes = useStyles();
@@ -111,7 +103,7 @@ const AddReq = () => {
   };
 
   const is_empty = (option: string, description: string, id: string) => {
-    if (option == "" || description == "" || id == "") {
+    if (option === "" || description === "" || id === "") {
       alert("a field is empty");
       return 1;
     }
@@ -121,7 +113,7 @@ const AddReq = () => {
   const submitRequest = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     const check = is_empty(option, description, id);
-    if (check == 0) {
+    if (check === 0) {
       await axios({
         method: "post",
         url: "http://localhost:5000/addreq",
@@ -138,27 +130,11 @@ const AddReq = () => {
   };
 
   const open = Boolean(anchorEl);
-  const o = open ? 'simple-popover' : undefined;
+  const o = open ? "simple-popover" : undefined;
 
   return (
     <div className={classes.root}>
       <Box className={classes.sqr}>
-        <Sidebarofapplication />
-        <CssBaseline />
-        <AppBar className={classes.appbar}>
-          <Toolbar>
-            <IconButton className={classes.menu}>
-              <MenuIcon />
-            </IconButton>
-            <Typography className={classes.typo} variant="h6">
-              Add Request
-            </Typography>
-            <IconButton className={classes.notification}>
-              <NotificationsNoneIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-
         <Typography className={classes.typo} variant="h5">
           Please provide the following information:
         </Typography>
@@ -221,7 +197,11 @@ const AddReq = () => {
           >
             Submit
           </BootstrapButton> */}
-          <Button aria-describedby={id} variant="contained" onClick={submitRequest}>
+          <Button
+            aria-describedby={id}
+            variant="contained"
+            onClick={submitRequest}
+          >
             Submit
           </Button>
           <Popover
@@ -230,8 +210,8 @@ const AddReq = () => {
             anchorEl={anchorEl}
             onClose={handleClose}
             anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
+              vertical: "bottom",
+              horizontal: "left",
             }}
           >
             <Typography>Request has been posted</Typography>

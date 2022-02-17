@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
   },
-  login: {
+  loginPage: {
     maxWidth: 160,
   },
   box: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     left: "64%",
   },
 }));
-export default function Login() {
+export default function LoginPage() {
   const classes = useStyles();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
@@ -104,7 +104,7 @@ export default function Login() {
           </Button>
         </NavLink>
       </Box>
-      <img src="login.PNG" alt="" />
+      <img src="loginPage.PNG" alt="" />
     </>
   );
 }
