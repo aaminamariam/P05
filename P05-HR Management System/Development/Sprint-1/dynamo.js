@@ -11,6 +11,7 @@ AWS.config.update({
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = "employee_table";
+const ANNOUNCEMENTS_TABLE = "announcements_table";
 
 // fetch from database
 const getEmployees = async () => {
@@ -256,8 +257,8 @@ const getEmployeeStatsbyID = async (id) => {
 // adding announcements
 const addAnnouncements = async (employeeID, title, aData, date) => {
   const params = {
-    TableName: TABLE_NAME,
-    Key: { employeeID: employeeID },
+    TableName: ANNOUNCEMENTS_TABLE,
+    Key: { announcement_id: employeeID },
     UpdateExpression: "SET #aData = :vals, #aDate = :dt, #title  = :tit",
     ExpressionAttributeNames: {
       "#aData": "announcements",
@@ -271,8 +272,8 @@ const addAnnouncements = async (employeeID, title, aData, date) => {
     },
   };
   const params2 = {
-    TableName: TABLE_NAME,
-    Key: { employeeID: employeeID },
+    TableName: ANNOUNCEMENTS_TABLE,
+    Key: { announcement_id: employeeID },
     UpdateExpression:
       "SET #aData = list_append(#aData,:vals), #aDate = list_append(#aDate,:dt), #title  = list_append(#title,:tit)",
     ExpressionAttributeNames: {
@@ -299,13 +300,14 @@ const addAnnouncements = async (employeeID, title, aData, date) => {
 
 const getAnnouncements = async () => {
   const params = {
-    TableName: TABLE_NAME,
-    ProjectionExpression: " #aData ,#name,#title, #date",
+    TableName: ANNOUNCEMENTS_TABLE,
+    ProjectionExpression: " #aData ,#name,#title, #date,#id",
     ExpressionAttributeNames: {
       "#aData": "announcements",
       "#title": "title",
       "#name": "name",
       "#date": "date",
+      "#id": "announcement_id",
     },
   };
   const getannoun = await dynamoClient.scan(params).promise();
@@ -327,4 +329,3 @@ module.exports = {
   addAnnouncements,
   getAnnouncements,
 };
-addAnnouncements("99","Employee","please work","2022-02-15");

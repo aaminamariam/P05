@@ -86,8 +86,6 @@ const ReqHist = () => {
     <Box className={classes.sqr}>
       <List
         sx={{
-          // bgcolor: "background.paper",
-          //   bgcolor: "red",
           position: "relative",
           overflow: "auto",
           // maxHeight: 300,
@@ -104,7 +102,6 @@ const ReqHist = () => {
                 data={i.data}
               />
             </ul>
-            // </li>
           ))
         )}
       </List>

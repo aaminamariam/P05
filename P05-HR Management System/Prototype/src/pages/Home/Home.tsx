@@ -18,7 +18,7 @@ import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "../../components/EmployeeTurnoverCard";
 import EmployeeRetentionCard from "../../components/EmployeeRetentionCard";
 import EmpStatsForm from "../empStatsForm";
-import EmployeeRequestsList from "../EmployeeRequestsPage/EmployeeRequestsPage";
+import AnnouncementsHist from "../AnnouncementsHist";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -40,6 +40,7 @@ const useStyles = makeStyles(() =>
 const Home = () => {
   const classes = useStyles();
   const [job_openeings, setjob_openeings] = useState("0");
+  const [title, set_title] = useState("");
 
   const getUser = async () => {
     try {

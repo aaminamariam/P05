@@ -13,6 +13,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
 import { NavLink } from "react-router-dom";
+import AnnouncementsHist from "../pages/AnnouncementsHist";
 
 // import announcementListItems from "./announcementListItems";
 import { useEffect, useState } from "react";
@@ -52,23 +53,21 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
   ]);
   const [list, setList] = useState<any[]>([]);
 
-  const getreq = async () => {
+  const getannoun = async () => {
     let x: any = [];
     try {
-      const response = await axios.get(
-        "http://localhost:5000/getAnnouncements"
-      );
+      const response = await axios.get("http://localhost:80/getAnnouncements");
       const li = response.data.Items;
-      x = li[0];
-      // console.log(li[0].title);
+      x = li;
+      // console.log(li);
     } catch (error) {
       console.error(error);
     }
     let a = [];
     try {
-      for (let i = 0; i < x.title.length; i++) {
+      for (let i = 0; i < x.length; i++) {
         a.push({
-          title: x.title[i],
+          title: x[i].title,
         });
         setList([...list, a]);
       }
@@ -76,17 +75,19 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
   };
 
   useEffect(() => {
-    getreq();
+    getannoun();
   }, []);
   return (
     <div className={classes.root}>
       <CardActions>
-      <NavLink to ="/addAnnouncements">
-        <Button color="primary" variant="outlined" size="medium">
-          <Typography>Create Announcement</Typography>
-        </Button>
+        <NavLink to="/addAnnouncements">
+          <Button color="primary" variant="outlined" size="medium">
+            <Typography>Create Announcement</Typography>
+          </Button>
         </NavLink>
-        <Button size="small">See History</Button>
+        <NavLink to="/getAnnouncements">
+          <Button size="small">See History</Button>
+        </NavLink>
       </CardActions>
       <CardActions>
         <List

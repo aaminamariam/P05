@@ -195,8 +195,8 @@ app.get("/activereq", async (req, res) => {
 });
 
 // start the server in the port 5000!
-app.listen(process.env.PORT || 5000, function () {
-  console.log("Example app listening on port 5000.");
+app.listen(process.env.PORT || 80, function () {
+  console.log("Example app listening on port 80.");
 });
 //page doesnt exist
 app.use(function (req, res, next) {
