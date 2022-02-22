@@ -42,7 +42,7 @@ const HomePage = () => {
   const getUser = async () => {
     try {
       const response = await axios.get(
-        "http://52.91.138.50:8000/jobs/jobpostings/"
+        "http://localhost:5001/jobs/jobpostings/"
       );
       console.log(response.data.length);
       setjob_openeings(response.data.length.toString());

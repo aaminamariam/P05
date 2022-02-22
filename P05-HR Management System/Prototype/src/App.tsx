@@ -7,11 +7,11 @@ import HeaderBar from "./navigation/HeaderBar";
 import NavBar from "./navigation/NavBar";
 import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
 import AppPortalPage from "./pages/AppPortalPage/AppPortalPage";
-import EmployeeDirectoryPage from "./pages/EmployeeDirectory/EmployeeDirectoryPage";
 import EmployeeRequestsPage from "./pages/EmployeeRequestsPage/EmployeeRequestsPage";
 import HiringPortalPage from "./pages/Hiring Portal/HiringPortalPage";
-import HomePage from "./pages/Home/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import JobApplication from "./pages/JobApplication";
+import EmployeeDirectoryPage from "./pages/EmployeeDirectoryPage/EmployeeDirectoryPage";
 
 const drawerWidth = 240;
 

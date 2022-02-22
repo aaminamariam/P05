@@ -157,7 +157,7 @@ app.put("/addstats", async (req, res) => {
 
 //get requests
 
-app.get("/getrequests", async (req, res) => {
+app.get("/getEmployeeRequests", async (req, res) => {
   try {
     const requests = await getEmployeeRequests();
     res.json(requests);

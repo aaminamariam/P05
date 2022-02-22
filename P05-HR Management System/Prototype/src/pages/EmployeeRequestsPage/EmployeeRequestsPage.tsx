@@ -31,25 +31,15 @@ export default function EmployeeRequestsList() {
   const [list, setList] = useState<any[]>([]);
 
   const getreq = async () => {
-    let x: any = [];
     try {
-      const response = await axios.get("http://52.91.138.50:5000/activereq");
+      const response = await axios.get(
+        "http://localhost:5001/getEmployeeRequests"
+      );
       // console.log(response.data.Items[0].comments);
       const li = response.data.Items;
-      x = li;
-      // console.log(li[0]);
+      setList([...list, li]);
     } catch (error) {
       console.error(error);
-    }
-    let a = [];
-    for (let i = 0; i < x.length; i++) {
-      a.push({
-        title: x[i].name,
-        type: x[i].option,
-        data: x[i].description,
-        id: x[i].employeeID,
-      });
-      setList([...list, a]);
     }
   };
 

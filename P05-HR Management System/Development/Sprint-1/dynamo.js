@@ -28,8 +28,6 @@ const getEmployees = async () => {
 const getEmployeeRequests = async (id) => {
   const params = {
     TableName: REQUESTS_TABLE,
-    //Key: {reqStatus: rStatus},
-    Key: { employeeID: id },
   };
   const requests = await dynamoClient.scan(params).promise();
   return requests;
@@ -71,7 +69,7 @@ const addOrUpdateEmployee = async (employee, name) => {
 //add request to database
 const addrequest = async (option, des, id, date) => {
   const params = {
-    TableName: REQUESTS_TABLE,
+    TableName: EMPLOYEE_TABLE,
     Key: { employeeID: id },
     UpdateExpression:
       "SET #option = :option , #description = :description, #stat = :status",
@@ -91,7 +89,7 @@ const addrequest = async (option, des, id, date) => {
 // fetch employee requests by status active or inactive
 const getEmployeeReqbystatus = async () => {
   const params = {
-    TableName: REQUESTS_TABLE,
+    TableName: EMPLOYEE_TABLE,
     ProjectionExpression: "#id, #option, #des, #status, #name",
     IndexName: "status-index",
     KeyConditionExpression: "#status = :status",
@@ -114,7 +112,7 @@ const getEmployeeReqbystatus = async () => {
 // fetch employee requests by id
 const getEmployeeReqbyID = async (id) => {
   const params = {
-    TableName: REQUESTS_TABLE,
+    TableName: EMPLOYEE_TABLE,
     ProjectionExpression: "#id, #option, #des, #name,#popt,#papprove,#pdes,#st",
     KeyConditionExpression: "#id = :empid",
     ExpressionAttributeNames: {
@@ -155,7 +153,7 @@ const approvedenyRequests = async (
   option
 ) => {
   const params = {
-    TableName: REQUESTS_TABLE,
+    TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #apv = :approvals, #status = :stat, #popt = :poption, #papprove = :pApp, #pdes = :pd",
@@ -176,7 +174,7 @@ const approvedenyRequests = async (
     },
   };
   const params2 = {
-    TableName: REQUESTS_TABLE,
+    TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
       "SET #com = list_append(#com,:vals), #popt = list_append(#popt,:poption), #papprove = list_append(#papprove,:pApp),#pdes = list_append(#pdes,:pd)",

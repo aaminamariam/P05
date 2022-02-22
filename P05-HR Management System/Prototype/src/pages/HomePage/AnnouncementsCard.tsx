@@ -45,46 +45,38 @@ export interface IAnnouncementListProps {
 
 export const AnnouncementCard = (props: IAnnouncementListProps) => {
   const classes = useStyles();
-  const [announcementList, setannouncementList] = useState([
-    {
-      title: "",
-    },
-  ]);
+  // const [list, setList] = useState([
+  //   {
+  //     title: "",
+  //   },
+  // ]);
   const [list, setList] = useState<any[]>([]);
 
-  const getreq = async () => {
+  const handleGetAnnouncements = async () => {
     let x: any = [];
     try {
       const response = await axios.get(
-        "http://localhost:5000/getAnnouncements"
+        "http://localhost:5001/getAnnouncements"
       );
       const li = response.data.Items;
-      x = li[0];
-      // console.log(li[0].title);
+      x = li;
+      setList(x);
+      // console.log("ANNOUNCE ITEMS", li);
     } catch (error) {
       console.error(error);
     }
-    let a = [];
-    try {
-      for (let i = 0; i < x.title.length; i++) {
-        a.push({
-          title: x.title[i],
-        });
-        setList([...list, a]);
-      }
-    } catch (err) {}
   };
-
   useEffect(() => {
-    getreq();
+    handleGetAnnouncements();
   }, []);
   return (
     <div className={classes.root}>
+      {/* ANNOUCEEMNT */}
       <CardActions>
-        <NavLink to ="/addAnnouncements">
-        <Button color="primary" variant="outlined" size="medium">
-          <Typography>Create Announcement</Typography>
-        </Button>
+        <NavLink to="/addAnnouncements">
+          <Button color="primary" variant="outlined" size="medium">
+            <Typography>Create .Announcement</Typography>
+          </Button>
         </NavLink>
         <Button size="small">See History</Button>
       </CardActions>
@@ -100,23 +92,18 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
             "& ul": { padding: 0 },
           }}
         >
-          {list.map((item) =>
-            // <li key={`section-${item}`}>
-            item.map((i: any) => (
-              <ul>
-                <ListItem disableGutters key={`item-${item}`}>
-                  <ListItemButton
-                    className={classes.listbutton}
-                    key={`section-${item}`}
-                  >
-                    <AnnouncementIcon />
-                    <Typography variant="subtitle2">{i.title}</Typography>
-                  </ListItemButton>
-                  <Divider />
-                </ListItem>
-              </ul>
-            ))
-          )}
+          {list.map((item) => (
+            <ListItem disableGutters key={`item-${item}`}>
+              <ListItemButton
+                className={classes.listbutton}
+                key={`section-${item.id}`}
+              >
+                <AnnouncementIcon />
+                <Typography variant="subtitle2">{item.title}</Typography>
+              </ListItemButton>
+              <Divider />
+            </ListItem>
+          ))}
         </List>
       </CardActions>
     </div>
