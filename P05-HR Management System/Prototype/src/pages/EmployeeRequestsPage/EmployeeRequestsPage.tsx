@@ -33,7 +33,7 @@ export default function EmployeeRequestsList() {
   const getreq = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5001/getEmployeeRequests"
+        "http://localhost:5001/activereq"
       );
       // console.log(response.data.Items[0].comments);
       const li = response.data.Items;
@@ -65,10 +65,10 @@ export default function EmployeeRequestsList() {
           item.map((i: any) => (
             <ul>
               <EmployeeRequestListItem
-                title={i.title}
-                type={i.type}
-                data={i.data}
-                id={i.id}
+                title={i.name}
+                type={i.option}
+                data={i.description}
+                id={i.employeeID}
               />
             </ul>
             // </li>

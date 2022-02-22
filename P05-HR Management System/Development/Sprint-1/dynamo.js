@@ -11,7 +11,7 @@ AWS.config.update({
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
 // const TABLE_NAME = "employee_table";
-const EMPLOYEE_TABLE = "employee_directory";
+const EMPLOYEE_TABLE = "employee_table";
 const REQUESTS_TABLE = "requests_table";
 const ANNOUNCEMENTS_TABLE = "announcements_table";
 
@@ -27,7 +27,7 @@ const getEmployees = async () => {
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
   const params = {
-    TableName: REQUESTS_TABLE,
+    TableName: EMPLOYEE_TABLE,
   };
   const requests = await dynamoClient.scan(params).promise();
   return requests;
