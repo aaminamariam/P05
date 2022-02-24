@@ -64,7 +64,7 @@ const Form = () => {
     console.log(formField);
     await axios({
       method: "post",
-      url: "http://52.91.138.50:8000/jobs/jobpostings/",
+      url: "http://localhost:5001/jobs/jobpostings/",
       data: formField,
     }).then((response: { data: any }) => {});
   };

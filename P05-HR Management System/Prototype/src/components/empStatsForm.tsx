@@ -84,7 +84,7 @@ const EmpStatsForm = () => {
     if (checker == 0) {
       await axios({
         method: "put",
-        url: "http://52.91.138.50:5000/addstats",
+        url: "http://localhost:5001/addstats",
         data: {
           employeeID: id,
           rating: rating,
