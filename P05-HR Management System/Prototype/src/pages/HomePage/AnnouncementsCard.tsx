@@ -75,7 +75,7 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
       <CardActions>
         <NavLink to="/addAnnouncements">
           <Button color="primary" variant="outlined" size="medium">
-            <Typography>Create .Announcement</Typography>
+            <Typography>Create Announcement</Typography>
           </Button>
         </NavLink>
         <Button size="small">See History</Button>

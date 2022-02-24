@@ -130,7 +130,7 @@ const AddAnnouncements = () => {
     if (check === 0) {
       await axios({
         method: "post",
-        url: "http://localhost:5000/addAnnouncements",
+        url: "http://localhost:5001/addAnnouncements",
         data: { title: title, aData: aData, employeeID: id },
       }).then((response: { data: any }) => {
         console.log(response.data);
