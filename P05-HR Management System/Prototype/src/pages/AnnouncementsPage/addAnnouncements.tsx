@@ -6,8 +6,9 @@ import Modal from "@mui/material/Modal";
 import { createStyles, makeStyles, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ReplayOutlined } from "@mui/icons-material";
 
-import handleGetAnnouncements from "./AnnouncementsPage";
+// import handleGetAnnouncements from "./AnnouncementsPage";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -27,10 +28,14 @@ const style = {
   p: 4,
 };
 
-export default function AddAnnouncements() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function AddAnnouncements(props: {
+  setOpen: (arg0: boolean) => any;
+  open: boolean;
+}) {
+  // const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => props.setOpen(true);
+  const handleClose = () => props.setOpen(false);
 
   const classes = useStyles();
 
@@ -38,6 +43,8 @@ export default function AddAnnouncements() {
   const [department, setDepartment] = useState("");
   const [title, setTitle] = useState("");
   const [data, setData] = useState("");
+
+  // const handleGetAnnouncements = prhandleGetAnnouncements;
 
   const handleAddAnnouncement = async () => {
     // setAnchorEl(event.currentTarget);
@@ -53,17 +60,16 @@ export default function AddAnnouncements() {
         data: data,
       },
     });
-    setOpen(false);
+    props.setOpen(false);
+    // reload()
+    // props.callhandleGetRequests();
   };
-  useEffect(() => {
-    // handleGetAnnouncements();
-  }, []);
 
   return (
     <div>
       <Button onClick={handleOpen}>ADD ANNOUNCEMENTS</Button>
       <Modal
-        open={open}
+        open={props.open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

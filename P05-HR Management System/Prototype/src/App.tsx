@@ -100,7 +100,7 @@ function App() {
           <Route path="/todolist" element={<ToDo />} />
           <Route path="/empstats" element={<EmpStatsForm />} />
           <Route path="/reqhist" element={<ReqHist />} />
-          <Route path="/addAnnouncements" element={<AddAnnouncements />} />
+          {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
           <Route path="/AnnouncementsPage" element={<AnnouncementsPage />} />
           <Route
             path="*"

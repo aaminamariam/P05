@@ -34,6 +34,7 @@ const columns: GridColDef[] = [
 ];
 
 export default function AnnouncementsPage() {
+  const [open, setOpen] = useState(false);
   const [list, setList] = useState<any[]>([]);
 
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
@@ -81,12 +82,12 @@ export default function AnnouncementsPage() {
   };
   useEffect(() => {
     handleGetAnnouncements();
-  }, []);
+  }, [open]);
 
   return (
     <div style={{ height: 400, width: "100%" }}>
       {/* <Button onClick={handleAddAnnouncement}>ADD ANNOUNCEMENT</Button> */}
-      <AddAnnouncements />
+      <AddAnnouncements setOpen={setOpen} open={open} />
       <DataGrid
         rows={list}
         columns={columns}
