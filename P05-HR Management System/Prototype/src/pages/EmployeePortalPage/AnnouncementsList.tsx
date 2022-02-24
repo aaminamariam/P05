@@ -61,13 +61,7 @@ const AnnouncementList = (props: IRequestListProps) => {
       console.error(error);
     }
     // let a = [];
-    // for (let i = 0; i < x.length; i++) {
-    //   a.push({
-    //     title: x[i].title,
-    //     id: x[i].employeeID,
-    //   });
-    //   setList([...list, a]);
-    // }
+
   };
 
   useEffect(() => {
