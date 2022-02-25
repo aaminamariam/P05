@@ -1,14 +1,10 @@
-import * as React from "react";
+import axios from "axios";
+import { useState } from "react";
+
+import { createStyles, makeStyles, TextField } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { createStyles, makeStyles, TextField } from "@material-ui/core";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { ReplayOutlined } from "@mui/icons-material";
-
-// import handleGetAnnouncements from "./AnnouncementsPage";
 
 const useStyles = makeStyles(() =>
   createStyles({
