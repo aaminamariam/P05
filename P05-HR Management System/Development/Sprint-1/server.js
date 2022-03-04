@@ -1,7 +1,15 @@
 //require express and create instance
 // this file contains all rest apis
-var express = require("express");
-var app = express();
+const express = require("express");
+const app = express();
+
+const dotenv = require('dotenv');
+dotenv.config();
+
+// access config var
+process.env.SECRET_TOKEN;
+
+const jwt = require('jsonwebtoken');
 
 const {
   getEmployees,
@@ -27,13 +35,59 @@ app.use(
   })
 );
 
+// get config vars
+dotenv.config();
+
+// access config var
+process.env.TOKEN_SECRET;
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
 
+//access token generator
+const generateAccessToken = (username) => {
+  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+}
+
+// auth token
+const authenticateToken = (req, res, next) =>{
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.TOKEN_SECRET , (err, user) => {
+    console.log(err)
+
+    if (err) return res.sendStatus(403)
+
+    req.user = user
+
+    next()
+  })
+}
+
 // rest apis
+
+//login
+app.post('/login', (req, res) => {
+  
+
+  const username = req.body.username
+  const user = { name: username }
+
+  const accessToken = generateAccessToken(user)
+  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+  refreshTokens.push(refreshToken)
+  res.json({ accessToken: accessToken, refreshToken: refreshToken })
+
+});
+
+
+
 //post
 app.post("/employee", async (req, res) => {
   const data = req.body;
