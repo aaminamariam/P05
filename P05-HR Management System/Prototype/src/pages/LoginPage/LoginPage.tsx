@@ -1,110 +1,192 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Drawer,
-  makeStyles,
-  TextField,
-  Typography,
-  Button,
-} from "@material-ui/core";
-import { NavLink } from "react-router-dom";
-const drawerWidth = 740;
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    background: "#371bb1",
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  loginPage: {
-    maxWidth: 160,
-  },
-  box: {
-    variant: "permanent",
-    position: "absolute",
-    left: "43%",
-    top: "20%",
-    width: "30%",
-    height: "75%",
-    boxSizing: "border-box",
-    background: "#ffffff",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: theme.spacing(2),
-    position: "absolute",
-    top: "20%",
-    left: "63%",
-    "& .MuiTextField-root": {
-      margin: theme.spacing(2),
-      width: "300px",
-    },
-    "& .MuiButtonBase-root": {
-      margin: theme.spacing(2),
-    },
-  },
-  text: {
-    background: "#ffffff",
-  },
-  typo: {
-    position: "relative",
-    top: "1%",
-    left: "64%",
-  },
-}));
-export default function LoginPage() {
-  const classes = useStyles();
-  const [username, setusername] = useState("");
-  const [password, setpassword] = useState("");
-  return (
-    <>
-      <Drawer
-        classes={{ paper: classes.paper }}
-        variant="permanent"
-        anchor="left"
-      ></Drawer>
+// import React, { useState } from "react";
+// import {
+//   Box,
+//   Drawer,
+//   makeStyles,
+//   TextField,
+//   Typography,
+//   Button,
+// } from "@material-ui/core";
 
-      <Box className={classes.box}>
-        <Typography variant="h4" className={classes.typo}>
-          Welcome to HRMS
-        </Typography>
-        <form className={classes.form}>
-          <TextField
-            className={classes.text}
-            label="Username"
-            variant="filled"
-            required
-            value={username}
-            onChange={(e) => setusername(e.target.value)}
-          />
-          <TextField
-            className={classes.text}
-            label="Password"
-            variant="filled"
-            required
-            value={password}
-            onChange={(e) => setpassword(e.target.value)}
-          />
-        </form>
-        <NavLink to="/hiringportal">
-          <Button
-            style={{
-              backgroundColor: "#371bb1",
-              color: "#FFFFFF",
-              maxWidth: "170px",
-              minWidth: "100px",
-              position: "absolute",
-              top: "71%",
-              left: "125%",
+// import companyLogo from "./loginimage.png";
+// import { NavLink } from "react-router-dom";
+
+// const drawerWidth = 740;
+// const useStyles = makeStyles((theme) => ({
+//   paper: {
+//     backgroundColor: "#371bb1",
+//     display: "flex",
+//     backgroundImage: companyLogo,
+//     flexShrink: 0,
+//     width: "40%",
+//   },
+//   img: {
+//     display: "flex-center",
+//     width: "40%",
+//     height: "100%",
+//     justifyContent: "center",
+//   },
+//   box: {
+//     display: "flex",
+//     flexDirection: "column",
+//     justifyContent: "center",
+//     boxSizing: "border-box",
+//     background: "#ffffff",
+//   },
+//   form: {
+//     display: "flex",
+//     flexDirection: "column",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     padding: theme.spacing(2),
+
+//     "& .MuiTextField-root": {
+//       margin: theme.spacing(2),
+//       width: "300px",
+//     },
+//     "& .MuiButtonBase-root": {
+//       margin: theme.spacing(2),
+//     },
+//   },
+//   text: {
+//     background: "#ffffff",
+//   },
+//   typo: {
+//     position: "relative",
+//     top: "1%",
+//     left: "64%",
+//   },
+// }));
+// export default function LoginPage() {
+//   const classes = useStyles();
+//   const [username, setusername] = useState("");
+//   const [password, setpassword] = useState("");
+
+//   return (
+//     <>
+//       <div className={classes.paper}>
+//         <div className={classes.img}>
+//           <img src={companyLogo} alt="BigCo Inc. logo" />
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import img from "./imglogin.svg";
+import Grid from "@mui/material/Grid";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme();
+
+export default function LoginPage() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    console.log({
+      id: data.get("id"),
+      password: data.get("password"),
+    });
+  };
+  return (
+    <ThemeProvider theme={theme}>
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: `url(${img})`,
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            Sign In
-          </Button>
-        </NavLink>
-      </Box>
-      <img src="loginPage.PNG" alt="" />
-    </>
+            <Avatar sx={{ m: 1, bgcolor: "#371bb1" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Employee ID"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, bgcolor: "#371bb1" }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
 }
