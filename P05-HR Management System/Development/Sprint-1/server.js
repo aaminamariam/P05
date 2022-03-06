@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 
 const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
 dotenv.config();
 
 // access config var
@@ -21,6 +22,7 @@ const {
   getEmployeeReqbystatus,
   approvedenyRequests,
   addstats,
+  login,
   getEmployeeStatsbyID,
   addNewAnnouncement,
   addAnnouncements,
@@ -72,30 +74,62 @@ const authenticateToken = (req, res, next) => {
 
 // rest apis
 
-//login
-app.post("/login", (req, res) => {
-  const username = req.body.name;
-  const user = { name: username };
+let refreshTokens = [];
 
-  const accessToken = generateAccessToken(user);
-  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-  refreshTokens.push(refreshToken);
-  res.json({ accessToken: accessToken, refreshToken: refreshToken });
+// access tokens
+app.post;
+//login
+app.post("/login", async (req, res) => {
+  const userid = req.body.id;
+  const user = { id: userid };
+
+  if (userid == null) {
+    return res.status(400).send("Cannot find user");
+  }
+
+  let data = await login(req.body.id);
+
+  try {
+    // Load hash from your password DB.
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      data.Items[0].password
+    );
+    if (validPassword) {
+      res.json("Success");
+
+      const accessToken = generateAccessToken(user);
+      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+      refreshTokens.push(refreshToken);
+      res.json({ accessToken: accessToken, refreshToken: refreshToken });
+    } else {
+      res.json("Not Allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
 });
 
-// //post
-// app.post("/employee", async (req, res) => {
-//   const data = req.body;
-//   const employee = data.employeeID;
-//   const name = data.name;
-//   try {
-//     const newEmployee = await addOrUpdateEmployee(employee, name);
-//     res.json(newEmployee);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ err: "Something went wrong" });
-//   }
-// });
+//post
+app.post("/employee", async (req, res) => {
+  const data = req.body;
+  const employee = data.employeeID;
+  const name = data.name;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
+
+  try {
+    const newEmployee = await addOrUpdateEmployee(
+      employee,
+      name,
+      hashedPassword
+    );
+    res.json(newEmployee);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
 
 //post
 app.post("/addnewemployee", async (req, res) => {
@@ -108,7 +142,10 @@ app.post("/addnewemployee", async (req, res) => {
   const level = data.level;
   const dateJoined = data.dateJoined;
   const email = data.email;
-  const hashedPassword = await bcrypt.hash(data.password, 10);
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
+
   const contact = data.contact;
   const address = data.address;
   const remainingLeaves = data.remainingLeaves;
@@ -128,36 +165,28 @@ app.post("/addnewemployee", async (req, res) => {
       remainingLeaves
     );
     res.json(newEmployee);
-
-    try {
-      const user = { id: data.id, password: data.hashedPassword };
-      users.push(user);
-      res.status(201).send();
-    } catch {
-      res.status(500).send();
-    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong in addnewemployee" });
   }
 });
 
-//comparing login credentials
-app.post("/employees/login", async (req, res) => {
-  const user = users.find((user) => user.id === req.body.id);
-  if (user == null) {
-    return res.status(400).send("Cannot find user");
-  }
-  try {
-    if (await bcrypt.compare(req.body.password, user.password)) {
-      res.send("Success");
-    } else {
-      res.send("Not Allowed");
-    }
-  } catch {
-    res.status(500).send();
-  }
-});
+// //comparing login credentials
+// app.post("/employees/login", async (req, res) => {
+//   const user = users.find((user) => user.id === req.body.id);
+//   if (user == null) {
+//     return res.status(400).send("Cannot find user");
+//   }
+//   try {
+//     if (await bcrypt.compare(req.body.password, user.password)) {
+//       res.send("Success");
+//     } else {
+//       res.send("Not Allowed");
+//     }
+//   } catch {
+//     res.status(500).send();
+//   }
+// });
 
 //get all items
 app.get("/ids", async (req, res) => {

@@ -1,78 +1,3 @@
-// import React, { useState } from "react";
-// import {
-//   Box,
-//   Drawer,
-//   makeStyles,
-//   TextField,
-//   Typography,
-//   Button,
-// } from "@material-ui/core";
-
-// import companyLogo from "./loginimage.png";
-// import { NavLink } from "react-router-dom";
-
-// const drawerWidth = 740;
-// const useStyles = makeStyles((theme) => ({
-//   paper: {
-//     backgroundColor: "#371bb1",
-//     display: "flex",
-//     backgroundImage: companyLogo,
-//     flexShrink: 0,
-//     width: "40%",
-//   },
-//   img: {
-//     display: "flex-center",
-//     width: "40%",
-//     height: "100%",
-//     justifyContent: "center",
-//   },
-//   box: {
-//     display: "flex",
-//     flexDirection: "column",
-//     justifyContent: "center",
-//     boxSizing: "border-box",
-//     background: "#ffffff",
-//   },
-//   form: {
-//     display: "flex",
-//     flexDirection: "column",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     padding: theme.spacing(2),
-
-//     "& .MuiTextField-root": {
-//       margin: theme.spacing(2),
-//       width: "300px",
-//     },
-//     "& .MuiButtonBase-root": {
-//       margin: theme.spacing(2),
-//     },
-//   },
-//   text: {
-//     background: "#ffffff",
-//   },
-//   typo: {
-//     position: "relative",
-//     top: "1%",
-//     left: "64%",
-//   },
-// }));
-// export default function LoginPage() {
-//   const classes = useStyles();
-//   const [username, setusername] = useState("");
-//   const [password, setpassword] = useState("");
-
-//   return (
-//     <>
-//       <div className={classes.paper}>
-//         <div className={classes.img}>
-//           <img src={companyLogo} alt="BigCo Inc. logo" />
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -114,9 +39,7 @@ export default function LoginPage() {
             backgroundImage: `url(${img})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
+              t.palette.mode === "light" ? "#371bb1" : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -150,8 +73,8 @@ export default function LoginPage() {
                 fullWidth
                 id="email"
                 label="Employee ID"
-                name="email"
-                autoComplete="email"
+                name="id"
+                autoComplete="id"
                 autoFocus
               />
               <TextField
