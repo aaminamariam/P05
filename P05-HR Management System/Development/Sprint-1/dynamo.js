@@ -42,7 +42,7 @@ const addNewEmployee = async (
   _level,
   _dateJoined,
   _email,
-  _password,
+  _passwordhash,
   _contact,
   _address,
   _remainingLeaves
@@ -57,7 +57,7 @@ const addNewEmployee = async (
       level: _level,
       dateJoined: _dateJoined,
       email: _email,
-      password: _password,
+      passwordhash: _passwordhash,
       contact: _contact,
       address: _address,
       remainingLeaves: _remainingLeaves,
@@ -67,12 +67,13 @@ const addNewEmployee = async (
 };
 
 // add to database
-const addOrUpdateEmployee = async (employee, name) => {
+const addOrUpdateEmployee = async (employee, name, pass) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
       employeeID: employee,
       name: name,
+      password: pass,
     },
   };
   return await dynamoClient.put(params).promise();
@@ -287,49 +288,23 @@ const getEmployeeStatsbyID = async (id) => {
   return statsbyID;
 };
 
-// adding announcements
-// const addAnnouncements = async (employeeID, title, aData, date) => {
-//   const params = {
-//     TableName: ANNOUNCEMENTS_TABLE,
-//     Key: { announcement_id: announcement_id },
-//     UpdateExpression: "SET #aData = :vals, #aDatePosted = :dt, #title  = :tit",
-//     ExpressionAttributeNames: {
-//       "#aData": "announcements",
-//       "#aDatePosted": "date",
-//       "#title": "title",
-//     },
-//     ExpressionAttributeValues: {
-//       ":vals": [aData],
-//       ":dt": [dateposted],
-//       ":tit": [title],
-//     },
-//   };
-//   const params2 = {
-//     TableName: ANNOUNCEMENTS_TABLE,
-//     Key: { announcement_id: announcement_id },
-//     UpdateExpression:
-//       "SET #aData = list_append(#aData,:vals), #aDatePosted = list_append(#aDatePosted,:dt), #title  = list_append(#title,:tit)",
-//     ExpressionAttributeNames: {
-//       "#aData": "announcements",
-//       "#aDatePosted": "dateposted",
-//       "#title": "title",
-//     },
-//     ExpressionAttributeValues: {
-//       ":vals": [aData],
-//       ":dt": [dateposted],
-//       ":tit": [title],
-//     },
-//   };
-//   try {
-//     c1 = await dynamoClient.update(params2).promise();
-//   } catch (err) {
-//     try {
-//       c2 = await dynamoClient.update(params).promise();
-//     } catch (err2) {
-//       console.log(err2);
-//     }
-//   }
-// };
+// login gives id and password
+const login = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    KeyConditionExpression: "#ids = :id",
+    ProjectionExpression: "#ids, #password",
+    ExpressionAttributeNames: {
+      "#ids": "employeeID",
+      "#password": "password",
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
+  const loginpass = await dynamoClient.query(params).promise();
+  return loginpass;
+};
 
 const addNewAnnouncement = async (
   id,
@@ -396,7 +371,7 @@ module.exports = {
   approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
-  // addAnnouncements,
+  login,
   addNewAnnouncement,
   getAnnouncements,
 };
