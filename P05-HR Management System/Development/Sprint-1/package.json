@@ -7,7 +7,7 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1"
   },
-  // "scripts": {
-  //   "devStart": "nodemon server.js"
-  // }
+  "scripts": {
+    "devStart": "nodemon server.js"
+  }
 }
