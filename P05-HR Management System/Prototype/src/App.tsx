@@ -11,7 +11,7 @@ import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsP
 import HiringPortalPage from "./pages/Hiring Portal/HiringPortalPage";
 import HomePage from "./pages/HomePage/HomePage";
 import JobApplication from "./pages/JobApplication";
-import EmployeeDirectoryPage from "./pages/EmployeeDirectoryPage/EmployeeDirectoryPage";
+import EmployeeDirectoryPage from "./pages/EmployeePortalPage/EmployeeDirectoryPage";
 import Addnewposting from "./pages/Hiring Portal/Addnewposting";
 import EmployeePortalPage from "./pages/EmployeePortalPage/EmployeePortalPage";
 import EmployeesAnalytics from "./pages/EmployeePortalPage/EmployeeAnalytics";
@@ -89,7 +89,7 @@ function App() {
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortalPage />} />
           <Route
-            path="/employee-directory"
+            path="/employeedirectorypage"
             element={<EmployeeDirectoryPage />}
           />
           <Route path="/employeerequests" element={<EmployeeRequestsList />} />
