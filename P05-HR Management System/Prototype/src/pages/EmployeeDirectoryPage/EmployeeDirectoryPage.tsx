@@ -7,7 +7,9 @@ import {
   GridFilterModel,
 } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Button, TextField } from "@mui/material";
+
+import AddEmployee from "./AddEmployee";
+
 import axios from "axios";
 
 const columns: GridColDef[] = [
@@ -51,18 +53,8 @@ const columns: GridColDef[] = [
 // ];
 
 export default function EmployeeDirectoryPage() {
+  const [open, setOpen] = useState(false);
   const [list, setList] = useState<any[]>([]);
-  const [name, setName] = useState("");
-  const [department, setDepartment] = useState("");
-  const [level, setLevel] = useState("");
-  const [contact, setContact] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [address, setAddress] = useState("");
-  const [dateJoined, setDateJoined] = useState("");
-  const [email, setEmail] = useState("");
-  const [rating, setRating] = useState("");
-  const [leaves, setLeaves] = useState("");
-  const [employeeID, setEmployeeID] = useState("");
 
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
@@ -93,34 +85,6 @@ export default function EmployeeDirectoryPage() {
   //   return 0;
   // };
 
-  const handleAddEmployee = async () => {
-    // setAnchorEl(event.currentTarget);
-    // const check = is_empty(title, aData, id);
-    // if (check == 0) {
-    await axios({
-      method: "post",
-      url: "http://localhost:5001/addnewemployee",
-      data: {
-        employeeID: employeeID,
-        name: name,
-        department: department,
-        designation: designation,
-        level: level,
-        dateJoined: dateJoined,
-        email: email,
-        contact: contact,
-        address: address,
-        remainingLeaves: leaves,
-        twRating: rating,
-      },
-    }).then((response: { data: any }) => {
-      handleGetEmployees();
-      console.log(response.data);
-      //alert("Your Request has been submitted");
-    });
-    // }
-  };
-
   const handleGetEmployees = async () => {
     let x: any = [];
     try {
@@ -132,20 +96,6 @@ export default function EmployeeDirectoryPage() {
     } catch (error) {
       console.error(error);
     }
-
-    // try {
-    //   for (let i = 1; i <= x.length; i++) {
-    //     const Intid = parseInt(x[i].announcement_id);
-    //     a.push({
-    //       id: i,
-    //       name: x[i].name,
-    //       title: x[i].title,
-    //       announcements: x[i].announcements,
-    //       date: x[i].date,
-    //     });
-    //     setList([...list, a]);
-    //   }
-    // } catch (err) {}
   };
   useEffect(() => {
     handleGetEmployees();
@@ -153,85 +103,7 @@ export default function EmployeeDirectoryPage() {
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      <TextField
-        id="employeeID"
-        label="Employee ID"
-        variant="standard"
-        value={employeeID}
-        onChange={(e) => setEmployeeID(e.target.value)}
-      />
-      <TextField
-        id="name"
-        label="Name"
-        variant="standard"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <TextField
-        id="department"
-        label="Department"
-        variant="standard"
-        value={department}
-        onChange={(e) => setDepartment(e.target.value)}
-      />
-      <TextField
-        id="level"
-        label="Level"
-        variant="standard"
-        value={level}
-        onChange={(e) => setLevel(e.target.value)}
-      />
-      <TextField
-        id="contact"
-        label="Contact"
-        variant="standard"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
-      />
-      <TextField
-        id="designation"
-        label="Designation"
-        variant="standard"
-        value={designation}
-        onChange={(e) => setDesignation(e.target.value)}
-      />
-      <TextField
-        id="address"
-        label="Address"
-        variant="standard"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-      />
-      <TextField
-        id="dateJoined"
-        label="Date Joined"
-        variant="standard"
-        value={dateJoined}
-        onChange={(e) => setDateJoined(e.target.value)}
-      />
-      <TextField
-        id="email"
-        label="Email"
-        variant="standard"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        id="twRating"
-        label="TW Rating"
-        variant="standard"
-        value={rating}
-        onChange={(e) => setRating(e.target.value)}
-      />
-      <TextField
-        id="remainingLeaves"
-        label="Remaining Leaves"
-        variant="standard"
-        value={leaves}
-        onChange={(e) => setLeaves(e.target.value)}
-      />
-
-      <Button onClick={handleAddEmployee}>ADD EMPLOYEE</Button>
+      <AddEmployee setOpen={setOpen} open={open} />
       <DataGrid
         rows={list}
         columns={columns}
