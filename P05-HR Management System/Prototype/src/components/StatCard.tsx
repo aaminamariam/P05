@@ -8,9 +8,14 @@ import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
 
 const useStyles = makeStyles({
   root: {
+    display: "flex",
+    // flex: 0 0 100,
+    // alignItems: "stretch",
+    // alignContent:
+    flexGrow: 1,
     textAlign: "center",
     boxShadow: "box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)",
-    width: "280px",
+    // minWidth: "5rem",
   },
   button: {
     paddingTop: 10,
@@ -54,7 +59,6 @@ const StatCard: React.FC<IStatCardProps> = ({
   icon = <PermIdentityOutlinedIcon />,
   title = "Employees",
   data = "",
-
 }: IStatCardProps) => {
   const classes = useStyles();
 

@@ -5,10 +5,10 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
+import AnnouncementIcon from "@mui/icons-material/Announcement";
 
-// import requestListItems from "./requestListItems";
+// import requestListItems from "../../components/requestListItems";
 import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() =>
@@ -32,7 +32,7 @@ export interface IRequestListProps {
   children?: React.ReactNode;
 }
 
-const RequestList = (props: IRequestListProps) => {
+const AnnouncementList = (props: IRequestListProps) => {
   const [requestList, setrequestList] = useState([
     {
       title: "",
@@ -44,35 +44,29 @@ const RequestList = (props: IRequestListProps) => {
 
   const classes = useStyles();
 
-  // const getRequestList = () => {
-  //   setrequestList(requestListItems);
-  // };
+  const getRequestList = () => {
+    // setrequestList(requestListItems);
+  };
 
   const getreq = async () => {
     let x: any = [];
     try {
-      const response = await axios.get("http://localhost:5001/activereq");
+      const response = await axios.get("http://localhost:5001/getAnnouncements");
       // console.log(response.data.Items[0].comments);
       const li = response.data.Items;
       x = li;
       // console.log(li[0]);
+      setList(x)
     } catch (error) {
       console.error(error);
     }
-    let a = [];
-    for (let i = 0; i < x.length; i++) {
-      a.push({
-        title: x[i].name,
-        id: x[i].employeeID,
-      });
-      setList([...list, a]);
-    }
+    // let a = [];
+
   };
 
   useEffect(() => {
-    // getRequestList();
+    getRequestList();
     getreq();
-    // console.log
   }, []);
 
   return (
@@ -88,24 +82,21 @@ const RequestList = (props: IRequestListProps) => {
         "& ul": { padding: 0 },
       }}
     >
-      {list.map((item) =>
-        item.map((i: any) => (
-          <ul>
-            <ListItem disableGutters key={`item-${i.id}`}>
+      {list.map((item) =>(
+            <ListItem disableGutters key={`item-${item}`}>
               <ListItemButton
                 className={classes.listbutton}
-                // key={`section-${item.id}`}
+                key={`section-${item.id}`}
               >
-                <PersonPinIcon />
-                <Typography variant="subtitle2">{i.title}</Typography>
+                <AnnouncementIcon />
+                <Typography variant="subtitle2">{item.title}</Typography>
               </ListItemButton>
               <Divider />
             </ListItem>
-          </ul>
-        ))
+        )
       )}
     </List>
   );
 };
 
-export default RequestList;
+export default AnnouncementList;

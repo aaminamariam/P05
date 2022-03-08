@@ -12,6 +12,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import RequestList from "../EmployeeRequestsPage/RequestList";
+import ReqHist from "../Requestshistory/employeerequests";
+import AnnouncementList from "./AnnouncementsList";
+
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -86,15 +89,27 @@ const EmployeePortalPage = () => {
           <EnhancedCard title="Employee Gender">SHOW</EnhancedCard>
         </Grid>
         <Grid item>
+        <Link
+            to="/reqhist"
+            style={{ textDecoration: "none", textDecorationColor: "white" }}
+          >
           <EnhancedCard title="Requests">
             <RequestList />
           </EnhancedCard>
+          </Link>
         </Grid>
+
         <Grid item>
-          <EnhancedCard title="Create Announcement">
-            {/* <CreatAnnouncement /> */}
+        <Link
+            to="/getAnnouncements"
+            style={{ textDecoration: "none", textDecorationColor: "white" }}
+          >
+          <EnhancedCard title="Announcements">
+            <AnnouncementList/>
           </EnhancedCard>
+          </Link>
         </Grid>
+
         <Grid item>
           <EnhancedCard title="Employee Turnover">SHOW</EnhancedCard>
         </Grid>

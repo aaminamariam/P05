@@ -21,15 +21,20 @@ import EmployeeRetentionCard from "./EmployeeRetentionCard";
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      display: "flex",
-      flexDirection: "column",
+      // display: "flex",
       // backgroundColor: "#FD6A00",
       // maxWidth: "1200px",
     },
     stats: {
       display: "flex",
+      // backgroundColor: "#FD6A00",
+      flexGrow: 1,
+      // alignContent: "stretch",
+      // alignItems: "stretch",
+      // justifyContent: "stretch",
     },
     content: {
+      // backgroundColor: "red",
       marginTop: "25px",
     },
   })
@@ -57,22 +62,22 @@ const HomePage = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={2} className={classes.stats}>
-        <Grid item>
+      <Grid container spacing={1} className={classes.stats}>
+        <Grid item lg={3}>
           <StatCard
             icon={<GroupIcon />}
             title="Number of Employees"
             data="678"
           />
         </Grid>
-        <Grid item>
+        <Grid item lg={3}>
           <StatCard
             icon={<PersonOffIcon />}
             title="Number on Leave"
             data="32"
           />
         </Grid>
-        <Grid item>
+        <Grid item lg={3}>
           <Link
             to="/hiringportal"
             style={{
@@ -87,7 +92,7 @@ const HomePage = () => {
             />
           </Link>
         </Grid>
-        <Grid item>
+        <Grid item lg={3}>
           <StatCard
             icon={<MonetizationOnIcon />}
             title="Next payroll"
@@ -95,14 +100,8 @@ const HomePage = () => {
           />
         </Grid>
       </Grid>
-      <Grid container spacing={2} className={classes.content}>
-        <Grid item>
-          <EnhancedCard title="Employee Gender">
-            <EmployeeGenderCard />
-          </EnhancedCard>
-        </Grid>
-
-        <Grid item>
+      <Grid container spacing={1} className={classes.content}>
+        <Grid item lg={3}>
           <Link
             to="/employeerequests"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
@@ -112,32 +111,36 @@ const HomePage = () => {
             </EnhancedCard>
           </Link>
         </Grid>
-
-        <Grid item>
-          <EnhancedCard title="To Do List">
-            <ToDo />
-          </EnhancedCard>
-        </Grid>
-
-        <Grid item>
+        <Grid item lg={3}>
           <EnhancedCard title="Announcements">
             <AnnouncementsCard />
           </EnhancedCard>
         </Grid>
 
-        <Grid item>
+        <Grid item lg={3}>
+          <EnhancedCard title="To Do List">
+            <ToDo />
+          </EnhancedCard>
+        </Grid>
+
+        <Grid item lg={3}>
+          <EnhancedCard title="Employee Gender">
+            <EmployeeGenderCard />
+          </EnhancedCard>
+        </Grid>
+        <Grid item lg={3}>
           <EnhancedCard title="Employee Turnover">
             <EmployeeTurnoverCard />
           </EnhancedCard>
         </Grid>
 
-        <Grid item>
+        <Grid item lg={3}>
           <EnhancedCard title="Employee Retention">
             <EmployeeRetentionCard />
           </EnhancedCard>
         </Grid>
 
-        <Grid item>
+        <Grid item lg={3}>
           <Link
             to="/empstats"
             style={{

@@ -7,11 +7,19 @@ import HeaderBar from "./navigation/HeaderBar";
 import NavBar from "./navigation/NavBar";
 import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
 import AppPortalPage from "./pages/AppPortalPage/AppPortalPage";
-import EmployeeRequestsPage from "./pages/EmployeeRequestsPage/EmployeeRequestsPage";
+import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsPage";
 import HiringPortalPage from "./pages/Hiring Portal/HiringPortalPage";
 import HomePage from "./pages/HomePage/HomePage";
 import JobApplication from "./pages/JobApplication";
-import EmployeeDirectoryPage from "./pages/EmployeeDirectoryPage/EmployeeDirectoryPage";
+import EmployeeDirectoryPage from "./pages/EmployeePortalPage/EmployeeDirectoryPage";
+import Addnewposting from "./pages/Hiring Portal/Addnewposting";
+import EmployeePortalPage from "./pages/EmployeePortalPage/EmployeePortalPage";
+import EmployeesAnalytics from "./pages/EmployeePortalPage/EmployeeAnalytics";
+import ReqHist from "./pages/Requestshistory/employeerequests";
+import ToDo from "./components/ToDo/ToDo";
+import EmpStatsForm from "./components/empStatsForm";
+import AddReq from "./components/addrequest";
+import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
 
 const drawerWidth = 240;
 
@@ -78,14 +86,22 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/hiringportal" element={<HiringPortalPage />} />
+          <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortalPage />} />
-          <Route path="/announcements" element={<AnnouncementsPage />} />
           <Route
-            path="/employeedirectory"
+            path="/employeedirectorypage"
             element={<EmployeeDirectoryPage />}
           />
-          <Route path="/employeerequests" element={<EmployeeRequestsPage />} />
+          <Route path="/employeerequests" element={<EmployeeRequestsList />} />
           <Route path="/jobapplication" element={<JobApplication />} />
+          <Route path="/employeedash" element={<EmployeePortalPage />} />
+          <Route path="/employeesanalytics" element={<EmployeesAnalytics />} />
+          <Route path="/addreq" element={<AddReq />} />
+          <Route path="/todolist" element={<ToDo />} />
+          <Route path="/empstats" element={<EmpStatsForm />} />
+          <Route path="/reqhist" element={<ReqHist />} />
+          {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
+          <Route path="/AnnouncementsPage" element={<AnnouncementsPage />} />
           <Route
             path="*"
             element={

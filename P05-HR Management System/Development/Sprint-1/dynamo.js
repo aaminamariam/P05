@@ -27,7 +27,7 @@ const getEmployees = async () => {
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
   const params = {
-    TableName: REQUESTS_TABLE,
+    TableName: EMPLOYEE_TABLE,
   };
   const requests = await dynamoClient.scan(params).promise();
   return requests;

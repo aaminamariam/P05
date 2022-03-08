@@ -36,7 +36,7 @@ const EmployeesAnalytics = () => {
   const [hrs, setHrs] = useState("15");
   const [comments, setComments] = useState<any[]>([]);
 
-  const link = "http://52.91.138.50:5000/getstats/" + id;
+  const link = "http://localhost:5001/getstats/" + id;
 
   const getStats = async () => {
     //
