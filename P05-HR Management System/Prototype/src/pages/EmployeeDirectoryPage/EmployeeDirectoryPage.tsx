@@ -99,10 +99,11 @@ export default function EmployeeDirectoryPage() {
   };
   useEffect(() => {
     handleGetEmployees();
-  }, []);
+  }, [open]);
 
   return (
     <div style={{ height: 400, width: "100%" }}>
+      han bhai
       <AddEmployee setOpen={setOpen} open={open} />
       <DataGrid
         rows={list}
