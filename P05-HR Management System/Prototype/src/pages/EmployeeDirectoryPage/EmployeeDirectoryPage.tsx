@@ -103,7 +103,6 @@ export default function EmployeeDirectoryPage() {
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      han bhai
       <AddEmployee setOpen={setOpen} open={open} />
       <DataGrid
         rows={list}

@@ -11,7 +11,7 @@ import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsP
 import HiringPortalPage from "./pages/Hiring Portal/HiringPortalPage";
 import HomePage from "./pages/HomePage/HomePage";
 import JobApplication from "./pages/JobApplication";
-import EmployeeDirectoryPage from "./pages/EmployeePortalPage/EmployeeDirectoryPage";
+import EmployeeDirectoryPage from "./pages/EmployeeDirectoryPage/EmployeeDirectoryPage";
 import Addnewposting from "./pages/Hiring Portal/Addnewposting";
 import EmployeePortalPage from "./pages/EmployeePortalPage/EmployeePortalPage";
 import EmployeesAnalytics from "./pages/EmployeePortalPage/EmployeeAnalytics";
