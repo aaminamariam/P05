@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { makeStyles, Toolbar } from "@material-ui/core";
 
-import HeaderBar from "./navigation/HeaderBar";
+import HeadBar from "./navigation/HeaderBar";
 import NavBar from "./navigation/NavBar";
 import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
 import AppPortalPage from "./pages/AppPortalPage/AppPortalPage";
@@ -16,6 +16,7 @@ import Addnewposting from "./pages/Hiring Portal/Addnewposting";
 import EmployeePortalPage from "./pages/EmployeePortalPage/EmployeePortalPage";
 import EmployeesAnalytics from "./pages/EmployeePortalPage/EmployeeAnalytics";
 import ReqHist from "./pages/Requestshistory/employeerequests";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import ToDo from "./components/ToDo/ToDo";
 import EmpStatsForm from "./components/empStatsForm";
 import AddReq from "./components/addrequest";
@@ -65,17 +66,14 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const [headbar, setheadbar] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   return (
     <div className={classes.root}>
-      <HeaderBar
-        customClass={classes}
-        handleDrawerToggle={handleDrawerToggle}
-      />
+      <HeadBar customClass={classes} handleDrawerToggle={handleDrawerToggle} />
       <NavBar
         customClass={classes}
         handleDrawerToggle={handleDrawerToggle}
@@ -85,6 +83,7 @@ function App() {
         <Toolbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/hiringportal" element={<HiringPortalPage />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortalPage />} />

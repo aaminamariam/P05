@@ -49,7 +49,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
       method: "post",
       url: "http://localhost:5001/addnewemployee",
       data: {
-        employeeID: employeeID,
+        id: employeeID,
         name: name,
         department: department,
         designation: designation,

@@ -2,6 +2,8 @@
 // this file contains all rest apis
 var express = require("express");
 var app = express();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const {
   getEmployees,
@@ -19,6 +21,7 @@ const {
   getAnnouncements,
   addNewEmployee,
 } = require("./dynamo");
+const { login, generateAccessToken, authenticateToken } = require("./login");
 
 const cors = require("cors");
 app.use(
@@ -34,13 +37,50 @@ app.get("/", (req, res) => {
 });
 
 // rest apis
+
+let refreshTokens = [];
+
+// login functionality
+//passwords are hashed and salted
+
+app.post("/login", async (req, res) => {
+  const user = { id: req.body.id };
+  console.log(req.body.id, req.body.password);
+
+  if (req.body.id == null) {
+    return res.status(400).send("Cannot find user");
+  }
+
+  let data = await login(req.body.id);
+
+  try {
+    // Load hash from your password DB.
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      data.Items[0].password
+    );
+    if (validPassword) {
+      res.json("success");
+    } else {
+      res.json("Not Allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
+});
 //post
 app.post("/employee", async (req, res) => {
   const data = req.body;
-  const employee = data.employeeID;
+  const employee = data.id;
   const name = data.name;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
   try {
-    const newEmployee = await addOrUpdateEmployee(employee, name);
+    const newEmployee = await addOrUpdateEmployee(
+      employee,
+      name,
+      hashedPassword
+    );
     res.json(newEmployee);
   } catch (err) {
     console.error(err);
@@ -55,9 +95,11 @@ app.post("/addnewemployee", async (req, res) => {
   const id = data.employeeID;
   const name = data.name;
   const department = data.department;
-  const designation = data. designation;
+  const designation = data.designation;
   const level = data.level;
   const dateJoined = data.dateJoined;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
   const email = data.email;
   const contact = data.contact;
   const address = data.address;
@@ -65,7 +107,20 @@ app.post("/addnewemployee", async (req, res) => {
   const twRating = data.twRating;
 
   try {
-    const newEmployee = await addNewEmployee(id, name, department, designation, level, dateJoined, email, contact, address, remainingLeaves, twRating);
+    const newEmployee = await addNewEmployee(
+      id,
+      name,
+      department,
+      designation,
+      level,
+      dateJoined,
+      email,
+      contact,
+      address,
+      hashedPassword,
+      remainingLeaves,
+      twRating
+    );
     res.json(newEmployee);
   } catch (err) {
     console.error(err);
@@ -98,7 +153,7 @@ app.delete("/ids/:id", async (req, res) => {
 //add request
 app.post("/addreq", async (req, res) => {
   const data = req.body;
-  const postdate = new Date().toISOString().slice(0, 10)
+  const postdate = new Date().toISOString().slice(0, 10);
   console.log(data);
   try {
     const newCharacter = await addrequest(
@@ -193,14 +248,25 @@ app.get("/getstats/:id", async (req, res) => {
 //add announcements
 app.post("/addNewAnnouncement", async (req, res) => {
   const data = req.body;
-  const today = new Date().toISOString().slice(0, 10)
-  const id = today
+  const today = new Date().toISOString().slice(0, 10);
+  const id = today;
   console.log("date recieved by server: ", data);
   try {
-    res.json(await addNewAnnouncement(id, data.postedBy, data.title, data.department, data.data, today));
+    res.json(
+      await addNewAnnouncement(
+        id,
+        data.postedBy,
+        data.title,
+        data.department,
+        data.data,
+        today
+      )
+    );
   } catch (err) {
     console.error(err);
-    res.status(500).json({ err: "Something went wrong while adding announcements in server" });
+    res.status(500).json({
+      err: "Something went wrong while adding announcements in server",
+    });
   }
 });
 
@@ -226,7 +292,7 @@ app.get("/activereq", async (req, res) => {
 
 // start the server in the port 5000!
 app.listen(process.env.PORT || 5001, function () {
-  console.log("Example app listening on port 5000.");
+  console.log("Example app listening on port 5001.");
 });
 //page doesnt exist
 app.use(function (req, res, next) {

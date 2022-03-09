@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -7,13 +7,17 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const drawerWidth = 740;
 const useStyles = makeStyles((theme) => ({
   paper: {
-    background: "#371bb1",
+    background: "#ffffff",
     width: drawerWidth,
-    flexShrink: 0,
+    // flexShrink: 0,
+    Width: "100%",
   },
   loginPage: {
     maxWidth: 160,
@@ -54,17 +58,48 @@ const useStyles = makeStyles((theme) => ({
     left: "64%",
   },
 }));
+const getSessionStorageOrDefault = (key: string, defaultValue: Boolean) => {
+  const stored = sessionStorage.getItem(key);
+  console.log(stored);
+  if (!stored) {
+    return defaultValue;
+  }
+  return JSON.parse(stored);
+};
 export default function LoginPage() {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(
+    getSessionStorageOrDefault("terms", false)
+  );
+  const login = async (username: any, password: any) => {
+    console.log(username, password);
+    await axios({
+      method: "post",
+      url: "http://localhost:5001/login",
+      data: {
+        id: username,
+        password: password,
+      },
+    }).then((response) => {
+      const check = response.data;
+      if (check == "success") {
+        navigate("/");
+      } else {
+        console.log(check);
+        setusername("");
+        setpassword("");
+      }
+    });
+  };
+  useEffect(() => {
+    sessionStorage.setItem("terms", JSON.stringify(termsAccepted));
+  }, [termsAccepted]);
   return (
     <>
-      <Drawer
-        classes={{ paper: classes.paper }}
-        variant="permanent"
-        anchor="left"
-      ></Drawer>
+      <Drawer classes={{ paper: classes.paper }} variant="permanent"></Drawer>
 
       <Box className={classes.box}>
         <Typography variant="h4" className={classes.typo}>
@@ -77,7 +112,7 @@ export default function LoginPage() {
             variant="filled"
             required
             value={username}
-            onChange={(e) => setusername(e.target.value)}
+            onChange={(e: any) => setusername(e.target.value)}
           />
           <TextField
             className={classes.text}
@@ -85,24 +120,23 @@ export default function LoginPage() {
             variant="filled"
             required
             value={password}
-            onChange={(e) => setpassword(e.target.value)}
+            onChange={(e: any) => setpassword(e.target.value)}
           />
         </form>
-        <NavLink to="/hiringportal">
-          <Button
-            style={{
-              backgroundColor: "#371bb1",
-              color: "#FFFFFF",
-              maxWidth: "170px",
-              minWidth: "100px",
-              position: "absolute",
-              top: "71%",
-              left: "125%",
-            }}
-          >
-            Sign In
-          </Button>
-        </NavLink>
+        <Button
+          onClick={(e: any) => login(username, password)}
+          style={{
+            backgroundColor: "#371bb1",
+            color: "#FFFFFF",
+            maxWidth: "170px",
+            minWidth: "100px",
+            position: "absolute",
+            top: "71%",
+            left: "125%",
+          }}
+        >
+          Sign In
+        </Button>
       </Box>
       <img src="loginPage.PNG" alt="" />
     </>

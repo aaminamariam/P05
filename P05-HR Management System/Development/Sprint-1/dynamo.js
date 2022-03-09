@@ -34,33 +34,48 @@ const getEmployeeRequests = async (id) => {
 };
 
 //add new employee
-const addNewEmployee = async (_id, _name, _department, _designation, _level, _dateJoined, _email, _contact, _address, _remainingLeaves, _twRating) =>{
+const addNewEmployee = async (
+  _id,
+  _name,
+  _department,
+  _designation,
+  _level,
+  _dateJoined,
+  _email,
+  _hashedPassword,
+  _contact,
+  _address,
+  _remainingLeaves,
+  _twRating
+) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
-      id: _id, 
-      name: _name, 
-      department: _department, 
-      designation: _designation, 
-      level: _level, 
-      dateJoined: _dateJoined, 
-      email: _email, 
-      contact: _contact, 
-      address: _address, 
-      remainingLeaves: _remainingLeaves, 
+      id: _id,
+      name: _name,
+      department: _department,
+      designation: _designation,
+      level: _level,
+      dateJoined: _dateJoined,
+      email: _email,
+      contact: _contact,
+      password: _hashedPassword,
+      address: _address,
+      remainingLeaves: _remainingLeaves,
       twRating: _twRating,
-    }
-  }
+    },
+  };
   return await dynamoClient.put(params).promise();
-}
+};
 
 // add to database
-const addOrUpdateEmployee = async (employee, name) => {
+const addOrUpdateEmployee = async (employee, name, password) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
-      employeeID: employee,
+      id: employee,
       name: name,
+      password: password,
     },
   };
   return await dynamoClient.put(params).promise();
@@ -319,27 +334,32 @@ const getEmployeeStatsbyID = async (id) => {
 //   }
 // };
 
-const addNewAnnouncement = async (id, postedBy, title, department, data, datePosted) => {
-  
+const addNewAnnouncement = async (
+  id,
+  postedBy,
+  title,
+  department,
+  data,
+  datePosted
+) => {
   const params = {
     TableName: ANNOUNCEMENTS_TABLE,
     Item: {
-      id: id, 
+      id: id,
       title: title,
       postedBy: postedBy,
       department: department,
       data: data,
       datePosted: datePosted,
-    }
-  }
-  console.log("Dynamo recieved: ", params.Item)
-  try{
+    },
+  };
+  console.log("Dynamo recieved: ", params.Item);
+  try {
     newAnnouncement = await dynamoClient.put(params).promise();
+  } catch (error) {
+    console.error(error);
   }
-  catch (error){
-    console.error(error)
-  }
- 
+
   return newAnnouncement;
 };
 
