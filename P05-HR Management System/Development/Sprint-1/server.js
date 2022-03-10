@@ -237,7 +237,6 @@ app.get("/getrequests/:id", async (req, res) => {
 app.get("/getstats/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    //const stats = await getEmployeeStatsbyID(id);
     res.json(await getEmployeeStatsbyID(id));
   } catch (err) {
     console.error(err);

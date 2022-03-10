@@ -62,7 +62,6 @@ const addNewEmployee = async (
       password: _hashedPassword,
       address: _address,
       remainingLeaves: _remainingLeaves,
-      twRating: _twRating,
     },
   };
   return await dynamoClient.put(params).promise();
@@ -273,14 +272,16 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
 const getEmployeeStatsbyID = async (id) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
-    ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
+    ProjectionExpression:
+      "#ids, #Rating, #teamscore, #hoursWorked, #comments, #joindate",
     KeyConditionExpression: "#ids = :id",
     ExpressionAttributeNames: {
-      "#ids": "employeeID",
+      "#ids": "id",
       "#Rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursWorked": "hoursworked",
       "#comments": "comments",
+      "#joindate": "dateJoined",
     },
     ExpressionAttributeValues: {
       ":id": id,
@@ -370,21 +371,6 @@ const getAnnouncements = async () => {
   const announcements = await dynamoClient.scan(params).promise();
   return announcements;
 };
-
-// const getAnnouncements = async () => {
-//   const params = {
-//     TableName: ANNOUNCEMENTS_TABLE,
-//     ProjectionExpression: " #aData ,#name,#title, #date",
-//     ExpressionAttributeNames: {
-//       "#aData": "announcements",
-//       "#title": "title",
-//       "#name": "name",
-//       "#dateposted": "dateposted",
-//     },
-//   };
-//   const getannoun = await dynamoClient.scan(params).promise();
-//   return getannoun;
-// };
 
 module.exports = {
   dynamoClient,
