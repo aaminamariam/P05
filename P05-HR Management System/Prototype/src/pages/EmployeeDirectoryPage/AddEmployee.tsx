@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { createStyles, makeStyles } from "@mui/styles";
-import { Box, Button, Modal, TextField } from "@mui/material";
-
 import axios from "axios";
+import { useState } from "react";
+
+import { PersonAdd } from "@mui/icons-material";
+import { Box, Button, Modal, TextField } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
+
 const useStyles = makeStyles(() =>
   createStyles({
     root: {},
@@ -68,7 +70,9 @@ export default function AddEmployee(props: IAddEmployeeProps) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>ADD EMPLOYEE</Button>
+      <Button onClick={handleOpen} startIcon={<PersonAdd />}>
+        ADD EMPLOYEE
+      </Button>
       <Modal
         open={props.open}
         onClose={handleClose}
