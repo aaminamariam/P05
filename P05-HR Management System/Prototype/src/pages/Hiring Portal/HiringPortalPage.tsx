@@ -73,14 +73,14 @@ const Hiringportal = () => {
 
   const fetchJobs = async () => {
     const result = await axios.get(
-      "http://localhost:5001/jobs/jobpostings/"
+      "http://localhost:8000/hiringportal"
     );
-    // console.log(result.data)
-    setHiringPortalListItems(result.data);
-    // console.log(HiringPortalListItems)
+    //console.log(result.data)
+    setHiringPortalListItems(result.data.Items);
+    //console.log(HiringPortalListItems)
   };
   const handleDelete = async (id: string) => {
-    const link = "http://localhost:5001/jobs/jobpostings/";
+    const link = "http://localhost:8000/hiringportal";
     const clink = link.concat(id);
     const del_link = clink.concat("/");
     const result = await axios.delete(del_link);
@@ -128,7 +128,7 @@ const Hiringportal = () => {
               <Card className={classes.card}>
                 <CardContent>
                   <ListItemText className={classes.header}>
-                    {item.job_title}
+                    {item.title}
                   </ListItemText>
                   <ListItemText>{item.description}</ListItemText>
                   <ListItemText>{item.location}</ListItemText>

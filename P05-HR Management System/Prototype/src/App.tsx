@@ -20,6 +20,7 @@ import ToDo from "./components/ToDo/ToDo";
 import EmpStatsForm from "./components/empStatsForm";
 import AddReq from "./components/addrequest";
 import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 const drawerWidth = 240;
 
@@ -72,6 +73,7 @@ function App() {
 
   return (
     <div className={classes.root}>
+
       <HeaderBar
         customClass={classes}
         handleDrawerToggle={handleDrawerToggle}
@@ -81,10 +83,12 @@ function App() {
         handleDrawerToggle={handleDrawerToggle}
         mobileOpen={mobileOpen}
       />
+
       <main className={classes.content}>
         <Toolbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/hiringportal" element={<HiringPortalPage />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortalPage />} />
@@ -102,14 +106,14 @@ function App() {
           <Route path="/reqhist" element={<ReqHist />} />
           {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
           <Route path="/AnnouncementsPage" element={<AnnouncementsPage />} />
-          <Route
+          {/* <Route
             path="*"
             element={
               <main style={{ padding: "1rem" }}>
                 <p>There's nothing here!</p>
               </main>
             }
-          />
+          /> */}
         </Routes>
       </main>
     </div>

@@ -100,7 +100,7 @@ export default function AnnouncementsPage() {
         }}
         checkboxSelection
         filterModel={filterModel}
-        onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
+        onFilterModelChange={(newFilterModel:any) => setFilterModel(newFilterModel)}
       />
     </div>
   );

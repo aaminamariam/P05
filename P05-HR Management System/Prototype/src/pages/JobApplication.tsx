@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import Paper from '@mui/material/Paper';
 import Jobform from "../components/Jobform";
 
 const drawerWidth = 240;
@@ -53,7 +54,8 @@ const JobApplication = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Box>
+      <Box >
+      <Paper variant="outlined" />
         <CssBaseline />
         <AppBar className={classes.appbar}>
           <Toolbar>
@@ -68,6 +70,8 @@ const JobApplication = () => {
             </IconButton>
           </Toolbar>
         </AppBar>
+        <Paper variant="outlined" />
+      <Paper variant="outlined" square />
       </Box>
       <CssBaseline />
       <Jobform />

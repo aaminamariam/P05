@@ -1,13 +1,21 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-// import { useHistory } from 'react-router-dom';
-import Popoverfunc from "../pages/EmployeeRequestsPage/Popup";
-import Popover from "@mui/material/Popover";
+
 import Typography from "@mui/material/Typography";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
+ 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,28 +61,44 @@ const Form = () => {
   const [departmentname, setDepartmentname] = useState("");
   const [location, setLocation] = useState("");
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [open, setOpen] = useState(false);
 
-  const addNewJob = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-    let formField = new FormData();
-    formField.append("job_title", jobtitle);
-    formField.append("jd", jobdescription);
-    formField.append("dept_name", departmentname);
-    formField.append("location", location);
-    console.log(formField);
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const addNewJob = async () => {
+
+    const data = {
+    title:jobtitle,
+    description:jobdescription,
+    dept: departmentname,
+    location: location,
+    }
+    console.log(data, "ff");
     await axios({
       method: "post",
-      url: "http://localhost:5001/jobs/jobpostings/",
-      data: formField,
-    }).then((response: { data: any }) => {});
+      url: "http://localhost:8000/addnewposting",
+      data: {
+        title:jobtitle,
+        description:jobdescription,
+        dept: departmentname,
+        location: location,
+      }
+    }).then((response: { data: any }) => {    setOpen(true);});
+
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+
 
   return (
     <Box className={classes.square}>
@@ -120,27 +144,20 @@ const Form = () => {
           </Button>
         </NavLink> */}
         <div>
-          <NavLink to="/hiringportal">
+
             <Button
-              aria-describedby={id}
+
               variant="contained"
               onClick={addNewJob}
             >
               Upload
             </Button>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <Typography sx={{ p: 2 }}>Job has been posted</Typography>
-            </Popover>
-          </NavLink>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Success the job has been posted!
+        </Alert>
+      </Snackbar>
+
         </div>
       </form>
     </Box>
@@ -148,3 +165,4 @@ const Form = () => {
 };
 
 export default Form;
+

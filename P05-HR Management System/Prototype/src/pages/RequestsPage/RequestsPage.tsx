@@ -65,24 +65,7 @@ export default function EmployeeDirectory() {
     ],
   });
 
-  // const is_empty = (option: string, description: string, id: string) => {
-  //   if (title == "" || aData == "" || id =="") {
-  //     if (title == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (aData == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (id = "")
-  //     {
-  //         alert("id is empty")
-  //     }
-  //     return 1;
-  //   }
-  //   return 0;
-  // };
+
 
   const handleAddEmployee = async () => {
     // setAnchorEl(event.currentTarget);
@@ -194,7 +177,7 @@ export default function EmployeeDirectory() {
         }}
         checkboxSelection
         filterModel={filterModel}
-        onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
+        onFilterModelChange={(newFilterModel:any) => setFilterModel(newFilterModel)}
       />
     </div>
   );
