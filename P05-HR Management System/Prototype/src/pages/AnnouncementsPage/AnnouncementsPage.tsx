@@ -146,7 +146,7 @@ export default function AnnouncementsPage() {
         }}
         checkboxSelection
         filterModel={filterModel}
-        onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
+        onFilterModelChange={(newFilterModel:any) => setFilterModel(newFilterModel)}
       />
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

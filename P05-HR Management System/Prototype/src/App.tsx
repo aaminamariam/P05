@@ -73,57 +73,50 @@ function App() {
   };
 
   return (
-    <>
-      <div className={classes.root}>
-        {/* <HeaderBar
-          customClass={classes}
-          handleDrawerToggle={handleDrawerToggle}
-        /> */}
-        {/* <NavBar
-          customClass={classes}
-          handleDrawerToggle={handleDrawerToggle}
-          mobileOpen={mobileOpen}
-        /> */}
-        <main className={classes.content}>
-          <Toolbar />
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/hiringportal" element={<HiringPortalPage />} />
-            <Route path="/addnewposting" element={<Addnewposting />} />
-            <Route path="/apportal" element={<AppPortalPage />} />
-            <Route
-              path="/employee-directory"
-              element={<EmployeeDirectoryPage />}
-            />
-            <Route
-              path="/employeerequests"
-              element={<EmployeeRequestsPage />}
-            />
-            <Route path="/jobapplication" element={<JobApplication />} />
-            <Route path="/employeedash" element={<EmployeePortalPage />} />
-            <Route
-              path="/employeesanalytics"
-              element={<EmployeesAnalytics />}
-            />
-            <Route path="/addreq" element={<AddReq />} />
-            <Route path="/todolist" element={<ToDo />} />
-            <Route path="/empstats" element={<EmpStatsForm />} />
-            <Route path="/reqhist" element={<ReqHist />} />
-            {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
-            <Route path="/AnnouncementsPage" element={<AnnouncementsPage />} />
-            <Route
-              path="*"
-              element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
-              }
-            />
-          </Routes>
-        </main>
-      </div>
-    </>
+    <div className={classes.root}>
+      <HeaderBar
+        customClass={classes}
+        handleDrawerToggle={handleDrawerToggle}
+      />
+      <NavBar
+        customClass={classes}
+        handleDrawerToggle={handleDrawerToggle}
+        mobileOpen={mobileOpen}
+      />
+
+      <main className={classes.content}>
+        <Toolbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/hiringportal" element={<HiringPortalPage />} />
+          <Route path="/addnewposting" element={<Addnewposting />} />
+          <Route path="/apportal" element={<AppPortalPage />} />
+          <Route
+            path="/employeedirectorypage"
+            element={<EmployeeDirectoryPage />}
+          />
+          <Route path="/employeerequests" element={<EmployeeRequestsPage />} />
+          <Route path="/jobapplication" element={<JobApplication />} />
+          <Route path="/employeedash" element={<EmployeePortalPage />} />
+          <Route path="/employeesanalytics" element={<EmployeesAnalytics />} />
+          <Route path="/addreq" element={<AddReq />} />
+          <Route path="/todolist" element={<ToDo />} />
+          <Route path="/empstats" element={<EmpStatsForm />} />
+          <Route path="/reqhist" element={<ReqHist />} />
+          {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
+          <Route path="/AnnouncementsPage" element={<AnnouncementsPage />} />
+          {/* <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          /> */}
+        </Routes>
+      </main>
+    </div>
   );
 }
 

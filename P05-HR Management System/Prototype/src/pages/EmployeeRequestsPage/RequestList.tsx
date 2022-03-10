@@ -51,7 +51,7 @@ const RequestList = (props: IRequestListProps) => {
     let x: any = [];
     try {
       const response = await axios.get("http://localhost:5001/activereq");
-      // console.log(response.data.Items[0].comments);
+      console.log(response.data.Items[0].comments);
       const li = response.data.Items;
       x = li;
       // console.log(li[0]);
