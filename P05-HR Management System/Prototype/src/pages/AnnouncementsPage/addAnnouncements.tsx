@@ -5,6 +5,7 @@ import { createStyles, makeStyles, TextField } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import { AddAlert } from "@mui/icons-material";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -63,7 +64,9 @@ export default function AddAnnouncements(props: {
 
   return (
     <div>
-      <Button onClick={handleOpen}>ADD ANNOUNCEMENTS</Button>
+      <Button onClick={handleOpen} startIcon={<AddAlert />}>
+        ADD ANNOUNCEMENT
+      </Button>
       <Modal
         open={props.open}
         onClose={handleClose}

@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
+
 import {
   DataGrid,
   GridColDef,
@@ -24,6 +25,7 @@ export default function EmployeeDirectoryPage() {
   const [loader, setloader] = useState(true);
   const [firstRender, setfirstRender] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
       {
@@ -88,7 +90,7 @@ export default function EmployeeDirectoryPage() {
       const li = response.data.Items;
       x = li;
       setList(x);
-      console.log("REQ IETMSSSSSSSS", li);
+      console.log("Employee directory REQ IETMSSSSSSSS", li);
       setfirstRender(false);
       setloader(false);
     } catch (error) {
@@ -148,7 +150,6 @@ export default function EmployeeDirectoryPage() {
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      {/* <AddEmployee setOpen={setModalOpen} open={modalOpen} /> */}
       <DataGrid
         components={{
           LoadingOverlay: LinearProgress,
