@@ -17,19 +17,10 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 
-import AddAnnouncements from "./addAnnouncements";
+// import AddEmployee from "./AddEmployee";
 
-const columns: GridColDef[] = [
-  // { field: "id", headerName: "Employee ID", width: 130 },
-  { field: "postedBy", headerName: "Full Name", width: 130 },
-  { field: "department", headerName: "Department", width: 130 },
-  { field: "data", headerName: "Announcement", width: 130 },
-  { field: "title", headerName: "Date Joined", width: 120 },
-];
-
-export default function AnnouncementsPage() {
+export default function EmployeeRequestsPage() {
   const [list, setList] = useState<any[]>([]);
-
   const [SnackbarOpen, setSnackbarOpen] = useState(false);
   const [loader, setloader] = useState(true);
   const [firstRender, setfirstRender] = useState(true);
@@ -44,6 +35,28 @@ export default function AnnouncementsPage() {
       },
     ],
   });
+
+  const columns: GridColDef[] = [
+    { field: "requesterName", headerName: "Request by", width: 130 },
+    { field: "type", headerName: "Type", width: 150 },
+    { field: "title", headerName: "Title", width: 250 },
+    { field: "data", headerName: "Request", width: 300 },
+    // {
+    //   field: "age",
+    //   headerName: "Age",
+    //   type: "number",
+    //   width: 90,
+    // },
+    // {
+    //   field: "fullName",
+    //   headerName: "Full name",
+    //   description: "This column has a value getter and is not sortable.",
+    //   sortable: true,
+    //   width: 160,
+    //   valueGetter: (params: GridValueGetterParams) =>
+    //     `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+    // },
+  ];
 
   // const is_empty = (option: string, description: string, id: string) => {
   //   if (title == "" || aData == "" || id =="") {
@@ -64,17 +77,17 @@ export default function AnnouncementsPage() {
   //   return 0;
   // };
 
-  const handleGetAnnouncements = async () => {
+  const handleGetRequests = async () => {
     let x: any = [];
     try {
       const response = await axios.get(
-        "http://localhost:5001/getAnnouncements"
+        "http://localhost:5001/getEmployeeRequests"
       );
 
       const li = response.data.Items;
       x = li;
       setList(x);
-      console.log("ANNOUNCE ITEMS", li);
+      console.log("Employee REQ  IETMSSSSSSSS", li);
       setfirstRender(false);
       setloader(false);
     } catch (error) {
@@ -82,11 +95,12 @@ export default function AnnouncementsPage() {
     }
   };
   useEffect(() => {
-    handleGetAnnouncements().then(() => {
+    handleGetRequests().then(() => {
       if (firstRender === false && modalOpen === false) {
         setSnackbarOpen(true);
       }
     });
+    // handleClick();
   }, [modalOpen, firstRender]);
 
   const handleClose = (
@@ -125,7 +139,7 @@ export default function AnnouncementsPage() {
           <GridToolbarExport style={{ margin: 10 }} />
         </div>
         <div>
-          <AddAnnouncements setOpen={setModalOpen} open={modalOpen} />
+          {/* <AddEmployee setOpen={setModalOpen} open={modalOpen} /> */}
         </div>
       </GridToolbarContainer>
     );
@@ -133,17 +147,19 @@ export default function AnnouncementsPage() {
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      {/* <Button onClick={handleAddAnnouncement}>ADD ANNOUNCEMENT</Button> */}
       <DataGrid
-        loading={loader}
-        rows={list}
-        columns={columns}
-        autoHeight
-        rowsPerPageOptions={[10]}
         components={{
           LoadingOverlay: LinearProgress,
           Toolbar: CustomGridToolbar,
         }}
+        loading={loader}
+        // loading
+        rows={list}
+        columns={columns}
+        autoHeight
+        // autoPageSize
+        // pageSize={5}
+        rowsPerPageOptions={[10]}
         checkboxSelection
         filterModel={filterModel}
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
@@ -157,7 +173,7 @@ export default function AnnouncementsPage() {
         action={action}
       >
         <Alert onClose={handleClose} severity="success">
-          New Announcement added!!
+          New Employee added!!
         </Alert>
       </Snackbar>
     </div>
