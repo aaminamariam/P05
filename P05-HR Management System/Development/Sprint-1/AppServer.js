@@ -5,6 +5,7 @@ var app = express();
 const {
  addJob,
  getjobs,
+ deleteJob,
  addJobApplication
 } = require("./AppDynamo");
 
@@ -53,6 +54,17 @@ app.get("/hiringportal",async (req,res) => {
   res.status(500).json({ err: "Something went wrong in getJobs" });
 } 
 })
+
+//delete job posting
+app.delete("/hiringportal/:date/", async (req, res) => {
+  const { date_posted } = req.params;
+  try {
+    res.json(await deleteJob(date_posted));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
 
 //apply for job
 app.post("/jobapplication",async (req,res) => {
