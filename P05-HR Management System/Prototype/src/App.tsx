@@ -7,7 +7,9 @@ import HeaderBar from "./navigation/HeaderBar";
 import NavBar from "./navigation/NavBar";
 import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
 import AppPortalPage from "./pages/AppPortalPage/AppPortalPage";
-import EmployeeRequestsList from "./pages/EmployeeRequestsPage/EmployeeRequestsPage";
+
+import EmployeeRequestsPage from "./pages/EmployeeRequestsPage/EmployeeRequestPageNew";
+
 import HiringPortalPage from "./pages/Hiring Portal/HiringPortalPage";
 import HomePage from "./pages/HomePage/HomePage";
 import JobApplication from "./pages/JobApplication";
@@ -92,7 +94,7 @@ function App() {
             path="/employeedirectorypage"
             element={<EmployeeDirectoryPage />}
           />
-          <Route path="/employeerequests" element={<EmployeeRequestsList />} />
+          <Route path="/employeerequests" element={<EmployeeRequestsPage />} />
           <Route path="/jobapplication" element={<JobApplication />} />
           <Route path="/employeedash" element={<EmployeePortalPage />} />
           <Route path="/employeesanalytics" element={<EmployeesAnalytics />} />
