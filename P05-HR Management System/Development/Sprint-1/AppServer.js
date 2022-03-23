@@ -5,6 +5,10 @@ var app = express();
 const {
  addJob,
  getjobs,
+<<<<<<< HEAD
+=======
+ deleteJob,
+>>>>>>> f7d3c16182b866d755befd36281f5fff8ed437a6
  addJobApplication
 } = require("./AppDynamo");
 
@@ -54,6 +58,20 @@ app.get("/hiringportal",async (req,res) => {
 } 
 })
 
+<<<<<<< HEAD
+=======
+//delete job posting
+app.delete("/hiringportal/:date/", async (req, res) => {
+  const { date_posted } = req.params;
+  try {
+    res.json(await deleteJob(date_posted));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+>>>>>>> f7d3c16182b866d755befd36281f5fff8ed437a6
 //apply for job
 app.post("/jobapplication",async (req,res) => {
     const data = req.body
@@ -76,4 +94,8 @@ app.listen(process.env.PORT || 8000, function () {
     res.status(404).send("Sorry, that route doesn't exist. Have a nice day :)");
     res.header("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Origin", "*");
+<<<<<<< HEAD
   });
+=======
+  });
+>>>>>>> f7d3c16182b866d755befd36281f5fff8ed437a6

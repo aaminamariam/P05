@@ -74,6 +74,7 @@ function App() {
 
   return (
     <div className={classes.root}>
+
       <HeaderBar
         customClass={classes}
         handleDrawerToggle={handleDrawerToggle}

@@ -38,6 +38,18 @@ const getjobs= async () => {
   return jobs;
 };
 
+//delete job
+const deleteJob = async (date_posted) => {
+  const params = {
+    TableName: JOBS_TABLE,
+
+    Key: { date_posted },
+  };
+  await dynamoClient.delete(params).promise();
+  console.log("deleted");
+  return;
+};
+
 //apply for job
 const addJobApplication = async (name,number,email, url,location) => {
     const params = {
@@ -56,6 +68,9 @@ const addJobApplication = async (name,number,email, url,location) => {
   module.exports =  { 
       addJob,
       getjobs,
+      deleteJob,
       addJobApplication 
     };
   
+    
+//deleteJob("3/10/2022, 10:53:47 PM")
