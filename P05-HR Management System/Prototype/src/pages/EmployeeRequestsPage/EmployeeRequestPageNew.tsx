@@ -101,7 +101,7 @@ export default function EmployeeRequestsPage() {
   const handleApproveRequest = async () => {
     await axios({
       method: "post",
-      url: "http://localhost:5001/approveRequest",
+      url: "http://localhost:5001/approveRequests",
       data: {
         ids: selectedIndex,
       },
