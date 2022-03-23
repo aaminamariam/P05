@@ -73,15 +73,18 @@ const Hiringportal = () => {
 
   const fetchJobs = async () => {
     const result = await axios.get(
-      "http://localhost:5001/jobs/jobpostings/"
+      "http://localhost:8000/hiringportal"
     );
-    // console.log(result.data)
-    setHiringPortalListItems(result.data);
-    // console.log(HiringPortalListItems)
+    //console.log(result.data)
+    setHiringPortalListItems(result.data.Items);
+    //console.log(HiringPortalListItems)
   };
-  const handleDelete = async (id: string) => {
-    const link = "http://localhost:5001/jobs/jobpostings/";
-    const clink = link.concat(id);
+  const handleDelete = async (date: string) => {
+    console.log(date)
+    // const d = date.replace('%',' ')
+    // console.log(d,"d")
+    const link = "http://localhost:8000/hiringportal/";
+    const clink = link.concat(date);
     const del_link = clink.concat("/");
     const result = await axios.delete(del_link);
     fetchJobs();
@@ -128,20 +131,20 @@ const Hiringportal = () => {
               <Card className={classes.card}>
                 <CardContent>
                   <ListItemText className={classes.header}>
-                    {item.job_title}
+                    TITLE: {item.title}
                   </ListItemText>
-                  <ListItemText>{item.description}</ListItemText>
-                  <ListItemText>{item.location}</ListItemText>
-                  <Button
+                  <ListItemText>DESCRIPTION: {item.description}</ListItemText>
+                  <ListItemText>LOCATION: {item.location}</ListItemText>
+                  {/* <Button
                     component="div"
                     onClick={() => {
-                      handleDelete(item.id);
+                      handleDelete(item.date_posted);
                     }}
                     aria-label="delete"
                     className={classes.del}
                   >
                     <DeleteIcon />
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             </ListItem>

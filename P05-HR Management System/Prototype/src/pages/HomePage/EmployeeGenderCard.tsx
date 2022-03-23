@@ -3,7 +3,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ManIcon from "@mui/icons-material/Man";
-import WomanIcon from "@mui/icons-material/Woman";
+//import WomanIcon from "@mui/icons-material/Woman";
 
 const useStyles = makeStyles({
   root: {
@@ -93,13 +93,13 @@ const EmployeeGenderStatCard: React.FC<IEmployeeGenderStatCardProps> = ({
           Women
         </Typography>
         {/* {iconWoman} */}
-        <WomanIcon
+        {/* <WomanIcon
           sx={{
             maxHeight: 245,
             fontSize: 50,
             color: "pink",
           }}
-        />
+        /> */}
         <Typography variant="subtitle1" className={classes.number}>
           {female}
         </Typography>

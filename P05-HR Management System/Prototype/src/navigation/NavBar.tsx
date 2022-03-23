@@ -66,7 +66,7 @@ const NavBar = (props: any) => {
       <ListItem button component={Link} to="/employeerequests">
         Requests
       </ListItem>
-      <ListItem button component={Link} to="/employeedirectory">
+      <ListItem button component={Link} to="/employeedirectorypage">
         Employee Directory
       </ListItem>
       <ListItem button component={Link} to="/hiringportal">

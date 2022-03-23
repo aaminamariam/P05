@@ -11,7 +11,7 @@ AWS.config.update({
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
 // const TABLE_NAME = "employee_table";
-const EMPLOYEE_TABLE = "employee_table";
+const EMPLOYEE_TABLE = "employee_directory";
 const REQUESTS_TABLE = "requests_table";
 const ANNOUNCEMENTS_TABLE = "announcements_table";
 

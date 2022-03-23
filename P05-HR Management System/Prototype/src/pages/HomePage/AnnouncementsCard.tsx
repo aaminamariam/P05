@@ -12,11 +12,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 // import announcementListItems from "./announcementListItems";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AddAnnouncements from "../AnnouncementsPage/addAnnouncements";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -51,6 +52,7 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
   //   },
   // ]);
   const [list, setList] = useState<any[]>([]);
+  const [open, setOpen] = useState(false);
 
   const handleGetAnnouncements = async () => {
     let x: any = [];
@@ -73,18 +75,16 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
     <div className={classes.root}>
       {/* ANNOUCEEMNT */}
       <CardActions>
-        <NavLink to="/addAnnouncements">
-          <Button color="primary" variant="outlined" size="medium">
-            <Typography>Create Announcement</Typography>
-          </Button>
-        </NavLink>
-        <Button size="small">See History</Button>
+        <AddAnnouncements open={open} setOpen={setOpen} />
+        <Link to="/AnnouncementsPage">
+          <Button size="small">See History</Button>
+        </Link>
       </CardActions>
       <CardActions>
         <List
           sx={{
             width: "100%",
-            maxWidth: 360,
+            // maxWidth: 360,
             bgcolor: "background.paper",
             position: "relative",
             overflow: "auto",

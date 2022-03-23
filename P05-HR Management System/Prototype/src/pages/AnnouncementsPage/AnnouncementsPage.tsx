@@ -16,6 +16,8 @@ const columns: GridColDef[] = [
   { field: "department", headerName: "Department", width: 130 },
   { field: "data", headerName: "Announcement", width: 130 },
   { field: "title", headerName: "Date Joined", width: 120 },
+  // { field: "button", headerName: "Date Joined", width: 120 },
+
   // {
   //   field: "age",
   //   headerName: "Age",
@@ -98,7 +100,7 @@ export default function AnnouncementsPage() {
         }}
         checkboxSelection
         filterModel={filterModel}
-        onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
+        onFilterModelChange={(newFilterModel:any) => setFilterModel(newFilterModel)}
       />
     </div>
   );

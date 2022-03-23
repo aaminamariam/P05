@@ -13,10 +13,20 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Drawer, makeStyles } from "@material-ui/core";
 
 const theme = createTheme();
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    background: "#ffffff",
+    width: "100%",
+    flexShrink: 0,
+  }
+}));
+
 
 export default function LoginPage() {
+  const classes = useStyles();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -27,6 +37,12 @@ export default function LoginPage() {
     });
   };
   return (
+    <>
+            <Drawer
+        classes={{ paper: classes.paper }}
+        variant="permanent"
+        anchor="left"
+      >
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
@@ -99,17 +115,21 @@ export default function LoginPage() {
               >
                 Sign In
               </Button>
-              <Grid container>
+              {/* <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
-              </Grid>
+              </Grid> */}
+
             </Box>
           </Box>
         </Grid>
       </Grid>
+    
     </ThemeProvider>
+    </Drawer>
+    </>
   );
 }
