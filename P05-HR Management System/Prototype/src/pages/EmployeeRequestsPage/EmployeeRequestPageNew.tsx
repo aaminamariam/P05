@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
 
@@ -10,6 +10,7 @@ import {
   DataGrid,
   GridColDef,
   GridFilterModel,
+  GridSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -26,6 +27,8 @@ export default function EmployeeRequestsPage() {
   const [firstRender, setfirstRender] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [selectedIndex, setSelectedIndex] = useState<any[]>([]);
+
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
       {
@@ -41,6 +44,7 @@ export default function EmployeeRequestsPage() {
     { field: "type", headerName: "Type", width: 150 },
     { field: "title", headerName: "Title", width: 250 },
     { field: "data", headerName: "Request", width: 300 },
+    { field: "status", headerName: "Status", width: 300 },
     // {
     //   field: "age",
     //   headerName: "Age",
@@ -94,6 +98,27 @@ export default function EmployeeRequestsPage() {
       console.error(error);
     }
   };
+
+  const handleApproveRequest = async () => {
+    await axios({
+      method: "post",
+      url: "http://localhost:5001/approveRequests",
+      data: {
+        ids: selectedIndex,
+      },
+    });
+  };
+
+  const handleDenyRequest = async () => {
+    await axios({
+      method: "post",
+      url: "http://localhost:5001/denyRequest",
+      data: {
+        ids: selectedIndex,
+      },
+    });
+  };
+
   useEffect(() => {
     handleGetRequests().then(() => {
       if (firstRender === false && modalOpen === false) {
@@ -102,6 +127,10 @@ export default function EmployeeRequestsPage() {
     });
     // handleClick();
   }, [modalOpen, firstRender]);
+
+  useEffect(() => {
+    console.log("SELECTED INDEX:", selectedIndex);
+  }, [selectedIndex]);
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -159,8 +188,12 @@ export default function EmployeeRequestsPage() {
         autoHeight
         // autoPageSize
         // pageSize={5}
+
         rowsPerPageOptions={[10]}
         checkboxSelection
+        onSelectionModelChange={(ids) => {
+          setSelectedIndex([...selectedIndex, ids]);
+        }}
         filterModel={filterModel}
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
       />
@@ -173,9 +206,13 @@ export default function EmployeeRequestsPage() {
         action={action}
       >
         <Alert onClose={handleClose} severity="success">
-          New Employee added!!
+          Requests Updated
         </Alert>
       </Snackbar>
+
+      <Button onClick={handleApproveRequest}>Approve Selected Requests</Button>
+
+      <Button onClick={handleDenyRequest}>Deny Selected Requests</Button>
     </div>
   );
 }

@@ -27,11 +27,68 @@ const getEmployees = async () => {
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
   const params = {
-    TableName: EMPLOYEE_TABLE,
+    TableName: REQUESTS_TABLE,
   };
   const requests = await dynamoClient.scan(params).promise();
   return requests;
 };
+
+
+//add request to database
+const addrequest = async (option, des, id, date) => {
+  const params = {
+    TableName: REQUESTS_TABLE,
+    Key: { employeeID: id },
+    UpdateExpression:
+      "SET #option = :option , #description = :description, #status = :status",
+    ExpressionAttributeNames: {
+      "#option": "option",
+      "#description": "description",
+      "#stat": "status",
+    },
+    ExpressionAttributeValues: {
+      ":option": option,
+      ":description": des,
+      ":status": "new",
+    },
+  };
+  return await dynamoClient.update(params).promise();
+};
+
+//add request to database
+const approveRequests = async (ids) => {
+  const params = {
+    TableName: REQUESTS_TABLE,
+    Key: { id: id },
+    UpdateExpression:
+      "SET #status = :status",
+    ExpressionAttributeNames: {
+      "#status": "status",
+    },
+    ExpressionAttributeValues: {
+      ":status": "approved",
+    },
+  };
+  return await dynamoClient.update(params).promise();
+};
+
+//add request to database
+const denyRequests = async (ids) => {
+  const params = {
+    TableName: REQUESTS_TABLE,
+    Key: { id: id },
+    UpdateExpression:
+      "SET #status = :status",
+    ExpressionAttributeNames: {
+      "#status": "status",
+    },
+    ExpressionAttributeValues: {
+      ":status": "denied",
+    },
+  };
+  return await dynamoClient.update(params).promise();
+};
+
 
 //add new employee
 const addNewEmployee = async (_id, _name, _department, _designation, _level, _dateJoined, _email, _contact, _address, _remainingLeaves, _twRating) =>{
@@ -66,26 +123,6 @@ const addOrUpdateEmployee = async (employee, name) => {
   return await dynamoClient.put(params).promise();
 };
 
-//add request to database
-const addrequest = async (option, des, id, date) => {
-  const params = {
-    TableName: EMPLOYEE_TABLE,
-    Key: { employeeID: id },
-    UpdateExpression:
-      "SET #option = :option , #description = :description, #stat = :status",
-    ExpressionAttributeNames: {
-      "#option": "option",
-      "#description": "description",
-      "#stat": "status",
-    },
-    ExpressionAttributeValues: {
-      ":option": option,
-      ":description": des,
-      ":status": "active",
-    },
-  };
-  return await dynamoClient.update(params).promise();
-};
 // fetch employee requests by status active or inactive
 const getEmployeeReqbystatus = async () => {
   const params = {
@@ -133,6 +170,7 @@ const getEmployeeReqbyID = async (id) => {
   console.log(employees);
   return employees;
 };
+
 //delete employee from the database
 const deleteEmployee = async (employeeID) => {
   const params = {
@@ -143,67 +181,6 @@ const deleteEmployee = async (employeeID) => {
   await dynamoClient.delete(params).promise();
   console.log("deleted");
   return;
-};
-
-// approval of request
-const approvedenyRequests = async (
-  employeeID,
-  approval,
-  description,
-  option
-) => {
-  const params = {
-    TableName: EMPLOYEE_TABLE,
-    Key: { employeeID: employeeID },
-    UpdateExpression:
-      "SET #apv = :approvals, #status = :stat, #popt = :poption, #papprove = :pApp, #pdes = :pd",
-    //#count = :counter",
-    ExpressionAttributeNames: {
-      "#apv": "approval",
-      "#status": "status",
-      "#popt": "previous_options",
-      "#papprove": "previous_approve",
-      "#pdes": "previous_description",
-    },
-    ExpressionAttributeValues: {
-      ":approvals": [approval],
-      ":stat": "inactive",
-      ":poption": [option],
-      ":pApp": [approval],
-      ":pd": [description],
-    },
-  };
-  const params2 = {
-    TableName: EMPLOYEE_TABLE,
-    Key: { employeeID: employeeID },
-    UpdateExpression:
-      "SET #com = list_append(#com,:vals), #popt = list_append(#popt,:poption), #papprove = list_append(#papprove,:pApp),#pdes = list_append(#pdes,:pd)",
-    ExpressionAttributeNames: {
-      "#com": "approval",
-      // "#status": "status",
-      "#popt": "previous_options",
-      "#papprove": "previous_approve",
-      "#pdes": "previous_description",
-    },
-    ExpressionAttributeValues: {
-      ":vals": [approval],
-      // ":stat": "inactive",
-      ":poption": [option],
-      ":pApp": [approval],
-      ":pd": [description],
-    },
-  };
-
-  try {
-    c1 = await dynamoClient.update(params2).promise();
-  } catch (err) {
-    try {
-      console.log(err);
-      c2 = await dynamoClient.update(params).promise();
-    } catch (err2) {
-      console.log(err2);
-    }
-  }
 };
 
 //add employee statics
@@ -373,10 +350,13 @@ module.exports = {
   addOrUpdateEmployee,
   deleteEmployee,
   addrequest,
+  approveRequests,
+  denyRequests,
   getEmployeeRequests,
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
-  approvedenyRequests,
+  
+  
   addstats,
   getEmployeeStatsbyID,
   // addAnnouncements,

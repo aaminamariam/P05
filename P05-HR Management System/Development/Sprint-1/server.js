@@ -115,12 +115,31 @@ app.post("/addreq", async (req, res) => {
 });
 
 // approve requests for HR
-app.post("/approverequests", async (req, res) => {
+app.post("/approveRequests", async (req, res) => {
   const data = req.body;
   console.log(data);
   try {
     res.json(
-      await approvedenyRequests(
+      await approveRequests(
+        data.employeeID,
+        data.approval,
+        data.description,
+        data.option
+      )
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+// deny requests for HR
+app.post("/denyRequests", async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  try {
+    res.json(
+      await denyRequests(
         data.employeeID,
         data.approval,
         data.description,
