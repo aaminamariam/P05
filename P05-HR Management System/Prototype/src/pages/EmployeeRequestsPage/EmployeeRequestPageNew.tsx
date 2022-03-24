@@ -113,7 +113,7 @@ export default function EmployeeRequestsPage() {
   const handleDenyRequest = async () => {
     await axios({
       method: "post",
-      url: "http://localhost:5001/denyRequest",
+      url: "http://localhost:5001/denyRequests",
       data: {
         ids: selectedIndex,
       },
@@ -193,7 +193,7 @@ export default function EmployeeRequestsPage() {
         rowsPerPageOptions={[10]}
         checkboxSelection
         onSelectionModelChange={(ids) => {
-          setSelectedIndex([...selectedIndex, ids]);
+          setSelectedIndex(ids);
         }}
         filterModel={filterModel}
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
