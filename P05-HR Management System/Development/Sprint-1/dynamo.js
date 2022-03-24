@@ -1,4 +1,6 @@
 const AWS = require("aws-sdk");
+const bcrypt = require('bcryptjs');
+
 
 require("dotenv").config();
 
@@ -90,7 +92,7 @@ const denyRequests = async (ids) => {
 
 
 //add new employee
-const addNewEmployee = async (_id, _name, _department, _designation, _level, _dateJoined, _email, _contact, _address, _remainingLeaves, _twRating) =>{
+const addNewEmployee = async (_id, _name, _department, _designation, _level, _dateJoined, _email, _contact, _address, _remainingLeaves, _password) =>{
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
@@ -104,7 +106,7 @@ const addNewEmployee = async (_id, _name, _department, _designation, _level, _da
       contact: _contact, 
       address: _address, 
       remainingLeaves: _remainingLeaves, 
-      twRating: _twRating,
+      password: _password,
     }
   }
   return await dynamoClient.put(params).promise();
@@ -234,14 +236,16 @@ const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
 const getEmployeeStatsbyID = async (id) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
-    ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
+    ProjectionExpression:
+      "#ids, #Rating, #teamscore, #hoursWorked, #comments, #joindate",
     KeyConditionExpression: "#ids = :id",
     ExpressionAttributeNames: {
-      "#ids": "employeeID",
+      "#ids": "id",
       "#Rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursWorked": "hoursworked",
       "#comments": "comments",
+      "#joindate": "dateJoined",
     },
     ExpressionAttributeValues: {
       ":id": id,
@@ -327,20 +331,7 @@ const getAnnouncements = async () => {
   return announcements;
 };
 
-// const getAnnouncements = async () => {
-//   const params = {
-//     TableName: ANNOUNCEMENTS_TABLE,
-//     ProjectionExpression: " #aData ,#name,#title, #date",
-//     ExpressionAttributeNames: {
-//       "#aData": "announcements",
-//       "#title": "title",
-//       "#name": "name",
-//       "#dateposted": "dateposted",
-//     },
-//   };
-//   const getannoun = await dynamoClient.scan(params).promise();
-//   return getannoun;
-// };
+
 
 module.exports = {
   dynamoClient,
@@ -362,3 +353,7 @@ module.exports = {
   addNewAnnouncement,
   getAnnouncements,
 };
+
+// const salt =  bcrypt.genSalt(10);
+// const hashedPassword =  bcrypt.hash("root", salt);
+// addNewEmployee ("root", "root", "root", "root", "root", "root", "root", "root", "root", "root", hashedPassword)

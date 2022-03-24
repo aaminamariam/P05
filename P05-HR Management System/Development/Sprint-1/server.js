@@ -11,14 +11,42 @@ const {
   getEmployeeRequests,
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
-  approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
   addNewAnnouncement,
-  addAnnouncements,
   getAnnouncements,
   addNewEmployee,
 } = require("./dynamo");
+
+
+const { login, generateAccessToken, authenticateToken } = require("./login");
+
+
+app.post("/login", async (req, res) => {
+  const user = { id: req.body.id };
+  console.log(req.body.id, req.body.password);
+
+  if (req.body.id == null) {
+    return res.status(400).send("Cannot find user");
+  }
+
+  let data = await login(req.body.id);
+
+  try {
+    // Load hash from your password DB.
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      data.Items[0].password
+    );
+    if (validPassword) {
+      res.json("success");
+    } else {
+      res.json("Not Allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
+});
 
 const cors = require("cors");
 app.use(
@@ -58,14 +86,16 @@ app.post("/addnewemployee", async (req, res) => {
   const designation = data. designation;
   const level = data.level;
   const dateJoined = data.dateJoined;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
   const email = data.email;
   const contact = data.contact;
   const address = data.address;
   const remainingLeaves = data.remainingLeaves;
-  const twRating = data.twRating;
+  
 
   try {
-    const newEmployee = await addNewEmployee(id, name, department, designation, level, dateJoined, email, contact, address, remainingLeaves, twRating);
+    const newEmployee = await addNewEmployee(id, name, department, designation, level, dateJoined, email, contact, address, remainingLeaves,hashedPassword );
     res.json(newEmployee);
   } catch (err) {
     console.error(err);
@@ -200,7 +230,6 @@ app.get("/getrequests/:id", async (req, res) => {
 app.get("/getstats/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    //const stats = await getEmployeeStatsbyID(id);
     res.json(await getEmployeeStatsbyID(id));
   } catch (err) {
     console.error(err);

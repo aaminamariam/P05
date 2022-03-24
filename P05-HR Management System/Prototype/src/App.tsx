@@ -21,6 +21,7 @@ import ToDo from "./components/ToDo/ToDo";
 import EmpStatsForm from "./components/empStatsForm";
 import AddReq from "./components/addrequest";
 import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 const drawerWidth = 240;
 
@@ -86,6 +87,7 @@ function App() {
         <Toolbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/hiringportal" element={<HiringPortalPage />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortalPage />} />
