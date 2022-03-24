@@ -22,6 +22,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       // display: "flex",
+      // flexGrow: 1,
       // backgroundColor: "#FD6A00",
       // maxWidth: "1200px",
     },
@@ -35,6 +36,8 @@ const useStyles = makeStyles(() =>
     },
     content: {
       // backgroundColor: "red",
+      display: "flex",
+      flexGrow: 1,
       marginTop: "25px",
     },
   })
@@ -42,22 +45,35 @@ const useStyles = makeStyles(() =>
 
 const HomePage = () => {
   const classes = useStyles();
-  const [job_openeings, setjob_openeings] = useState("0");
+  const [jobOpeningsNumber, setjobOpeningsNumber] = useState("0");
 
-  const getUser = async () => {
+  const [EmployeeNumber, setEmployeeNumber] = useState("0");
+
+  const getJobOpeningsNumber = async () => {
     try {
       const response = await axios.get(
         "http://localhost:5001/jobs/jobpostings/"
       );
-      console.log(response.data.length);
-      setjob_openeings(response.data.length.toString());
+      // console.log(response.data.length);
+      setjobOpeningsNumber(response.data.ScannedCount.toString());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getEmployeeNumber = async () => {
+    try {
+      const response = await axios.get("http://localhost:5001/ids/");
+      // console.log(response.data.ScannedCount);
+      setEmployeeNumber(response.data.ScannedCount.toString());
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    getUser();
+    getJobOpeningsNumber();
+    getEmployeeNumber();
   }, []);
 
   return (
@@ -67,7 +83,7 @@ const HomePage = () => {
           <StatCard
             icon={<GroupIcon />}
             title="Number of Employees"
-            data="678"
+            data={EmployeeNumber}
           />
         </Grid>
         <Grid item lg={3}>
@@ -88,7 +104,7 @@ const HomePage = () => {
             <StatCard
               icon={<PersonAddIcon />}
               title="Job openings"
-              data={job_openeings}
+              data={jobOpeningsNumber}
             />
           </Link>
         </Grid>
@@ -106,13 +122,13 @@ const HomePage = () => {
             to="/employeerequests"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
-            <EnhancedCard title="Requests">
+            <EnhancedCard title="New Requests">
               <RequestList />
             </EnhancedCard>
           </Link>
         </Grid>
         <Grid item lg={3}>
-          <EnhancedCard title="Announcements">
+          <EnhancedCard title="New Announcements">
             <AnnouncementsCard />
           </EnhancedCard>
         </Grid>

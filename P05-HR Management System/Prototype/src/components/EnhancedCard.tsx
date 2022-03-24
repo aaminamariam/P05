@@ -11,20 +11,22 @@ const useStyles = makeStyles({
     height: 400,
     // maxHeight:
 
-    // paddingHorizontal: 0,
-    width: "280px",
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    // width: "280px",
   },
   title: {
     fontSize: 14,
     fontWeight: 600,
-    color: "rgba(0, 82, 204, 1)"
+    color: "rgba(0, 82, 204, 1)",
   },
   divider: {
     // width: "100%",
   },
   content: {
     padding: 0,
-    paddingBottom: 0,
+    paddingBottom: 20,
   },
 });
 

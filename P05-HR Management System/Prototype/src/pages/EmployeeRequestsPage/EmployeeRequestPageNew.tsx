@@ -10,7 +10,7 @@ import {
   DataGrid,
   GridColDef,
   GridFilterModel,
-  GridSelectionModel,
+  // GridSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -25,7 +25,7 @@ export default function EmployeeRequestsPage() {
   const [SnackbarOpen, setSnackbarOpen] = useState(false);
   const [loader, setloader] = useState(true);
   const [firstRender, setfirstRender] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen] = useState(false);
 
   const [selectedIndex, setSelectedIndex] = useState<any[]>([]);
 
@@ -43,8 +43,9 @@ export default function EmployeeRequestsPage() {
     { field: "requesterName", headerName: "Request by", width: 130 },
     { field: "type", headerName: "Type", width: 150 },
     { field: "title", headerName: "Title", width: 250 },
-    { field: "data", headerName: "Request", width: 300 },
     { field: "status", headerName: "Status", width: 300 },
+    { field: "data", headerName: "Request", width: 700 },
+
     // {
     //   field: "age",
     //   headerName: "Age",
@@ -210,9 +211,9 @@ export default function EmployeeRequestsPage() {
         </Alert>
       </Snackbar>
 
-      <Button onClick={handleApproveRequest}>Approve Selected Requests</Button>
+      <Button onClick={handleApproveRequest}>Approve Selected Request</Button>
 
-      <Button onClick={handleDenyRequest}>Deny Selected Requests</Button>
+      <Button onClick={handleDenyRequest}>Deny Selected Request</Button>
     </div>
   );
 }

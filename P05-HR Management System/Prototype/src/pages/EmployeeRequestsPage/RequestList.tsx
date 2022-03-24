@@ -1,109 +1,105 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
-import Divider from "@mui/material/Divider";
+import * as React from "react";
+import {
+  makeStyles,
+  createStyles,
+  Typography,
+  Button,
+  CardActions,
+} from "@material-ui/core";
+
+import AnnouncementIcon from "@mui/icons-material/Announcement";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import { Typography } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import { Link, NavLink } from "react-router-dom";
 
-// import requestListItems from "../../components/requestListItems";
-import { createStyles, makeStyles } from "@mui/styles";
+// import announcementListItems from "./announcementListItems";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import AddAnnouncements from "../AnnouncementsPage/addAnnouncements";
 
 const useStyles = makeStyles(() =>
   createStyles({
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      // justifyContent: "space-around",
+      // alignItems: "center",
+      // paddingTop: "20px",
+      // paddingBottom: "20px",
+    },
     listText: {
       text: "10px",
+    },
+    buttons: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-around",
+      paddingTop: 5,
     },
     listbutton: {
       padding: 0,
     },
   })
 );
-export interface IRequestListProps {
+export interface IAnnouncementListProps {
   /**
    * the content of the title
    */
   title?: String;
-  /**
-   * content of the component, must be a node
-   */
-  children?: React.ReactNode;
 }
 
-const RequestList = (props: IRequestListProps) => {
-  const [requestList, setrequestList] = useState([
-    {
-      title: "",
-      description: "",
-      link: "",
-    },
-  ]);
+export const AnnouncementCard = (props: IAnnouncementListProps) => {
+  const classes = useStyles();
   const [list, setList] = useState<any[]>([]);
 
-  const classes = useStyles();
-
-  const getRequestList = () => {
-    // setrequestList(requestListItems);
-  };
-
-  const getreq = async () => {
+  const handleGetAnnouncements = async () => {
     let x: any = [];
     try {
-      const response = await axios.get("http://localhost:5001/activereq");
-      // console.log(response.data.Items[0].comments);
+      const response = await axios.get(
+        "http://localhost:5001/getEmployeeRequests"
+      );
       const li = response.data.Items;
       x = li;
-      // console.log(li[0]);
+      setList(x);
+      console.log("ANNOUNCE ITEMS", li);
     } catch (error) {
       console.error(error);
     }
-    let a = [];
-    for (let i = 0; i < x.length; i++) {
-      a.push({
-        title: x[i].name,
-        id: x[i].employeeID,
-      });
-      setList([...list, a]);
-    }
   };
-
   useEffect(() => {
-    getRequestList();
-    getreq();
+    handleGetAnnouncements();
   }, []);
-
   return (
-    <List
-      sx={{
-        width: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
-        // bgcolor: "red",
-        position: "relative",
-        overflow: "auto",
-        maxHeight: 300,
-        "& ul": { padding: 0 },
-      }}
-    >
-      {list.map((item) =>
-        item.map((i: any) => (
-          <ul>
-            <ListItem disableGutters key={`item-${i.id}`}>
-              <ListItemButton
-                className={classes.listbutton}
-                // key={`section-${item.id}`}
-              >
-                <PersonPinIcon />
-                <Typography variant="subtitle2">{i.title}</Typography>
-              </ListItemButton>
-              <Divider />
-            </ListItem>
-          </ul>
-        ))
-      )}
-    </List>
+    <div className={classes.root}>
+      <List
+        sx={{
+          width: "100%",
+          // maxWidth: 360,
+          bgcolor: "background.paper",
+          position: "relative",
+          overflow: "auto",
+          maxHeight: 300,
+          "& ul": { paddingTop: 0 },
+        }}
+      >
+        {list.map((item) => (
+          <ListItem disableGutters key={`item-${item}`}>
+            <ListItemButton
+              className={classes.listbutton}
+              key={`section-${item.id}`}
+            >
+              <AnnouncementIcon />
+              <Typography variant="subtitle2">{item.title}</Typography>
+            </ListItemButton>
+            <Divider />
+          </ListItem>
+        ))}
+      </List>
+      {/* </CardActions> */}
+    </div>
   );
 };
 
-export default RequestList;
+export default AnnouncementCard;

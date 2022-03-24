@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "stretch",
-    height: "250px",
+    height: "350px",
     // backgroundColor: "green",
   },
   columns: {
@@ -20,7 +20,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     // backgroundColor: "red",
   },
-
   title: {
     paddingBottom: 5,
   },
@@ -69,41 +68,41 @@ const EmployeeGenderStatCard: React.FC<IEmployeeGenderStatCardProps> = ({
   return (
     <div onClick={handleClick} className={classes.root}>
       <div className={classes.columns}>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h5" className={classes.title}>
           Men
         </Typography>
         {/* {iconMan}
          */}
         <ManIcon
           sx={{
-            maxHeight: 245,
-            fontSize: 50,
+            // maxHeight: 245,
+            fontSize: 100,
             color: "lightblue",
           }}
         />
         <Typography variant="subtitle1" className={classes.number}>
           {male}
         </Typography>
-        <Typography variant="caption" className={classes.percentage}>
+        <Typography variant="subtitle2" className={classes.percentage}>
           {malepercent}%
         </Typography>
       </div>
       <div className={classes.columns}>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h5" className={classes.title}>
           Women
         </Typography>
         {/* {iconWoman} */}
         <WomanIcon
           sx={{
-            maxHeight: 245,
-            fontSize: 50,
+            // maxHeight: 245,
+            fontSize: 95,
             color: "pink",
           }}
         />
         <Typography variant="subtitle1" className={classes.number}>
           {female}
         </Typography>
-        <Typography variant="caption" className={classes.percentage}>
+        <Typography variant="subtitle2" className={classes.percentage}>
           {femalepercent}%
         </Typography>
       </div>

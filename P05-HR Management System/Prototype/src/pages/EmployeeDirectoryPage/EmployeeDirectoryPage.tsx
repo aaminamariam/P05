@@ -39,14 +39,19 @@ export default function EmployeeDirectoryPage() {
   const columns: GridColDef[] = [
     { field: "id", headerName: "Employee ID", width: 130 },
     { field: "name", headerName: "Full Name", width: 250 },
-    { field: "address", headerName: "Address", width: 130 },
-    { field: "contact", headerName: "Contact", width: 150 },
+
+    { field: "address", headerName: "Address", width: 200 },
+    { field: "contact", headerName: "Contact", width: 200 },
     { field: "department", headerName: "Department", width: 130 },
     { field: "designation", headerName: "Designation", width: 150 },
     { field: "level", headerName: "Level", width: 130 },
+    { field: "gender", headerName: "Gender", width: 130 },
+    { field: "dateofbirth", headerName: "Date of Birth", width: 200 },
     { field: "remainingLeaves", headerName: "Remaining Leaves", width: 130 },
-    { field: "twRating", headerName: "TW Rating", width: 100 },
+    // { field: "twRating", headerName: "TW Rating", width: 100 },
     { field: "dateJoined", headerName: "Date Joined", width: 130 },
+    { field: "onLeave", headerName: "On Leave", width: 130 },
+
     // {
     //   field: "age",
     //   headerName: "Age",

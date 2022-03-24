@@ -21,10 +21,11 @@ import AddAnnouncements from "./addAnnouncements";
 
 const columns: GridColDef[] = [
   // { field: "id", headerName: "Employee ID", width: 130 },
+  { field: "title", headerName: "Title", width: 250 },
+  { field: "postedOn", headerName: "Posted On", width: 200 },
   { field: "postedBy", headerName: "Full Name", width: 130 },
   { field: "department", headerName: "Department", width: 130 },
-  { field: "data", headerName: "Announcement", width: 130 },
-  { field: "title", headerName: "Date Joined", width: 120 },
+  { field: "data", headerName: "Announcement", width: 300 },
 ];
 
 export default function AnnouncementsPage() {

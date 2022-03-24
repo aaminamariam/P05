@@ -12,6 +12,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@material-ui/icons/Delete";
+
+import AddPosting from "./AddPosting";
 import { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
@@ -70,11 +72,10 @@ const Hiringportal = () => {
   const classes = useStyles();
 
   const [HiringPortalListItems, setHiringPortalListItems] = useState<any[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const fetchJobs = async () => {
-    const result = await axios.get(
-      "http://localhost:5001/jobs/jobpostings/"
-    );
+    const result = await axios.get("http://localhost:5001/jobs/jobpostings/");
     // console.log(result.data)
     setHiringPortalListItems(result.data);
     // console.log(HiringPortalListItems)
@@ -96,20 +97,22 @@ const Hiringportal = () => {
       <div className={classes.listheader}>
         {/* LIST HEADER */}
         {/* <div>Search Bar</div> */}
-        <Link
+        {/* <Link
           to="/addnewposting"
           style={{ textDecoration: "none", textDecorationColor: "white" }}
-        >
-          <Button className={classes.addpostingButton}>
-            <Typography
-              style={{
-                textDecoration: "inherit",
-              }}
-            >
-              Add Posting
-            </Typography>
-          </Button>
-        </Link>
+        > */}
+        {/* <Button className={classes.addpostingButton}>
+          <Typography
+            style={{
+              textDecoration: "inherit",
+            }}
+          >
+            Add Posting
+          </Typography>
+        </Button> */}
+        {/* </Link> */}
+
+        <AddPosting setOpen={setModalOpen} open={modalOpen} />
       </div>
 
       <div className={classes.listbody}>

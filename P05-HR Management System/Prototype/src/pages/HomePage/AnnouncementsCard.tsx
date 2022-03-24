@@ -26,17 +26,30 @@ const useStyles = makeStyles(() =>
       flexDirection: "column",
       // justifyContent: "space-around",
       // alignItems: "center",
-      paddingTop: "20px",
+      // paddingTop: "20px",
+      // paddingBottom: "20px",
     },
     listText: {
-      text: "10px",
+      paddingLeft: 10,
+      // fontSize: 16,
+      // color: "rgba(0, 82, 221, 1)",
+      // fontWeight: 500,
+    },
+    buttons: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-around",
+      paddingTop: 5,
     },
     listbutton: {
       padding: 0,
+      display: "flex",
+    },
+    icon: {
+      color: "blue",
     },
   })
 );
-
 export interface IAnnouncementListProps {
   /**
    * the content of the title
@@ -63,7 +76,7 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
       const li = response.data.Items;
       x = li;
       setList(x);
-      // console.log("ANNOUNCE ITEMS", li);
+      console.log("ANNOUNCE ITEMS", li);
     } catch (error) {
       console.error(error);
     }
@@ -73,39 +86,40 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
   }, []);
   return (
     <div className={classes.root}>
-      {/* ANNOUCEEMNT */}
-      <CardActions>
+      <div className={classes.buttons}>
         <AddAnnouncements open={open} setOpen={setOpen} />
         <Link to="/AnnouncementsPage">
           <Button size="small">See History</Button>
         </Link>
-      </CardActions>
-      <CardActions>
-        <List
-          sx={{
-            width: "100%",
-            // maxWidth: 360,
-            bgcolor: "background.paper",
-            position: "relative",
-            overflow: "auto",
-            maxHeight: 300,
-            "& ul": { padding: 0 },
-          }}
-        >
-          {list.map((item) => (
-            <ListItem disableGutters key={`item-${item}`}>
-              <ListItemButton
-                className={classes.listbutton}
-                key={`section-${item.id}`}
-              >
-                <AnnouncementIcon />
-                <Typography variant="subtitle2">{item.title}</Typography>
-              </ListItemButton>
-              <Divider />
-            </ListItem>
-          ))}
-        </List>
-      </CardActions>
+      </div>
+      {/* <CardActions> */}
+      <List
+        sx={{
+          width: "100%",
+          // maxWidth: 360,
+          bgcolor: "background.paper",
+          position: "relative",
+          overflow: "auto",
+          maxHeight: 300,
+          "& ul": { paddingTop: 0 },
+        }}
+      >
+        {list.map((item) => (
+          <ListItem disableGutters key={`item-${item}`}>
+            {/* <ListItemButton
+              className={classes.listbutton}
+              key={`section-${item.id}`}
+            > */}
+            <AnnouncementIcon color="primary" />
+            <Typography className={classes.listText} variant="subtitle1">
+              {item.title}
+            </Typography>
+            {/* </ListItemButton> */}
+            <Divider />
+          </ListItem>
+        ))}
+      </List>
+      {/* </CardActions> */}
     </div>
   );
 };

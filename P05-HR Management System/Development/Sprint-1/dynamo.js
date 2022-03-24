@@ -33,7 +33,6 @@ const getEmployeeRequests = async (id) => {
   return requests;
 };
 
-
 //add request to database
 const addrequest = async (option, des, id, date) => {
   const params = {
@@ -126,7 +125,7 @@ const addOrUpdateEmployee = async (employee, name) => {
 // fetch employee requests by status active or inactive
 const getEmployeeReqbystatus = async () => {
   const params = {
-    TableName: EMPLOYEE_TABLE,
+    TableName: REQUESTS_TABLE,
     ProjectionExpression: "#id, #option, #des, #status, #name",
     IndexName: "status-index",
     KeyConditionExpression: "#status = :status",

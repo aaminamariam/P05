@@ -175,7 +175,6 @@ app.put("/addstats", async (req, res) => {
 });
 
 //get requests
-
 app.get("/getEmployeeRequests", async (req, res) => {
   try {
     const requests = await getEmployeeRequests();
