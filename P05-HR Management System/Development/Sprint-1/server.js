@@ -8,10 +8,11 @@ const {
   addOrUpdateEmployee,
   deleteEmployee,
   addrequest,
+  approveRequests,
+  denyRequests,
   getEmployeeRequests,
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
-  approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
   addNewAnnouncement,
@@ -57,7 +58,7 @@ app.post("/addnewemployee", async (req, res) => {
   const department = data.department;
   const designation = data. designation;
   const level = data.level;
-  const dateJoined = data.dateJoined;
+  const dateJoined = new Date().toISOString().slice(0, 10);
   const email = data.email;
   const contact = data.contact;
   const address = data.address;
@@ -98,13 +99,15 @@ app.delete("/ids/:id", async (req, res) => {
 //add request
 app.post("/addreq", async (req, res) => {
   const data = req.body;
-  const postdate = new Date().toISOString().slice(0, 10)
+  const postdate = new Date().toISOString().slice(0, 19)
   console.log(data);
   try {
     const newCharacter = await addrequest(
-      data.option,
-      data.description,
-      data.employeeID,
+      data.type,
+      data.data,
+      data.id,
+      //data.status,
+      data.title,
       postdate
     );
     res.json(newCharacter);
@@ -117,14 +120,11 @@ app.post("/addreq", async (req, res) => {
 // approve requests for HR
 app.post("/approveRequests", async (req, res) => {
   const data = req.body;
-  console.log(data);
+  console.log(data, "data");
   try {
     res.json(
       await approveRequests(
-        data.employeeID,
-        data.approval,
-        data.description,
-        data.option
+        data.id
       )
     );
   } catch (err) {
@@ -140,10 +140,7 @@ app.post("/denyRequests", async (req, res) => {
   try {
     res.json(
       await denyRequests(
-        data.employeeID,
-        data.approval,
-        data.description,
-        data.option
+        data.id,
       )
     );
   } catch (err) {
@@ -211,7 +208,7 @@ app.get("/getstats/:id", async (req, res) => {
 //add announcements
 app.post("/addNewAnnouncement", async (req, res) => {
   const data = req.body;
-  const today = new Date().toISOString().slice(0, 10)
+  const today = new Date().toISOString().slice(0, 19)
   const id = today
   console.log("date recieved by server: ", data);
   try {
@@ -252,3 +249,6 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Origin", "*");
 });
+
+
+console.log(new Date().toISOString().slice(0, 20))

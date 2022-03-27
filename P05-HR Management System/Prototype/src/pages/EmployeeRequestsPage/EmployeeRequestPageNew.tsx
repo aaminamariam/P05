@@ -17,6 +17,7 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
+import { AnyAaaaRecord } from "dns";
 
 // import AddEmployee from "./AddEmployee";
 
@@ -27,7 +28,8 @@ export default function EmployeeRequestsPage() {
   const [firstRender, setfirstRender] = useState(true);
   const [modalOpen] = useState(false);
 
-  const [selectedIndex, setSelectedIndex] = useState<any[]>([]);
+  //const [selectedIndex, setSelectedIndex] = useState<any[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<any>();
 
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
@@ -40,11 +42,12 @@ export default function EmployeeRequestsPage() {
   });
 
   const columns: GridColDef[] = [
-    { field: "requesterName", headerName: "Request by", width: 130 },
+    { field: "id", headerName: "Employee ID", width: 130 },
     { field: "type", headerName: "Type", width: 150 },
     { field: "title", headerName: "Title", width: 250 },
     { field: "status", headerName: "Status", width: 300 },
     { field: "data", headerName: "Request", width: 700 },
+    { field: "dateAdded", headerName: "Date Added", width: 150 },
 
     // {
     //   field: "age",
@@ -101,23 +104,23 @@ export default function EmployeeRequestsPage() {
   };
 
   const handleApproveRequest = async () => {
-    await axios({
-      method: "post",
-      url: "http://localhost:5001/approveRequests",
-      data: {
-        ids: selectedIndex,
-      },
-    });
+      await axios({
+        method: "post",
+        url: "http://localhost:5001/approveRequests",
+        data: {
+          id: selectedIndex[0],
+        },
+      });
   };
 
   const handleDenyRequest = async () => {
-    await axios({
-      method: "post",
-      url: "http://localhost:5001/denyRequest",
-      data: {
-        ids: selectedIndex,
-      },
-    });
+      await axios({
+        method: "post",
+        url: "http://localhost:5001/denyRequests",
+        data: {
+          id: selectedIndex[0],
+        },
+      });
   };
 
   useEffect(() => {
@@ -131,8 +134,8 @@ export default function EmployeeRequestsPage() {
 
   useEffect(() => {
     console.log("SELECTED INDEX:", selectedIndex);
-  }, [selectedIndex]);
-
+  },selectedIndex);
+//[selectedIndex]
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: string
@@ -192,8 +195,8 @@ export default function EmployeeRequestsPage() {
 
         rowsPerPageOptions={[10]}
         checkboxSelection
-        onSelectionModelChange={(ids) => {
-          setSelectedIndex([...selectedIndex, ids]);
+        onSelectionModelChange={(id) => {
+          setSelectedIndex(id);
         }}
         filterModel={filterModel}
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
