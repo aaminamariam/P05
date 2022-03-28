@@ -14,7 +14,7 @@ function printRows() {
     }})
 }
 
-const get_match = (keywords,Str_txt) => {
+const get_match = (keywords,txt_file) => {
   let regwords = [];
   let matches = 0;
   let listwords = [];
@@ -26,16 +26,18 @@ const get_match = (keywords,Str_txt) => {
     // console.log(e)
   }
   
-  data = JSON.parse(Str_txt);
-  
-  data.forEach(x =>
-    regwords.forEach(y => {
-      if (x.match(y) !== null){
-       listwords.push(x.match(y))
-       set_w.add(x.match(y))
-      }
-    })
-  )
+  fs.readFile(txt_file, 'utf8', function(err, data){
+    data = JSON.parse(txt_file);
+    
+    data.forEach(x =>
+      regwords.forEach(y => {
+        if (x.match(y) !== null){
+        listwords.push(x.match(y))
+        set_w.add(x.match(y))
+        }
+      })
+    )
+  })
   const score = (set_w.size/keywords.length) * 100
   return {score,listwords};
 }
@@ -43,37 +45,58 @@ const get_match = (keywords,Str_txt) => {
 
 let keywords = ["Performed", "experience", "football"];
 
-let file = "res_Test.pdf"
+// let filename = "res_Test.pdf"
 
-const pdf_parser = (keywords,file) => {
+const pdf_parser = (filename) => {
   let counts = 0.0 
-  return new pdfreader.PdfReader().parseFileItems(
-  file,
-  (async (err, item) => {
-    if (!item || item.page) {
-      // end of file, or page
-      printRows();
-      
-      // console.log("PAGE:", item.page);
-      rows = {}; // clear rows for next page
+  new pdfreader.PdfReader().parseFileItems(
+    filename,
+    function (err, item) {
+      if (!item || item.page) {
+        // end of file, or page
+        printRows();
+        
+        // console.log("PAGE:", item.page);
+        rows = {}; // clear rows for next page
+      } else if (item.text) {
+  
+        // accumulate text items into rows object, per line
+        (rows[item.y] = rows[item.y] || []).push(item.text);
+        data.push(item.text);
+  
+      }
+      let text = data.toString();
+      Str_txt = JSON.stringify({"data":text});
+        
+  
+      fs.writeFile("resume.json",  Str_txt, function(err) {
+          if (err) {
+              console.log(err);
+          }
+          // else
+          // {
+          //   counts = get_match(keywords,"test.txt")
+          // }
+      });
 
-    } else if (item.text) {
-      // accumulate text items into rows object, per line
-      (rows[item.y] = rows[item.y] || []).push(item.text);
-      data.push(item.text);
-    }
-    // stringify data
-    let Str_txt = JSON.stringify(data);
-    counts = get_match(keywords,Str_txt);
-    return await counts 
-  }
+    },
 
-));
-}
+  );
+  // counts = get_match(keywords,"test.txt")
+  
+  // fs.unlink('test.txt', (err) => {
+  //   if (err) {
+  //       throw err;
+  //   }
+  // })
+  
 
-console.log(pdf_parser(keywords,file))
+};
+
+
 // console.log("end");
 
-// module.exports = {
-//   pdf_parser
-// }
+module.exports = {
+  pdf_parser
+}
+
