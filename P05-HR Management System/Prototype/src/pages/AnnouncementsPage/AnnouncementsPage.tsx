@@ -46,25 +46,6 @@ export default function AnnouncementsPage() {
     ],
   });
 
-  // const is_empty = (option: string, description: string, id: string) => {
-  //   if (title == "" || aData == "" || id =="") {
-  //     if (title == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (aData == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (id = "")
-  //     {
-  //         alert("id is empty")
-  //     }
-  //     return 1;
-  //   }
-  //   return 0;
-  // };
-
   const handleGetAnnouncements = async () => {
     let x: any = [];
     try {
