@@ -8,9 +8,7 @@ function printRows() {
     .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
     .forEach((y) => {
       // console.log((rows[y] || []).join(""));
-      for (let i = 0; i < rows[y].length; i++) {
-
-      }
+      for (let i = 0; i < rows[y].length; i++) {}
     });
 }
 
@@ -72,9 +70,6 @@ const pdf_parser = (filename) => {
       // }
     });
   });
-  // counts = get_match(keywords,"test.txt")
-
-
 };
 
 // console.log("end");
