@@ -379,4 +379,3 @@ module.exports = {
 };
 
 
-approveRequests("134567");

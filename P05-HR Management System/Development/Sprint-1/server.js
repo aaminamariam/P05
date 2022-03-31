@@ -21,6 +21,8 @@ const {
   addNewEmployee,
 } = require("./dynamo");
 
+const { add_cv_data, getapplications } = require("./uploader");
+
 const cors = require("cors");
 app.use(
   cors({
@@ -49,14 +51,25 @@ app.post("/employee", async (req, res) => {
   }
 });
 
-//post
+//getcv data
+app.get("/getcvs", async (req, res) => {
+  try {
+    const cvs = await getapplications();
+    res.json(cvs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+//add a new employee
 app.post("/addnewemployee", async (req, res) => {
   const data = req.body;
 
   const id = data.employeeID;
   const name = data.name;
   const department = data.department;
-  const designation = data. designation;
+  const designation = data.designation;
   const level = data.level;
   const dateJoined = new Date().toISOString().slice(0, 10);
   const email = data.email;
@@ -66,7 +79,19 @@ app.post("/addnewemployee", async (req, res) => {
   const twRating = data.twRating;
 
   try {
-    const newEmployee = await addNewEmployee(id, name, department, designation, level, dateJoined, email, contact, address, remainingLeaves, twRating);
+    const newEmployee = await addNewEmployee(
+      id,
+      name,
+      department,
+      designation,
+      level,
+      dateJoined,
+      email,
+      contact,
+      address,
+      remainingLeaves,
+      twRating
+    );
     res.json(newEmployee);
   } catch (err) {
     console.error(err);
@@ -76,6 +101,17 @@ app.post("/addnewemployee", async (req, res) => {
 
 //get all items
 app.get("/ids", async (req, res) => {
+  try {
+    const characters = await getEmployees();
+    res.json(characters);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+//get all items
+app.get("/getapplications", async (req, res) => {
   try {
     const characters = await getEmployees();
     res.json(characters);
@@ -99,7 +135,7 @@ app.delete("/ids/:id", async (req, res) => {
 //add request
 app.post("/addreq", async (req, res) => {
   const data = req.body;
-  const postdate = new Date().toISOString().slice(0, 19)
+  const postdate = new Date().toISOString().slice(0, 19);
   console.log(data);
   try {
     const newCharacter = await addrequest(
@@ -122,11 +158,7 @@ app.post("/approveRequests", async (req, res) => {
   const data = req.body;
   console.log(data, "data");
   try {
-    res.json(
-      await approveRequests(
-        data.id
-      )
-    );
+    res.json(await approveRequests(data.id));
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
@@ -138,11 +170,7 @@ app.post("/denyRequests", async (req, res) => {
   const data = req.body;
   console.log(data);
   try {
-    res.json(
-      await denyRequests(
-        data.id,
-      )
-    );
+    res.json(await denyRequests(data.id));
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
@@ -208,14 +236,48 @@ app.get("/getstats/:id", async (req, res) => {
 //add announcements
 app.post("/addNewAnnouncement", async (req, res) => {
   const data = req.body;
-  const today = new Date().toISOString().slice(0, 19)
-  const id = today
+  const today = new Date().toISOString().slice(0, 19);
+  const id = today;
   console.log("date recieved by server: ", data);
   try {
-    res.json(await addNewAnnouncement(id, data.postedBy, data.title, data.department, data.data, today));
+    res.json(
+      await addNewAnnouncement(
+        id,
+        data.postedBy,
+        data.title,
+        data.department,
+        data.data,
+        today
+      )
+    );
   } catch (err) {
     console.error(err);
-    res.status(500).json({ err: "Something went wrong while adding announcements in server" });
+    res.status(500).json({
+      err: "Something went wrong while adding announcements in server",
+    });
+  }
+});
+
+//adds cv to database
+app.put("/addresume_info", async (req, res) => {
+  const data = req.body;
+  const name = data.name;
+  const email = data.email;
+  const phone = data.phone;
+  const city = data.city;
+  const sp = data.sp;
+  const linkedin = data.linkedin;
+  const cv = data.cv;
+  const today = new Date().toISOString().slice(0, 19);
+  const id = today;
+
+  try {
+    res.json(await add_cv_data(name, city, linkedin, phone, email, cv, sp));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      err: "Something went wrong while adding announcements in server",
+    });
   }
 });
 
@@ -241,7 +303,7 @@ app.get("/activereq", async (req, res) => {
 
 // start the server in the port 5000!
 app.listen(process.env.PORT || 5001, function () {
-  console.log("Example app listening on port 5000.");
+  console.log("Example app listening on port 5001.");
 });
 //page doesnt exist
 app.use(function (req, res, next) {
@@ -250,5 +312,4 @@ app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 });
 
-
-console.log(new Date().toISOString().slice(0, 20))
+console.log(new Date().toISOString().slice(0, 20));

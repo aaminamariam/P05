@@ -1,29 +1,55 @@
-// Import required AWS SDK clients and commands for Node.js.
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { s3Client } from "./libs/s3Client.js"; // Helper function that creates an Amazon S3 service client module.
-import { path } from "path";
-import { fs } from "fs";
+const AWS = require("aws-sdk");
 
-const file = "res_Test.pdf"; // Path to and name of object. For example '../myFiles/index.js'.
-const fileStream = fs.createReadStream(file);
+require("dotenv").config();
 
-// Set the parameters
-export const uploadParams = {
-  Bucket: "mycvandresumebucket",
-  // Add the required 'Key' parameter using the 'path' module.
-  Key: path.basename(file),
-  // Add the required 'Body' parameter
-  Body: fileStream,
+//env variables
+AWS.config.update({
+  accessKeyId: process.env.AccessKeyId,
+  secretAccessKey: process.env.SecretAccessKey,
+  region: process.env.Region,
+});
+const dynamoClient = new AWS.DynamoDB.DocumentClient();
+
+const CV_TABLE = "cv_table";
+
+const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp) => {
+  date = new Date();
+  //sp is for state/province
+  let dt = date.toString();
+  const params = {
+    TableName: "cv_table",
+    Key: { date: dt },
+    UpdateExpression:
+      "SET #name = :name, #city = :city, #linkedin = :linkedin, #phone = :phone, #email = :email, #cv = :cv, #sp = :sp",
+    ExpressionAttributeNames: {
+      "#name": "name",
+      "#city": "city",
+      "#linkedin": "linkedin",
+      "#phone": "phone",
+      "#email": "email",
+      "#cv": "cv",
+      "#sp": "sp",
+    },
+    ExpressionAttributeValues: {
+      ":name": Name,
+      ":city": city,
+      ":linkedin": Linkedin,
+      ":phone": phone,
+      ":email": email,
+      ":cv": cv,
+      ":sp": sp,
+    },
+  };
+  return await dynamoClient.update(params).promise();
 };
 
-// Upload file to specified bucket.
-export const run = async () => {
-  try {
-    const data = await s3Client.send(new PutObjectCommand(uploadParams));
-    console.log("Success", data);
-    return data; // For unit tests.
-  } catch (err) {
-    console.log("Error", err);
-  }
+//fetch requests from database and approve/deny request
+const getapplications = async () => {
+  const params = {
+    TableName: CV_TABLE,
+  };
+  return await dynamoClient.scan(params).promise();
 };
-run();
+
+module.exports = { add_cv_data, getapplications };
+// console.log(getapplications());
