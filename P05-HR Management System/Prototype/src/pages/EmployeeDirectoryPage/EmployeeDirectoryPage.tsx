@@ -140,12 +140,14 @@ export default function EmployeeDirectoryPage() {
       <GridToolbarContainer
         style={{ display: "flex", justifyContent: "space-between" }}
       >
+        
         <div>
           <GridToolbarColumnsButton style={{ margin: 10 }} />
           <GridToolbarFilterButton style={{ margin: 10 }} />
           <GridToolbarDensitySelector style={{ margin: 10 }} />
           <GridToolbarExport style={{ margin: 10 }} />
         </div>
+  
         <div>
           <AddEmployee setOpen={setModalOpen} open={modalOpen} />
         </div>

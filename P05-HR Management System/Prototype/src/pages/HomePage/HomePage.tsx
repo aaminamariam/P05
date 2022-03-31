@@ -167,7 +167,7 @@ const HomePage = () => {
             <StatCard
               icon={<GroupIcon />}
               title="Add Employee Statics"
-              // backgroundColor= "#FD6A00"
+            
             />
           </Link>
         </Grid>

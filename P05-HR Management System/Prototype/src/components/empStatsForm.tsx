@@ -115,7 +115,7 @@ const EmpStatsForm = () => {
             maxRows={4}
           />
 
-          <FormControl fullWidth>
+          <FormControl style ={{width: '95%'}}>
             <InputLabel id="demo-simple-select-label">Rating</InputLabel>
             <Select
               labelId="demo-simple-select-label"

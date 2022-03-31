@@ -78,6 +78,7 @@ export default function AddAnnouncements(props: {
             <TextField
               id="name"
               label="Name"
+              required
               variant="standard"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -85,6 +86,7 @@ export default function AddAnnouncements(props: {
             <TextField
               id="department"
               label="Department"
+              required
               variant="standard"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
@@ -92,6 +94,7 @@ export default function AddAnnouncements(props: {
             <TextField
               id="title"
               label="Title"
+              required
               variant="standard"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -99,6 +102,7 @@ export default function AddAnnouncements(props: {
             <TextField
               id="data"
               label="Announcement"
+              required
               variant="standard"
               value={data}
               onChange={(e) => setData(e.target.value)}

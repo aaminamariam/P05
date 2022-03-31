@@ -14,6 +14,8 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import {ThemeProvider} from "@material-ui/core";
+import theme from "../../components/theme";
 
 export default function ToDo() {
   const [text, settext] = useState("");
@@ -32,7 +34,7 @@ export default function ToDo() {
     {
       index: 3,
       checked: "True",
-      data: "Complete promotion process for this and this",
+      data: "Complete promotion process for this ",
     },
   ]);
   const [checked, setChecked] = React.useState([0]);
@@ -49,7 +51,7 @@ export default function ToDo() {
   };
 
   const submitHandler = () => {
-    console.log("SUBMIT HAMNDERAAS");
+    
     setList([
       {
         index: list.length + 1,
@@ -58,7 +60,7 @@ export default function ToDo() {
       },
       ...list,
     ]);
-    // console.log("LISTttttt", text);
+    
     settext("");
   };
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -72,8 +74,10 @@ export default function ToDo() {
     index: any;
   }) => {
     const { children, value, index, ...other } = props;
+ 
 
     return (
+      <ThemeProvider theme={theme}>
       <div
         role="tabpanel"
         hidden={value !== index}
@@ -83,14 +87,16 @@ export default function ToDo() {
       >
         {value === index && (
           <div>
-            <Typography>{children}</Typography>
+            <Typography variant='h6'>{children}</Typography>
           </div>
         )}
       </div>
+      </ThemeProvider>
     );
   };
 
   return (
+
     <div>
       {/* className={classes.container} */}
       <div>
@@ -119,8 +125,7 @@ export default function ToDo() {
           <Tab label="Done" />
         </Tabs>
       </Box>
-      {/* <div>checked{checked.length}</div>
-      <div>list{list.length}</div> */}
+     
       <TabPanel value={value} index={0}>
         {checked.length < list.length + 1 ? (
           <List
@@ -175,7 +180,7 @@ export default function ToDo() {
             })}
           </List>
         ) : (
-          <div> NO Tasks Due yay </div>
+          <div> NO Tasks Due  </div>
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -227,9 +232,10 @@ export default function ToDo() {
             })}
           </List>
         ) : (
-          <div> Nothing done yet haye</div>
+          <div> Nothing done yet </div>
         )}
       </TabPanel>
     </div>
+  
   );
 }

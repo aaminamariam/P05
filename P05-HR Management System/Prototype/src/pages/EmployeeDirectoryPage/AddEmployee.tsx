@@ -8,6 +8,8 @@ import { createStyles, makeStyles } from "@mui/styles";
 const useStyles = makeStyles(() =>
   createStyles({
     root: {},
+    
+  
   })
 );
 
@@ -84,6 +86,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="employeeID"
               label="Employee ID"
+              required
               variant="standard"
               value={employeeID}
               onChange={(e) => setEmployeeID(e.target.value)}
@@ -91,6 +94,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="name"
               label="Name"
+              required
               variant="standard"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -98,6 +102,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="department"
               label="Department"
+              required
               variant="standard"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
@@ -105,6 +110,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="level"
               label="Level"
+              required
               variant="standard"
               value={level}
               onChange={(e) => setLevel(e.target.value)}
@@ -112,6 +118,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="contact"
               label="Contact"
+              required
               variant="standard"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
@@ -119,6 +126,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="designation"
               label="Designation"
+              required
               variant="standard"
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
@@ -126,6 +134,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="address"
               label="Address"
+              required
               variant="standard"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -133,6 +142,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="dateJoined"
               label="Date Joined"
+              required
               variant="standard"
               value={dateJoined}
               onChange={(e) => setDateJoined(e.target.value)}
@@ -140,6 +150,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="email"
               label="Email"
+              required
               variant="standard"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -147,6 +158,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="twRating"
               label="TW Rating"
+              required
               variant="standard"
               value={rating}
               onChange={(e) => setRating(e.target.value)}
@@ -154,6 +166,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
             <TextField
               id="remainingLeaves"
               label="Remaining Leaves"
+              required
               variant="standard"
               value={leaves}
               onChange={(e) => setLeaves(e.target.value)}

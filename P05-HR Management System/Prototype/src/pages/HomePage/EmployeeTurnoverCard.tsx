@@ -39,7 +39,7 @@ export default function EmployeeTurnoeverCard(
   };
   return (
     <div className={classes.root}>
-      <Typography variant="caption">
+      <Typography variant="caption" >
         Proportion of your workforce who leave during a period of time
       </Typography>
       <div className={classes.body}>

@@ -10,6 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
+
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
@@ -38,6 +39,7 @@ export default function EmployeeRetentionCard(
     setyear(event.target.value as string);
   };
   return (
+ 
     <div className={classes.root}>
       <Typography variant="caption">
         Proportion of your workforce who stay during a period of time
@@ -63,5 +65,6 @@ export default function EmployeeRetentionCard(
         <ThumbUpIcon fontSize="large" />
       </div>
     </div>
+ 
   );
 }

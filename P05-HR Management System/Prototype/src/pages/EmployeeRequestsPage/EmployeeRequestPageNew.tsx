@@ -6,9 +6,8 @@ import { Alert, Button, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import {
-  DataGrid,
-  GridColDef,
+import {DataGrid,
+GridColDef,
   GridFilterModel,
   // GridSelectionModel,
   GridToolbarColumnsButton,
@@ -162,12 +161,14 @@ export default function EmployeeRequestsPage() {
       <GridToolbarContainer
         style={{ display: "flex", justifyContent: "space-between" }}
       >
+        
         <div>
           <GridToolbarColumnsButton style={{ margin: 10 }} />
           <GridToolbarFilterButton style={{ margin: 10 }} />
           <GridToolbarDensitySelector style={{ margin: 10 }} />
-          <GridToolbarExport style={{ margin: 10 }} />
+          <GridToolbarExport style={{ margin: 10 }}/>
         </div>
+   
         <div>
           {/* <AddEmployee setOpen={setModalOpen} open={modalOpen} /> */}
         </div>
