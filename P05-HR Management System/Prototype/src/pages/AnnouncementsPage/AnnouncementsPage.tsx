@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
-
+import TouchRipple from "@material-ui/core/ButtonBase/TouchRipple";
 import {
   DataGrid,
   GridColDef,
@@ -119,12 +119,16 @@ export default function AnnouncementsPage() {
       <GridToolbarContainer
         style={{ display: "flex", justifyContent: "space-between" }}
       >
+        
         <div>
+          
           <GridToolbarColumnsButton style={{ margin: 10 }} />
           <GridToolbarFilterButton style={{ margin: 10 }} />
           <GridToolbarDensitySelector style={{ margin: 10 }} />
           <GridToolbarExport style={{ margin: 10 }} />
         </div>
+    
+       
         <div>
           <AddAnnouncements setOpen={setModalOpen} open={modalOpen} />
         </div>
