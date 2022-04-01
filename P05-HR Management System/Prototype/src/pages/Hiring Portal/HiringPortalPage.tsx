@@ -75,7 +75,7 @@ const Hiringportal = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const fetchJobs = async () => {
-    const result = await axios.get("http://localhost:5001/jobs/jobpostings/");
+    const result = await axios.get("http://localhost:800/jobs/jobpostings/");
     // console.log(result.data)
     setHiringPortalListItems(result.data);
     // console.log(HiringPortalListItems)
