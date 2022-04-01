@@ -170,7 +170,7 @@ export default function EmployeeDirectoryPage() {
         rowsPerPageOptions={[10]}
         checkboxSelection
         filterModel={filterModel}
-        onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
+        onFilterModelChange={(newFilterModel: any) => setFilterModel(newFilterModel)}
       />
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

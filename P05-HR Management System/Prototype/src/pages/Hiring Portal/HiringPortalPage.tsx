@@ -95,22 +95,6 @@ const Hiringportal = () => {
   return (
     <div className={classes.root}>
       <div className={classes.listheader}>
-        {/* LIST HEADER */}
-        {/* <div>Search Bar</div> */}
-        {/* <Link
-          to="/addnewposting"
-          style={{ textDecoration: "none", textDecorationColor: "white" }}
-        > */}
-        {/* <Button className={classes.addpostingButton}>
-          <Typography
-            style={{
-              textDecoration: "inherit",
-            }}
-          >
-            Add Posting
-          </Typography>
-        </Button> */}
-        {/* </Link> */}
 
         <AddPosting setOpen={setModalOpen} open={modalOpen} />
       </div>
