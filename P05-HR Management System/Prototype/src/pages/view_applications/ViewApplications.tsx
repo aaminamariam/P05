@@ -30,27 +30,20 @@ const View_Resumes = () => {
   };
   const renderDetailsButton = (params) => {
     return (
-      <div>
-        <Link
-          to={{ pathname: "https://github.com/vinothsmart/" }}
-          target="_blank"
-        />
-        <Button
-          variant="outlined"
-          size="medium"
-          onClick={() => {
-            console.log(params.value);
-            window.open(params.value);
-          }}
-        >
-          View CV
-        </Button>
-      </div>
+      <Button
+        variant="outlined"
+        size="medium"
+        onClick={() => {
+          window.open(params.value);
+        }}
+      >
+        View CV
+      </Button>
     );
   };
 
   const columns: GridColDef[] = [
-    { field: "date", headerName: "ID", width: 90 },
+    { field: "date", headerName: "date", width: 90 },
     {
       field: "name",
       headerName: "Name",
@@ -89,15 +82,23 @@ const View_Resumes = () => {
       sortable: false,
     },
     {
+      field: "email",
+      headerName: "email",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+    },
+    {
       field: "cv",
       headerName: "CV",
       renderCell: renderDetailsButton,
+      width: 90,
     },
   ];
 
   const getCVs = async () => {
     const response = await axios.get("http://localhost:5001/getcvs");
     const li = response.data.Items;
+    console.log(li);
     for (let i = 0; i < li.length; i++) {
       li[i].id = Math.random();
     }
