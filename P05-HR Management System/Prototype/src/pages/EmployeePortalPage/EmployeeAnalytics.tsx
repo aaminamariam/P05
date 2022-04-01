@@ -15,6 +15,8 @@ import Box from "@mui/material/Box";
 import DashCard from "../../components/DashCard";
 import List from "@mui/material/List";
 import DashCharts from "../../components/DashCharts";
+import {Bar} from 'react-chartjs-2';
+import BarChart from "./EmployeeGraphs";
 
 // const EmployeeReview = withStyles({
 //   root: {
@@ -26,6 +28,10 @@ import DashCharts from "../../components/DashCharts";
 //     },
 //   },
 // })(Button);
+
+
+
+
 
 const EmployeesAnalytics = () => {
   const average = (arr: any) =>
@@ -53,6 +59,7 @@ const EmployeesAnalytics = () => {
     // console.log(teamwork);
 
     const hoursworked = data.hoursworked;
+    console.log(hoursworked)
     setHrs(average(hoursworked.map((i: string) => Number(i))).toFixed(2));
     setComments(data.comments);
 
@@ -61,6 +68,7 @@ const EmployeesAnalytics = () => {
     // rating
   };
   getStats();
+
   const EmployeeData = [
     [
       "Month",
@@ -116,6 +124,8 @@ const EmployeesAnalytics = () => {
       title: "Day",
     },
   };
+
+ 
 
   return (
     <React.Fragment>

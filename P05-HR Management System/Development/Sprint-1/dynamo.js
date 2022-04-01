@@ -198,41 +198,45 @@ const deleteEmployee = async (employeeID) => {
 };
 
 //add employee statics
-const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
+const addstats = async (employeeID, comments, rating, teamworkScore, hours, postdate) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
-      "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours",
+      "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours, #date_posted = :postdate",
     ExpressionAttributeNames: {
       "#comments": "comments",
       "#rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursworked": "hoursworked",
+      "#date_posted": "postdate"
     },
     ExpressionAttributeValues: {
       ":vals": [comments],
       ":rating": [rating],
       ":tscore": [teamworkScore],
       ":hours": [hours],
+      ":postdate":postdate
     },
   };
   const params2 = {
     TableName: EMPLOYEE_TABLE,
     Key: { employeeID: employeeID },
     UpdateExpression:
-      "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours)",
+      "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours), #date_posted = :postdate",
     ExpressionAttributeNames: {
       "#com": "comments",
       "#rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursworked": "hoursworked",
+      "#date_posted": "postdate"
     },
     ExpressionAttributeValues: {
       ":vals": [comments],
       ":rating": [rating],
       ":tscore": [teamworkScore],
       ":hours": [hours],
+      ":postdate":postdate
     },
   };
   try {
@@ -250,9 +254,9 @@ const getEmployeeStatsbyID = async (id) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
-    KeyConditionExpression: "#ids = :id",
+    KeyConditionExpression: "#id = :id",
     ExpressionAttributeNames: {
-      "#ids": "employeeID",
+      "#id": "employeeID",
       "#Rating": "rating",
       "#teamscore": "teamworkScore",
       "#hoursWorked": "hoursworked",

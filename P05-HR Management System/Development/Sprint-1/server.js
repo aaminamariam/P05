@@ -154,6 +154,7 @@ app.post("/denyRequests", async (req, res) => {
 //no of projects/tasks, no of leaves->from db
 app.put("/addstats", async (req, res) => {
   const data = req.body;
+  const postdate = new Date().toISOString().slice(0, 10)
   console.log(data);
   try {
     res.json(
@@ -162,7 +163,8 @@ app.put("/addstats", async (req, res) => {
         data.comments,
         data.rating,
         data.teamworkScore,
-        data.hoursworked
+        data.hoursworked,
+        postdate
       )
     );
   } catch (err) {
