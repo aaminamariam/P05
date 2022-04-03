@@ -76,7 +76,7 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
       const li = response.data.Items;
       x = li;
       setList(x);
-      console.log("ANNOUNCE ITEMS", li);
+      // console.log("ANNOUNCE ITEMS", li);
     } catch (error) {
       console.error(error);
     }
