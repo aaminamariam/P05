@@ -55,7 +55,7 @@ app.post("/addnewemployee", async (req, res) => {
   const id = data.employeeID;
   const name = data.name;
   const department = data.department;
-  const designation = data. designation;
+  const designation = data.designation;
   const level = data.level;
   const dateJoined = data.dateJoined;
   const email = data.email;
@@ -65,7 +65,19 @@ app.post("/addnewemployee", async (req, res) => {
   const twRating = data.twRating;
 
   try {
-    const newEmployee = await addNewEmployee(id, name, department, designation, level, dateJoined, email, contact, address, remainingLeaves, twRating);
+    const newEmployee = await addNewEmployee(
+      id,
+      name,
+      department,
+      designation,
+      level,
+      dateJoined,
+      email,
+      contact,
+      address,
+      remainingLeaves,
+      twRating
+    );
     res.json(newEmployee);
   } catch (err) {
     console.error(err);
@@ -98,7 +110,7 @@ app.delete("/ids/:id", async (req, res) => {
 //add request
 app.post("/addreq", async (req, res) => {
   const data = req.body;
-  const postdate = new Date().toISOString().slice(0, 10)
+  const postdate = new Date().toISOString().slice(0, 10);
   console.log(data);
   try {
     const newCharacter = await addrequest(
@@ -199,6 +211,7 @@ app.get("/getrequests/:id", async (req, res) => {
 //display stats of employee
 app.get("/getstats/:id", async (req, res) => {
   const { id } = req.params;
+
   try {
     //const stats = await getEmployeeStatsbyID(id);
     res.json(await getEmployeeStatsbyID(id));
@@ -211,14 +224,25 @@ app.get("/getstats/:id", async (req, res) => {
 //add announcements
 app.post("/addNewAnnouncement", async (req, res) => {
   const data = req.body;
-  const today = new Date().toISOString().slice(0, 10)
-  const id = today
+  const today = new Date().toISOString().slice(0, 10);
+  const id = today;
   console.log("date recieved by server: ", data);
   try {
-    res.json(await addNewAnnouncement(id, data.postedBy, data.title, data.department, data.data, today));
+    res.json(
+      await addNewAnnouncement(
+        id,
+        data.postedBy,
+        data.title,
+        data.department,
+        data.data,
+        today
+      )
+    );
   } catch (err) {
     console.error(err);
-    res.status(500).json({ err: "Something went wrong while adding announcements in server" });
+    res.status(500).json({
+      err: "Something went wrong while adding announcements in server",
+    });
   }
 });
 
@@ -244,7 +268,7 @@ app.get("/activereq", async (req, res) => {
 
 // start the server in the port 5000!
 app.listen(process.env.PORT || 5001, function () {
-  console.log("Example app listening on port 5000.");
+  console.log("Example app listening on port 5001.");
 });
 //page doesnt exist
 app.use(function (req, res, next) {
