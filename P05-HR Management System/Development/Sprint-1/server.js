@@ -135,7 +135,7 @@ app.delete("/ids/:id", async (req, res) => {
 //add request
 app.post("/addreq", async (req, res) => {
   const data = req.body;
-  const postdate = new Date().toISOString().slice(0, 10);
+  const postdate = new Date().toISOString().slice(0, 19);
   console.log(data);
   try {
     const newCharacter = await addrequest(
@@ -213,7 +213,6 @@ app.get("/getEmployeeRequests", async (req, res) => {
 app.get("/getrequests/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    // const requests = await getEmployeeReqbyID(id, );
     res.json(await getEmployeeReqbyID(id));
   } catch (err) {
     console.error(err);
@@ -224,9 +223,7 @@ app.get("/getrequests/:id", async (req, res) => {
 //display stats of employee
 app.get("/getstats/:id", async (req, res) => {
   const { id } = req.params;
-
   try {
-    //const stats = await getEmployeeStatsbyID(id);
     res.json(await getEmployeeStatsbyID(id));
   } catch (err) {
     console.error(err);
@@ -237,7 +234,7 @@ app.get("/getstats/:id", async (req, res) => {
 //add announcements
 app.post("/addNewAnnouncement", async (req, res) => {
   const data = req.body;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date().toISOString().slice(0, 19);
   const id = today;
   console.log("date recieved by server: ", data);
   try {
@@ -251,6 +248,29 @@ app.post("/addNewAnnouncement", async (req, res) => {
         today
       )
     );
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      err: "Something went wrong while adding announcements in server",
+    });
+  }
+});
+
+//adds cv to database
+app.put("/addresume_info", async (req, res) => {
+  const data = req.body;
+  const name = data.name;
+  const email = data.email;
+  const phone = data.phone;
+  const city = data.city;
+  const sp = data.sp;
+  const linkedin = data.linkedin;
+  const cv = data.cv;
+  const today = new Date().toISOString().slice(0, 19);
+  const id = today;
+
+  try {
+    res.json(await add_cv_data(name, city, linkedin, phone, email, cv, sp));
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -289,5 +309,3 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Origin", "*");
 });
-
-console.log(new Date().toISOString().slice(0, 20));
