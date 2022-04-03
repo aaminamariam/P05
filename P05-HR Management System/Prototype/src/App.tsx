@@ -21,6 +21,7 @@ import ReqHist from "./pages/Requestshistory/employeerequests";
 import ToDo from "./components/ToDo/ToDo";
 import EmpStatsForm from "./components/empStatsForm";
 import AddReq from "./components/addrequest";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
 
 const drawerWidth = 240;
@@ -95,6 +96,7 @@ function App() {
             path="/employeedirectorypage"
             element={<EmployeeDirectoryPage />}
           />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/employeerequests"
             element={<EmployeeRequestsPageNew />}
