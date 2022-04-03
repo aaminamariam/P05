@@ -6,8 +6,9 @@ import { Alert, Button, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import {DataGrid,
-GridColDef,
+import {
+  DataGrid,
+  GridColDef,
   GridFilterModel,
   // GridSelectionModel,
   GridToolbarColumnsButton,
@@ -16,6 +17,7 @@ GridColDef,
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
+import { AnyAaaaRecord } from "dns";
 
 // import AddEmployee from "./AddEmployee";
 
@@ -26,7 +28,8 @@ export default function EmployeeRequestsPage() {
   const [firstRender, setfirstRender] = useState(true);
   const [modalOpen] = useState(false);
 
-  const [selectedIndex, setSelectedIndex] = useState<any[]>([]);
+  //const [selectedIndex, setSelectedIndex] = useState<any[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<any>();
 
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
@@ -39,11 +42,12 @@ export default function EmployeeRequestsPage() {
   });
 
   const columns: GridColDef[] = [
-    { field: "requesterName", headerName: "Request by", width: 130 },
+    { field: "id", headerName: "Employee ID", width: 130 },
     { field: "type", headerName: "Type", width: 150 },
     { field: "title", headerName: "Title", width: 250 },
     { field: "status", headerName: "Status", width: 300 },
     { field: "data", headerName: "Request", width: 700 },
+    { field: "dateAdded", headerName: "Date Added", width: 150 },
 
     // {
     //   field: "age",
@@ -104,7 +108,7 @@ export default function EmployeeRequestsPage() {
       method: "post",
       url: "http://localhost:5001/approveRequests",
       data: {
-        ids: selectedIndex,
+        id: selectedIndex[0],
       },
     });
   };
@@ -130,8 +134,8 @@ export default function EmployeeRequestsPage() {
 
   useEffect(() => {
     console.log("SELECTED INDEX:", selectedIndex);
-  }, [selectedIndex]);
-
+  }, selectedIndex);
+  //[selectedIndex]
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: string
@@ -161,14 +165,13 @@ export default function EmployeeRequestsPage() {
       <GridToolbarContainer
         style={{ display: "flex", justifyContent: "space-between" }}
       >
-        
         <div>
           <GridToolbarColumnsButton style={{ margin: 10 }} />
           <GridToolbarFilterButton style={{ margin: 10 }} />
           <GridToolbarDensitySelector style={{ margin: 10 }} />
-          <GridToolbarExport style={{ margin: 10 }}/>
+          <GridToolbarExport style={{ margin: 10 }} />
         </div>
-   
+
         <div>
           {/* <AddEmployee setOpen={setModalOpen} open={modalOpen} /> */}
         </div>

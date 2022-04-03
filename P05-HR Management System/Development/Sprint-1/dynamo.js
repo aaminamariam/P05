@@ -34,28 +34,33 @@ const getEmployeeRequests = async (id) => {
 };
 
 //add request to database
-const addrequest = async (option, des, id, date) => {
+const addrequest = async (type, data, id, title, date) => {
   const params = {
     TableName: REQUESTS_TABLE,
-    Key: { employeeID: id },
+    Key: { id: id },
     UpdateExpression:
-      "SET #option = :option , #description = :description, #status = :status",
+      "SET #type = :type , #data = :data, #status = :status, #title = :title, #dateAdded= :date" ,
     ExpressionAttributeNames: {
-      "#option": "option",
-      "#description": "description",
-      "#stat": "status",
+      "#type": "type",
+      "#data": "data",
+      "#title": "title",
+      "#status": "status",
+      "#dateAdded":"dateAdded"
     },
     ExpressionAttributeValues: {
-      ":option": option,
-      ":description": des,
-      ":status": "new",
+      ":type": type,
+      ":data": data,
+      ":title": title,
+      ":status": "New",
+      ":date": date
+
     },
   };
   return await dynamoClient.update(params).promise();
 };
 
 //add request to database
-const approveRequests = async (ids) => {
+const approveRequests = async (id) => {
   const params = {
     TableName: REQUESTS_TABLE,
     Key: { id: id },
@@ -65,14 +70,19 @@ const approveRequests = async (ids) => {
       "#status": "status",
     },
     ExpressionAttributeValues: {
-      ":status": "approved",
+      ":status": "Approved",
     },
-  };
+ }
+  // dynamoClient.batchWrite(params, function(err, data) {
+  //   if (err) console.log(err, err.stack); // an error occurred
+  //   else console.log(data);// successful response
+  // });
+
   return await dynamoClient.update(params).promise();
 };
 
 //add request to database
-const denyRequests = async (ids) => {
+const denyRequests = async (id) => {
   const params = {
     TableName: REQUESTS_TABLE,
     Key: { id: id },
@@ -82,9 +92,14 @@ const denyRequests = async (ids) => {
       "#status": "status",
     },
     ExpressionAttributeValues: {
-      ":status": "denied",
+      ":status": "Denied",
     },
   };
+  // dynamoClient.batchGet(params, function(err, data) {
+  //   if (err) console.log(err, err.stack); // an error occurred
+  //   else  console.log(data);// successful response
+  // });
+
   return await dynamoClient.update(params).promise();
 };
 
@@ -362,3 +377,5 @@ module.exports = {
   addNewAnnouncement,
   getAnnouncements,
 };
+
+

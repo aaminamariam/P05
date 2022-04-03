@@ -90,20 +90,25 @@ const BootstrapButton = styled(Button)({
 
 const AddReq = () => {
   const classes = useStyles();
-  const [option, set_option] = useState("");
-  const [description, set_description] = useState("");
+  const [type, set_type] = useState("");
+  const [data, set_data] = useState("");
   const [id, set_id] = useState("");
+  const [title, set_title] = useState("");
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleChange = (event: any) => {
-    set_option(event.target.value);
+    set_type(event.target.value);
   };
 
   const handleChangeDes = (event: any) => {
-    set_description(event.target.value);
+    set_data(event.target.value);
   };
 
-  const is_empty = (option: string, description: string, id: string) => {
-    if (option === "" || description === "" || id === "") {
+  const handleChangeTitle = (event: any) => {
+    set_title(event.target.value);
+  };
+
+  const is_empty = (type: string, title: string, data: string, id: string) => {
+    if (type === "" || data === "" || id === "" || title === "") {
       alert("a field is empty");
       return 1;
     }
@@ -112,12 +117,12 @@ const AddReq = () => {
   //sub
   const submitRequest = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    const check = is_empty(option, description, id);
+    const check = is_empty(type, title, data, id);
     if (check === 0) {
       await axios({
         method: "post",
-        url: "http://localhost:5000/addreq",
-        data: { option: option, description: description, employeeID: id },
+        url: "http://localhost:5001/addreq",
+        data: { type: type, title:title, data: data, id: id },
       }).then((response: { data: any }) => {
         console.log(response.data);
         //alert("Your Request has been submitted");
@@ -149,6 +154,18 @@ const AddReq = () => {
           value={id}
           onChange={(event: any) => set_id(event.target.value)}
         />
+
+        <Typography className={classes.typo} variant="h6">
+          Title:
+        </Typography>
+        <TextField
+          id="outlined-multiline-flexible"
+          label="Title"
+          maxRows={10}
+          value={title}
+          fullWidth={true}
+          onChange={handleChangeTitle}
+        />  
         <Typography className={classes.typo} variant="h6">
           Reason:
         </Typography>
@@ -157,7 +174,7 @@ const AddReq = () => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={option}
+            value={type}
             label="Option"
             onChange={handleChange}
           >
@@ -177,7 +194,7 @@ const AddReq = () => {
             label="Description"
             multiline
             rows={8}
-            value={description}
+            value={data}
             onChange={handleChangeDes}
             variant="outlined"
             fullWidth={true}

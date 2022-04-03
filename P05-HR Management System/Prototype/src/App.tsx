@@ -15,11 +15,13 @@ import JobApplication from "./pages/JobApplication";
 import EmployeeDirectoryPage from "./pages/EmployeeDirectoryPage/EmployeeDirectoryPage";
 import Addnewposting from "./pages/Hiring Portal/Addnewposting";
 import EmployeePortalPage from "./pages/EmployeePortalPage/EmployeePortalPage";
+import View_Resumes from "./pages/view_applications/ViewApplications";
 import EmployeesAnalytics from "./pages/EmployeePortalPage/EmployeeAnalytics";
 import ReqHist from "./pages/Requestshistory/employeerequests";
 import ToDo from "./components/ToDo/ToDo";
 import EmpStatsForm from "./components/empStatsForm";
 import AddReq from "./components/addrequest";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
 
 const drawerWidth = 240;
@@ -89,10 +91,12 @@ function App() {
           <Route path="/hiringportal" element={<HiringPortalPage />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortalPage />} />
+          <Route path="/view_resumes" element={<View_Resumes />} />
           <Route
             path="/employeedirectorypage"
             element={<EmployeeDirectoryPage />}
           />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/employeerequests"
             element={<EmployeeRequestsPageNew />}

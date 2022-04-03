@@ -8,10 +8,11 @@ const {
   addOrUpdateEmployee,
   deleteEmployee,
   addrequest,
+  approveRequests,
+  denyRequests,
   getEmployeeRequests,
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
-  approvedenyRequests,
   addstats,
   getEmployeeStatsbyID,
   addNewAnnouncement,
@@ -19,6 +20,8 @@ const {
   getAnnouncements,
   addNewEmployee,
 } = require("./dynamo");
+
+const { add_cv_data, getapplications } = require("./uploader");
 
 const cors = require("cors");
 app.use(
@@ -48,7 +51,18 @@ app.post("/employee", async (req, res) => {
   }
 });
 
-//post
+//getcv data
+app.get("/getcvs", async (req, res) => {
+  try {
+    const cvs = await getapplications();
+    res.json(cvs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+//add a new employee
 app.post("/addnewemployee", async (req, res) => {
   const data = req.body;
 
@@ -57,7 +71,7 @@ app.post("/addnewemployee", async (req, res) => {
   const department = data.department;
   const designation = data.designation;
   const level = data.level;
-  const dateJoined = data.dateJoined;
+  const dateJoined = new Date().toISOString().slice(0, 10);
   const email = data.email;
   const contact = data.contact;
   const address = data.address;
@@ -96,6 +110,17 @@ app.get("/ids", async (req, res) => {
   }
 });
 
+//get all items
+app.get("/getapplications", async (req, res) => {
+  try {
+    const characters = await getEmployees();
+    res.json(characters);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
 //delete a specific item
 app.delete("/ids/:id", async (req, res) => {
   const { id } = req.params;
@@ -114,9 +139,11 @@ app.post("/addreq", async (req, res) => {
   console.log(data);
   try {
     const newCharacter = await addrequest(
-      data.option,
-      data.description,
-      data.employeeID,
+      data.type,
+      data.data,
+      data.id,
+      //data.status,
+      data.title,
       postdate
     );
     res.json(newCharacter);
@@ -129,16 +156,9 @@ app.post("/addreq", async (req, res) => {
 // approve requests for HR
 app.post("/approveRequests", async (req, res) => {
   const data = req.body;
-  console.log(data);
+  console.log(data, "data");
   try {
-    res.json(
-      await approveRequests(
-        data.employeeID,
-        data.approval,
-        data.description,
-        data.option
-      )
-    );
+    res.json(await approveRequests(data.id));
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
@@ -150,14 +170,7 @@ app.post("/denyRequests", async (req, res) => {
   const data = req.body;
   console.log(data);
   try {
-    res.json(
-      await denyRequests(
-        data.employeeID,
-        data.approval,
-        data.description,
-        data.option
-      )
-    );
+    res.json(await denyRequests(data.id));
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
@@ -276,3 +289,5 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Origin", "*");
 });
+
+console.log(new Date().toISOString().slice(0, 20));

@@ -47,7 +47,7 @@ const ReqHist = () => {
     } catch (error) {
       console.error(error);
     }
-    let a = [];
+    let a = [] as any;
     for (let i = 0; i < x.length; i++) {
       a.push({
         title: x[i].name,

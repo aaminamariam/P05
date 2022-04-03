@@ -3,13 +3,15 @@ import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   rot: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
     padding: theme.spacing(2),
     position: "absolute",
@@ -32,82 +34,120 @@ const useStyles = makeStyles((theme) => ({
     width: "75%",
     height: "120%",
     boxSizing: "border-box",
-    background: "#c4c4c4",
   },
   text: {
     background: "#ffffff",
     borderRadius: "50px",
   },
 }));
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Form = () => {
   const classes = useStyles();
   const [name, setname] = useState("");
   const [phoneno, setphoneno] = useState("");
   const [linkedinprofile, setlinkedinprofile] = useState("");
-  const [location, setlocation] = useState("");
+  const [city, setcity] = useState("");
+  const [state, setstate] = useState("");
   const [email, setemail] = useState("");
+  const [open, setOpen] = React.useState(false);
   const [uploadFile, setUploadFile] = useState<any | null>(null);
+
   const submission = async () => {
     let formField = new FormData();
     formField.append("title", "CV");
     formField.append("document", uploadFile[0]);
-
+    const name =
+      Math.random().toString(36).substring(2, 7) + uploadFile[0].name;
+    const link =
+      "https://yw2d4umwc5.execute-api.us-east-1.amazonaws.com/devdep/mycvandresumebucket/" +
+      name;
+    console.log(uploadFile[0]);
+    const cv_link = "https://mycvandresumebucket.s3.amazonaws.com/" + name;
+    await axios({ method: "put", url: link, data: uploadFile[0] });
     await axios({
-      method: "post",
-      url: "http://52.91.138.50:8000/upload/",
-      data: formField,
-    }).then((response: { data: any }) => {
-      console.log(response.data);
-      alert("Your Job application has been submitted");
+      method: "put",
+      url: "http://localhost:5001/addresume_info",
+      data: {
+        name: name,
+        city: city,
+        linkedin: linkedinprofile,
+        phone: phoneno,
+        email: email,
+        cv: cv_link,
+        sp: state,
+      },
+    }).then(() => {
+      setOpen(true);
     });
+  };
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
   };
   return (
     <>
-      {/* <Box className={classes.sqr}> */}
-      <form className={classes.rot}>
-        <TextField
-          className={classes.text}
-          label="Full Name"
-          variant="filled"
-          required
-          value={name}
-          onChange={(e) => setname(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          label="Phone Number"
-          variant="filled"
-          required
-          value={phoneno}
-          onChange={(e) => setphoneno(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          label="Email"
-          variant="filled"
-          required
-          value={email}
-          onChange={(e) => setemail(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          label="LinkedInProfileUrl"
-          variant="filled"
-          required
-          value={linkedinprofile}
-          onChange={(e) => setlinkedinprofile(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          label="Location"
-          variant="filled"
-          required
-          value={location}
-          onChange={(e) => setlocation(e.target.value)}
-        />
+      <Box className={classes.sqr}>
+        <form className={classes.rot}>
+          <TextField
+            className={classes.text}
+            label="Full Name"
+            variant="filled"
+            required
+            value={name}
+            onChange={(e) => setname(e.target.value)}
+          />
+          <TextField
+            className={classes.text}
+            label="Phone Number"
+            variant="filled"
+            required
+            value={phoneno}
+            onChange={(e) => setphoneno(e.target.value)}
+          />
+          <TextField
+            className={classes.text}
+            label="Email"
+            variant="filled"
+            required
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
+          />
+          <TextField
+            className={classes.text}
+            label="LinkedInProfileUrl"
+            variant="filled"
+            required
+            value={linkedinprofile}
+            onChange={(e) => setlinkedinprofile(e.target.value)}
+          />
+          <TextField
+            className={classes.text}
+            label="City"
+            variant="filled"
+            required
+            value={city}
+            onChange={(e) => setcity(e.target.value)}
+          />
+          <TextField
+            className={classes.text}
+            label="state/Province"
+            variant="filled"
+            required
+            value={state}
+            onChange={(e) => setstate(e.target.value)}
+          />
 
-        <Button
+          {/* <Button
           variant="contained"
           component="label"
           style={{
@@ -122,31 +162,30 @@ const Form = () => {
         >
           Upload Cover Letter
           <input type="file" hidden />
-        </Button>
+        </Button> */}
 
-        <Button
-          variant="contained"
-          component="label"
-          style={{
-            borderRadius: "50px",
-            maxWidth: "170px",
-            maxHeight: "50px",
-            minWidth: "30px",
-            minHeight: "30px",
-            backgroundColor: "#ffffff",
-            color: "grey",
-          }}
-        >
-          Upload Resume
-          <input
-            type="file"
-            onChange={(e) => setUploadFile(e.target.files)}
-            hidden
-            required
-          />
-        </Button>
-        <div>
-          <NavLink to="/hiringportal">
+          <Button
+            variant="contained"
+            component="label"
+            style={{
+              borderRadius: "50px",
+              maxWidth: "170px",
+              maxHeight: "50px",
+              minWidth: "30px",
+              minHeight: "30px",
+              backgroundColor: "#ffffff",
+              color: "grey",
+            }}
+          >
+            Upload Resume
+            <input
+              type="file"
+              onChange={(e) => setUploadFile(e.target.files)}
+              hidden
+              required
+            />
+          </Button>
+          <div>
             <Button
               style={{
                 backgroundColor: "#46b988",
@@ -159,10 +198,18 @@ const Form = () => {
             >
               Submit
             </Button>
-          </NavLink>
-        </div>
-      </form>
-      {/* </Box> */}
+          </div>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Your Application has been successfully submitted.
+            </Alert>
+          </Snackbar>
+        </form>
+      </Box>
     </>
   );
 };

@@ -75,7 +75,7 @@ const Hiringportal = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const fetchJobs = async () => {
-    const result = await axios.get("http://localhost:5001/jobs/jobpostings/");
+    const result = await axios.get("http://localhost:800/jobs/jobpostings/");
     // console.log(result.data)
     setHiringPortalListItems(result.data);
     // console.log(HiringPortalListItems)
@@ -95,22 +95,6 @@ const Hiringportal = () => {
   return (
     <div className={classes.root}>
       <div className={classes.listheader}>
-        {/* LIST HEADER */}
-        {/* <div>Search Bar</div> */}
-        {/* <Link
-          to="/addnewposting"
-          style={{ textDecoration: "none", textDecorationColor: "white" }}
-        > */}
-        {/* <Button className={classes.addpostingButton}>
-          <Typography
-            style={{
-              textDecoration: "inherit",
-            }}
-          >
-            Add Posting
-          </Typography>
-        </Button> */}
-        {/* </Link> */}
 
         <AddPosting setOpen={setModalOpen} open={modalOpen} />
       </div>
