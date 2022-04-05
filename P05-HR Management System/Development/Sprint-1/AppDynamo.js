@@ -73,4 +73,3 @@ const addJobApplication = async (name,number,email, url,location) => {
     };
   
     
-//deleteJob("3/10/2022, 10:53:47 PM")

@@ -75,23 +75,16 @@ const Hiringportal = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const fetchJobs = async () => {
-    const result = await axios.get("http://localhost:800/jobs/jobpostings/");
-    // console.log(result.data)
-    setHiringPortalListItems(result.data);
-    // console.log(HiringPortalListItems)
+    const result = await axios.get("http://localhost:8000/hiringportal");
+    console.log(result.data,"items");
+    // setHiringPortalListItems(result.data.items);
   };
-  const handleDelete = async (id: string) => {
-    const link = "http://localhost:5001/jobs/jobpostings/";
-    const clink = link.concat(id);
-    const del_link = clink.concat("/");
-    const result = await axios.delete(del_link);
-    fetchJobs();
-  };
+ 
 
   useEffect(() => {
     fetchJobs();
   }, []);
-
+  fetchJobs();
   return (
     <div className={classes.root}>
       <div className={classes.listheader}>
@@ -122,7 +115,7 @@ const Hiringportal = () => {
                   <Button
                     component="div"
                     onClick={() => {
-                      handleDelete(item.id);
+                      //handleDelete(item.id);
                     }}
                     aria-label="delete"
                     className={classes.del}

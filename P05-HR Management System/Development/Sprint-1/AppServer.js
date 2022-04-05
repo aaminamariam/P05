@@ -44,8 +44,7 @@ app.post("/addnewposting",async (req,res) => {
 })
 
 app.get("/hiringportal",async (req,res) => {
-  const data = req.body
-
+  const data = req.body;
   try {
     const Jobs = await getjobs();
   res.json(Jobs);
