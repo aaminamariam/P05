@@ -14,23 +14,23 @@ const JOBS_TABLE = "jobpostings";
 const APPLICATION_TABLE = "";
 
 //add new job
-const addJob = async (title,des,dept,location) => {
-  const postdate = new Date().toLocaleString();
-    const params = {
-      TableName: JOBS_TABLE,
-      Item: {
-        title: title,
-        description: des,
-        dept: dept,
-        location: location,
-        date_posted: postdate
-      },
-    };
-    return await dynamoClient.put(params).promise();
+const addJob = async (title, des, dept, location) => {
+  const result = Math.random().toString(36).substring(2, 15);
+  const params = {
+    TableName: JOBS_TABLE,
+    Item: {
+      title: title,
+      description: des,
+      dept: dept,
+      location: location,
+      date_posted: result,
+    },
   };
+  return await dynamoClient.put(params).promise();
+};
 
 //get jobs
-const getjobs= async () => {
+const getjobs = async () => {
   const params = {
     TableName: JOBS_TABLE,
   };
@@ -43,33 +43,31 @@ const deleteJob = async (date_posted) => {
   const params = {
     TableName: JOBS_TABLE,
 
-    Key: { date_posted },
+    Key: { date_posted: date_posted.date },
   };
   await dynamoClient.delete(params).promise();
-  console.log("deleted");
+
   return;
 };
 
 //apply for job
-const addJobApplication = async (name,number,email, url,location) => {
-    const params = {
-      TableName: JOBS_TABLE ,
-      Item: {
-        name: name,
-        contact: number,
-        email: email,
-        linkedinUrl: url,
-        location: location
-      },
-    };
-    return await dynamoClient.put(params).promise();
+const addJobApplication = async (name, number, email, url, location) => {
+  const params = {
+    TableName: JOBS_TABLE,
+    Item: {
+      name: name,
+      contact: number,
+      email: email,
+      linkedinUrl: url,
+      location: location,
+    },
   };
+  return await dynamoClient.put(params).promise();
+};
 
-  module.exports =  { 
-      addJob,
-      getjobs,
-      deleteJob,
-      addJobApplication 
-    };
-  
-    
+module.exports = {
+  addJob,
+  getjobs,
+  deleteJob,
+  addJobApplication,
+};

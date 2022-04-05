@@ -60,6 +60,7 @@ const useStyles = makeStyles(() =>
     del: {
       color: "#ffffff",
       postion: "relative",
+      justifyContent: "space-around",
     },
     header: {
       fontWeight: "bold",
@@ -76,10 +77,13 @@ const Hiringportal = () => {
 
   const fetchJobs = async () => {
     const result = await axios.get("http://localhost:8000/hiringportal");
-    console.log(result.data,"items");
-    // setHiringPortalListItems(result.data.items);
+    setHiringPortalListItems(result.data.Items);
   };
- 
+  const handleDelete = async (date_posted: string) => {
+    const dlt = "http://localhost:8000/hiringportal/" + date_posted;
+    await axios.delete(dlt);
+    fetchJobs();
+  };
 
   useEffect(() => {
     fetchJobs();
@@ -88,7 +92,6 @@ const Hiringportal = () => {
   return (
     <div className={classes.root}>
       <div className={classes.listheader}>
-
         <AddPosting setOpen={setModalOpen} open={modalOpen} />
       </div>
 
@@ -104,18 +107,18 @@ const Hiringportal = () => {
           }}
         >
           {HiringPortalListItems.map((item) => (
-            <ListItem key={item}>
+            <ListItem key={item.date_posted}>
               <Card className={classes.card}>
                 <CardContent>
                   <ListItemText className={classes.header}>
-                    {item.job_title}
+                    {item.title}
                   </ListItemText>
                   <ListItemText>{item.description}</ListItemText>
                   <ListItemText>{item.location}</ListItemText>
                   <Button
                     component="div"
                     onClick={() => {
-                      //handleDelete(item.id);
+                      handleDelete(item.date_posted);
                     }}
                     aria-label="delete"
                     className={classes.del}
