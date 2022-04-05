@@ -113,7 +113,6 @@ const Hiringportal = () => {
                   <ListItemText className={classes.header}>
                     {item.title}
                   </ListItemText>
-                  <ListItemText>{item.description}</ListItemText>
                   <ListItemText>{item.location}</ListItemText>
                   <Button
                     component="div"

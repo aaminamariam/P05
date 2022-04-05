@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import img from "./imglogin.svg";
 import Grid from "@mui/material/Grid";
+import axios from "axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -26,13 +27,29 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginPage() {
   const classes = useStyles();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     console.log({
       id: data.get("id"),
       password: data.get("password"),
+    });
+
+    await axios({
+      method: "post",
+      url: "http://localhost:5001/login",
+      data: {
+        id: data.get("id"),
+        password: data.get("password"),
+      },
+    }).then((response: { data: string }) => {
+      console.log(response);
+      if (response.data === "Success") {
+        window.location.href = "/";
+      } else {
+        alert("Invalid ID or Password");
+      }
     });
   };
   return (

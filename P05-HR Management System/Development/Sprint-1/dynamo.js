@@ -24,6 +24,46 @@ const getEmployees = async () => {
   return employees;
 };
 
+//login
+const login = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    KeyConditionExpression: "#ids = :id",
+    ProjectionExpression: "#ids, #password",
+    ExpressionAttributeNames: {
+      "#ids": "id",
+      "#password": "password",
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
+
+  const loginpass = await dynamoClient.query(params).promise();
+  return loginpass;
+};
+const generateAccessToken = (username) => {
+  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
+};
+
+// auth token
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+    console.log(err);
+
+    if (err) return res.sendStatus(403);
+
+    req.user = user;
+
+    next();
+  });
+};
+
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
   const params = {
@@ -134,12 +174,13 @@ const addNewEmployee = async (
 };
 
 // add to database
-const addOrUpdateEmployee = async (employee, name) => {
+const addOrUpdateEmployee = async (employee, name, password) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
-      employeeID: employee,
+      id: employee,
       name: name,
+      password: password,
     },
   };
   return await dynamoClient.put(params).promise();
@@ -350,4 +391,5 @@ module.exports = {
   getEmployeeStatsbyID,
   addNewAnnouncement,
   getAnnouncements,
+  login,
 };

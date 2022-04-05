@@ -2,7 +2,8 @@
 // this file contains all rest apis
 var express = require("express");
 var app = express();
-
+const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
 const {
   getEmployees,
   addOrUpdateEmployee,
@@ -14,6 +15,7 @@ const {
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
   addstats,
+  login,
   getEmployeeStatsbyID,
   addNewAnnouncement,
   addAnnouncements,
@@ -30,6 +32,12 @@ app.use(
   })
 );
 
+// get config vars
+dotenv.config();
+
+// access config var
+process.env.TOKEN_SECRET;
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -38,6 +46,58 @@ app.get("/", (req, res) => {
 
 // rest apis
 //post
+app.post("/login", async (req, res) => {
+  const userid = req.body.id;
+  const user = { id: userid };
+
+  if (userid == null) {
+    return res.status(400).send("Cannot find user");
+  }
+
+  let data = await login(req.body.id);
+
+  try {
+    // Load hash from your password DB.
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      data.Items[0].password
+    );
+    if (validPassword) {
+      res.json("Success");
+
+      const accessToken = generateAccessToken(user);
+      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+      refreshTokens.push(refreshToken);
+      res.json({ accessToken: accessToken, refreshToken: refreshToken });
+    } else {
+      res.json("Not Allowed");
+    }
+  } catch {
+    res.status(500).send();
+  }
+});
+
+//post
+app.post("/employee", async (req, res) => {
+  const data = req.body;
+  const employee = data.employeeID;
+  const name = data.name;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
+
+  try {
+    const newEmployee = await addOrUpdateEmployee(
+      employee,
+      name,
+      hashedPassword
+    );
+    res.json(newEmployee);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
 app.post("/employee", async (req, res) => {
   const data = req.body;
   const employee = data.employeeID;
