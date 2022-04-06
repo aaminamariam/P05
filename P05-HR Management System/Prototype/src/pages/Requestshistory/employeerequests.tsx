@@ -48,16 +48,16 @@ const ReqHist = () => {
       console.error(error);
     }
     let a = [];
-    for (let i = 0; i < x.length; i++) {
-      a.push({
-        title: x[i].name,
-        type: x[i].option,
-        data: x[i].description,
-        active: x[i].status,
-      });
+    // for (let i = 0; i < x.length; i++) {
+    //   a.push({
+    //     title: x[i].name,
+    //     type: x[i].option,
+    //     data: x[i].description,
+    //     active: x[i].status,
+    //   });
 
-      setList([...list, a]);
-    }
+    //   setList([...list, a]);
+    // }
   };
 
   useEffect(() => {

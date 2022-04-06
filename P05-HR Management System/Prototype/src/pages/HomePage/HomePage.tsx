@@ -17,6 +17,7 @@ import EmployeeGenderCard from "./EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "./EmployeeTurnoverCard";
 import EmployeeRetentionCard from "./EmployeeRetentionCard";
+import Graph from "./Graph";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -35,9 +36,6 @@ const useStyles = makeStyles(() =>
       // justifyContent: "stretch",
     },
     content: {
-      // backgroundColor: "red",
-      display: "flex",
-      flexGrow: 1,
       marginTop: "25px",
     },
   })
@@ -123,7 +121,7 @@ const HomePage = () => {
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
             <EnhancedCard title="New Requests">
-              <RequestList />
+              {/* <RequestList /> */}
             </EnhancedCard>
           </Link>
         </Grid>
@@ -144,19 +142,19 @@ const HomePage = () => {
             <EmployeeGenderCard />
           </EnhancedCard>
         </Grid>
+
         <Grid item lg={3}>
-          <EnhancedCard title="Employee Turnover">
-            <EmployeeTurnoverCard />
-          </EnhancedCard>
+          <EmployeeTurnoverCard />
+        </Grid>
+        <Grid item lg={3}>
+          {/* <EmployeeTurnoverCard /> */}
         </Grid>
 
         <Grid item lg={3}>
-          <EnhancedCard title="Employee Retention">
-            <EmployeeRetentionCard />
-          </EnhancedCard>
+          <EmployeeRetentionCard />
         </Grid>
 
-        <Grid item lg={3}>
+        {/* <Grid item lg={3}>
           <Link
             to="/empstats"
             style={{
@@ -170,6 +168,11 @@ const HomePage = () => {
               // backgroundColor= "#FD6A00"
             />
           </Link>
+        </Grid> */}
+        <Grid item lg={3}>
+          {/* <EnhancedCard title="Sample graph"> */}
+          {/* <Graph /> */}
+          {/* </EnhancedCard> */}
         </Grid>
       </Grid>
     </div>
