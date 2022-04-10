@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -122,7 +122,7 @@ const AddReq = () => {
       await axios({
         method: "post",
         url: "http://localhost:5001/addreq",
-        data: { type: type, title:title, data: data, id: id },
+        data: { type: type, title: title, data: data, id: id },
       }).then((response: { data: any }) => {
         console.log(response.data);
         //alert("Your Request has been submitted");
@@ -133,6 +133,21 @@ const AddReq = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const parseJwt = (token) => {
+    try {
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch (e) {
+      return null;
+    }
+  };
+  const getJwtToken = () => {
+    const token = sessionStorage.getItem("jwt");
+    const name: string = token as string;
+    return name;
+  };
+  useEffect(() => {
+    set_id(parseJwt(getJwtToken()).id);
+  }, []);
 
   const open = Boolean(anchorEl);
   const o = open ? "simple-popover" : undefined;
@@ -165,7 +180,7 @@ const AddReq = () => {
           value={title}
           fullWidth={true}
           onChange={handleChangeTitle}
-        />  
+        />
         <Typography className={classes.typo} variant="h6">
           Reason:
         </Typography>

@@ -68,6 +68,11 @@ const useStyles = makeStyles(() =>
     },
   })
 );
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+}
 
 const Hiringportal = () => {
   const classes = useStyles();
@@ -76,12 +81,14 @@ const Hiringportal = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const fetchJobs = async () => {
-    const result = await axios.get("http://localhost:8000/hiringportal");
+    const result = await axios.get("http://localhost:8000/hiringportal", {
+      headers: { "access-token": getJwtToken() },
+    });
     setHiringPortalListItems(result.data.Items);
   };
   const handleDelete = async (date_posted: string) => {
     const dlt = "http://localhost:8000/hiringportal/" + date_posted;
-    await axios.delete(dlt);
+    await axios.delete(dlt, { headers: { "access-token": getJwtToken() } });
     fetchJobs();
   };
 

@@ -2,7 +2,7 @@ const { sign, verify } = require("jsonwebtoken");
 
 const createTokens = (user) => {
   const accessToken = sign(
-    { username: user.username, id: user.id },
+    { name: user.name, id: user.id },
     process.env.TOKEN_SECRET
   );
 
@@ -10,7 +10,7 @@ const createTokens = (user) => {
 };
 
 const validateToken = (req, res, next) => {
-  const accessToken = req.cookies["access-token"];
+  const accessToken = req.headers["access-token"];
 
   if (!accessToken)
     return res.status(400).json({ error: "User not Authenticated!" });

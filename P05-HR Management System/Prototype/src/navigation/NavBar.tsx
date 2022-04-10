@@ -75,6 +75,9 @@ const NavBar = (props: any) => {
       <ListItem button component={Link} to="/apportal">
         App Portal
       </ListItem>
+      <ListItem button component={Link} to="/view_resumes">
+        View Applications
+      </ListItem>
     </React.Fragment>
   );
 

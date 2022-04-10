@@ -7,6 +7,7 @@ const {
   deleteJob,
   addJobApplication,
 } = require("./AppDynamo");
+const { createTokens, validateToken } = require("./jwt");
 
 const cors = require("cors");
 app.use(
@@ -39,7 +40,7 @@ app.post("/addnewposting", async (req, res) => {
   }
 });
 
-app.get("/hiringportal", async (req, res) => {
+app.get("/hiringportal", validateToken, async (req, res) => {
   const data = req.body;
   try {
     const Jobs = await getjobs();
@@ -51,7 +52,7 @@ app.get("/hiringportal", async (req, res) => {
 });
 
 //delete job posting
-app.delete("/hiringportal/:date", async (req, res) => {
+app.delete("/hiringportal/:date", validateToken, async (req, res) => {
   const { date_posted } = req.params;
   console.log(date_posted);
   try {

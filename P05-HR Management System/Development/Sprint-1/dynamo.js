@@ -29,10 +29,11 @@ const login = async (id) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     KeyConditionExpression: "#ids = :id",
-    ProjectionExpression: "#ids, #password",
+    ProjectionExpression: "#ids, #password,#name",
     ExpressionAttributeNames: {
       "#ids": "id",
       "#password": "password",
+      "#name": "name",
     },
     ExpressionAttributeValues: {
       ":id": id,

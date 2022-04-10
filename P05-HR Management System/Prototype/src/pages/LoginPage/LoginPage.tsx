@@ -24,17 +24,15 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
   },
 }));
+export function setJwtToken(token) {
+  sessionStorage.setItem("jwt", token);
+}
 
 export default function LoginPage() {
   const classes = useStyles();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    console.log({
-      id: data.get("id"),
-      password: data.get("password"),
-    });
 
     await axios({
       method: "post",
@@ -45,10 +43,12 @@ export default function LoginPage() {
       },
     }).then((response: { data: string }) => {
       console.log(response);
-      if (response.data === "Success") {
-        window.location.href = "/";
-      } else {
+      if (response.data === "Invalid Credentials") {
+        // window.location.href = "/";
         alert("Invalid ID or Password");
+      } else {
+        window.location.href = "/";
+        setJwtToken(response.data);
       }
     });
   };

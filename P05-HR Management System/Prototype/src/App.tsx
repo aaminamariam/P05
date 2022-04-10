@@ -20,7 +20,7 @@ import EmployeesAnalytics from "./pages/EmployeePortalPage/EmployeeAnalytics";
 import ReqHist from "./pages/Requestshistory/employeerequests";
 import ToDo from "./components/ToDo/ToDo";
 import EmpStatsForm from "./components/empStatsForm";
-import AddReq from "./components/addrequest";
+import AddReq from "./pages/addrequest/addrequest";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
 

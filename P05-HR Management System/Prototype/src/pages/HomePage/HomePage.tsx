@@ -42,6 +42,17 @@ const useStyles = makeStyles(() =>
     },
   })
 );
+const getJwtToken = () => {
+  return sessionStorage.getItem("jwt");
+};
+
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
 const HomePage = () => {
   const classes = useStyles();
@@ -61,6 +72,9 @@ const HomePage = () => {
     }
   };
 
+  const setJwtToken = (token) => {
+    sessionStorage.setItem("jwt", token);
+  };
   const getEmployeeNumber = async () => {
     try {
       const response = await axios.get("http://localhost:5001/ids/");
@@ -164,11 +178,7 @@ const HomePage = () => {
               color: "white",
             }}
           >
-            <StatCard
-              icon={<GroupIcon />}
-              title="Add Employee Statics"
-            
-            />
+            <StatCard icon={<GroupIcon />} title="Add Employee Statics" />
           </Link>
         </Grid>
       </Grid>

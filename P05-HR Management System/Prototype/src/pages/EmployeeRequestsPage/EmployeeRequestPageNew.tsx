@@ -19,7 +19,11 @@ import {
 } from "@mui/x-data-grid";
 import { AnyAaaaRecord } from "dns";
 
-// import AddEmployee from "./AddEmployee";
+const getJwtToken = () => {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+};
 
 export default function EmployeeRequestsPage() {
   const [list, setList] = useState<any[]>([]);
@@ -48,22 +52,6 @@ export default function EmployeeRequestsPage() {
     { field: "status", headerName: "Status", width: 300 },
     { field: "data", headerName: "Request", width: 700 },
     { field: "dateAdded", headerName: "Date Added", width: 150 },
-
-    // {
-    //   field: "age",
-    //   headerName: "Age",
-    //   type: "number",
-    //   width: 90,
-    // },
-    // {
-    //   field: "fullName",
-    //   headerName: "Full name",
-    //   description: "This column has a value getter and is not sortable.",
-    //   sortable: true,
-    //   width: 160,
-    //   valueGetter: (params: GridValueGetterParams) =>
-    //     `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    // },
   ];
 
   // const is_empty = (option: string, description: string, id: string) => {
@@ -89,13 +77,14 @@ export default function EmployeeRequestsPage() {
     let x: any = [];
     try {
       const response = await axios.get(
-        "http://localhost:5001/getEmployeeRequests"
+        "http://localhost:5001/getEmployeeRequests",
+        { headers: { "access-token": getJwtToken() } }
       );
 
       const li = response.data.Items;
       x = li;
       setList(x);
-      console.log("Employee REQ  IETMSSSSSSSS", li);
+      // console.log("Employee REQ  IETMSSSSSSSS", li);
       setfirstRender(false);
       setloader(false);
     } catch (error) {

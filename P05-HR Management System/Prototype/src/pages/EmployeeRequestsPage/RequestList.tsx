@@ -18,6 +18,11 @@ import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddAnnouncements from "../AnnouncementsPage/addAnnouncements";
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+}
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -58,7 +63,8 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
     let x: any = [];
     try {
       const response = await axios.get(
-        "http://localhost:5001/getEmployeeRequests"
+        "http://localhost:5001/getEmployeeRequests",
+        { headers: { "access-token": getJwtToken() } }
       );
       const li = response.data.Items;
       x = li;
