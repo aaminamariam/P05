@@ -51,7 +51,6 @@ app.get("/", (req, res) => {
 //post
 app.post("/login", async (req, res) => {
   const userid = req.body.id;
-  const user = { id: userid };
 
   if (userid == null) {
     return res.status(400).send("Cannot find user");
@@ -73,19 +72,14 @@ app.post("/login", async (req, res) => {
       // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
       // refreshTokens.push(refreshToken);
       // res.json({ accessToken: accessToken, refreshToken: refreshToken });
-      // hello??? u there aamina?
+      const user = { id: userid, name: data.Items[0].name };
       const accessToken = createTokens(user);
 
-      res.cookie("access-token", accessToken, {
-        maxAge: 60 * 60 * 24 * 30 * 1000,
-        httpOnly: true,
-      });
+      res.json(accessToken);
 
-      res.json("Success");
+      // res.json("Success");
     } else {
-      res
-        .status(400)
-        .json({ error: "Wrong Username and Password Combination!" });
+      res.status(400).send("Invalid Credentials");
     }
   } catch {
     res.status(500).send();
@@ -132,7 +126,7 @@ app.post("/employee", async (req, res) => {
 });
 
 //getcv data
-app.get("/getcvs", async (req, res) => {
+app.get("/getcvs", validateToken, async (req, res) => {
   try {
     const cvs = await getapplications();
     res.json(cvs);
@@ -191,7 +185,7 @@ app.get("/ids", async (req, res) => {
 });
 
 //get all items
-app.get("/getapplications", async (req, res) => {
+app.get("/getapplications", validateToken, async (req, res) => {
   try {
     const characters = await getEmployees();
     res.json(characters);
@@ -222,7 +216,6 @@ app.post("/addreq", async (req, res) => {
       data.type,
       data.data,
       data.id,
-      //data.status,
       data.title,
       postdate
     );
@@ -280,7 +273,7 @@ app.put("/addstats", async (req, res) => {
 });
 
 //get requests
-app.get("/getEmployeeRequests", async (req, res) => {
+app.get("/getEmployeeRequests", validateToken, async (req, res) => {
   try {
     const requests = await getEmployeeRequests();
     res.json(requests);
