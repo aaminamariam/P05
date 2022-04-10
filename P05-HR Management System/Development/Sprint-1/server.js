@@ -80,7 +80,7 @@ app.post("/login", async (req, res) => {
 //post
 app.post("/employee", async (req, res) => {
   const data = req.body;
-  const employee = data.employeeID;
+  const employee = data.id;
   const name = data.name;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(data.password, salt);
