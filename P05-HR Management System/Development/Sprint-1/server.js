@@ -65,16 +65,15 @@ app.post("/login", async (req, res) => {
       req.body.password,
       data.Items[0].password
     );
-    if (validPassword) 
-    // {
-    //   res.json("Success");
+    if (validPassword) {
+      // {
+      //   res.json("Success");
 
       // const accessToken = generateAccessToken(user);
       // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
       // refreshTokens.push(refreshToken);
-      // res.json({ accessToken: accessToken, refreshToken: refreshToken }); 
-        // hello??? u there aamina?
-    { 
+      // res.json({ accessToken: accessToken, refreshToken: refreshToken });
+      // hello??? u there aamina?
       const accessToken = createTokens(user);
 
       res.cookie("access-token", accessToken, {
@@ -82,10 +81,8 @@ app.post("/login", async (req, res) => {
         httpOnly: true,
       });
 
-      res.json("LOGGED IN");
-    }
-
-    else {
+      res.json("Success");
+    } else {
       res
         .status(400)
         .json({ error: "Wrong Username and Password Combination!" });
