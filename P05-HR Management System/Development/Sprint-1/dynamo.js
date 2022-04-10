@@ -42,27 +42,28 @@ const login = async (id) => {
   const loginpass = await dynamoClient.query(params).promise();
   return loginpass;
 };
-const generateAccessToken = (username) => {
-  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
-};
+
+// const generateAccessToken = (username) => {
+//   return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
+// };
 
 // auth token
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+// const authenticateToken = (req, res, next) => {
+//   const authHeader = req.headers["authorization"];
+//   const token = authHeader && authHeader.split(" ")[1];
 
-  if (token == null) return res.sendStatus(401);
+//   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-    console.log(err);
+//   jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+//     console.log(err);
 
-    if (err) return res.sendStatus(403);
+//     if (err) return res.sendStatus(403);
 
-    req.user = user;
+//     req.user = user;
 
-    next();
-  });
-};
+//     next();
+//   });
+// };
 
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {

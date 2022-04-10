@@ -4,6 +4,7 @@ var express = require("express");
 var app = express();
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 const {
   getEmployees,
   addOrUpdateEmployee,
@@ -24,6 +25,7 @@ const {
 } = require("./dynamo");
 
 const { add_cv_data, getapplications } = require("./uploader");
+const { createTokens, validateToken } = require("./jwt");
 
 const cors = require("cors");
 app.use(
@@ -39,6 +41,7 @@ dotenv.config();
 process.env.TOKEN_SECRET;
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Hello world");
@@ -62,19 +65,39 @@ app.post("/login", async (req, res) => {
       req.body.password,
       data.Items[0].password
     );
-    if (validPassword) {
-      res.json("Success");
+    if (validPassword) 
+    // {
+    //   res.json("Success");
 
-      const accessToken = generateAccessToken(user);
-      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-      refreshTokens.push(refreshToken);
-      res.json({ accessToken: accessToken, refreshToken: refreshToken });
-    } else {
-      res.json("Not Allowed");
+      // const accessToken = generateAccessToken(user);
+      // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+      // refreshTokens.push(refreshToken);
+      // res.json({ accessToken: accessToken, refreshToken: refreshToken }); 
+        // hello??? u there aamina?
+    { 
+      const accessToken = createTokens(user);
+
+      res.cookie("access-token", accessToken, {
+        maxAge: 60 * 60 * 24 * 30 * 1000,
+        httpOnly: true,
+      });
+
+      res.json("LOGGED IN");
+    }
+
+    else {
+      res
+        .status(400)
+        .json({ error: "Wrong Username and Password Combination!" });
     }
   } catch {
     res.status(500).send();
   }
+});
+
+//for user authentication
+app.get("/profile", validateToken, (req, res) => {
+  res.json("profile");
 });
 
 //post
