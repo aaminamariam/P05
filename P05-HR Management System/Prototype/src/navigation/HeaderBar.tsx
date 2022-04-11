@@ -42,27 +42,13 @@ const HeaderBar = (props: any) => {
   };
 
   const handleClose2 = () => {
+    sessionStorage.clear();
     navigate("/login");
   };
   // const classes = useStyles();
 
   return (
     <React.Fragment>
-      {/* <CssBaseline />
-      <AppBar className={classes.appbar}>
-        <Toolbar>
-          <IconButton className={classes.menu}>
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.typo} variant="h6">
-            HR Dashboard Home
-          </Typography>
-          <IconButton className={classes.notification}>
-            <NotificationsNoneIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar> */}
-
       <CssBaseline />
       <AppBar position="fixed" className={customClass.appBar} color="default">
         <Toolbar>
@@ -88,7 +74,7 @@ const HeaderBar = (props: any) => {
             <NotificationsNoneIcon />
           </IconButton>
           <IconButton
-            size="small"
+            size="medium"
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
@@ -113,7 +99,9 @@ const HeaderBar = (props: any) => {
             onClose={handleClose}
           >
             {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
-            <MenuItem onClick={handleClose2}>Logout</MenuItem>
+            <MenuItem onClick={handleClose2} sx={{ color: "red" }}>
+              Logout
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
