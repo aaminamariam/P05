@@ -145,12 +145,16 @@ app.post("/addnewemployee", async (req, res) => {
   const department = data.department;
   const designation = data.designation;
   const level = data.level;
+  const role = data.role;
   const dateJoined = new Date().toISOString().slice(0, 10);
   const email = data.email;
   const contact = data.contact;
   const address = data.address;
-  const remainingLeaves = data.remainingLeaves;
-  const twRating = data.twRating;
+  const gender = data.gender;
+  //const dateOfBirth = data.dateOfBirth;
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
 
   try {
     const newEmployee = await addNewEmployee(
@@ -159,12 +163,14 @@ app.post("/addnewemployee", async (req, res) => {
       department,
       designation,
       level,
+      role,
+      hashedPassword,
       dateJoined,
       email,
       contact,
       address,
-      remainingLeaves,
-      twRating
+      gender,
+      //dateOfBirth
     );
     res.json(newEmployee);
   } catch (err) {
@@ -174,7 +180,7 @@ app.post("/addnewemployee", async (req, res) => {
 });
 
 //get all items
-app.get("/ids", async (req, res) => {
+app.get("/ids",validateToken, async (req, res) => {
   try {
     const characters = await getEmployees();
     res.json(characters);

@@ -19,6 +19,20 @@ import {
 
 import AddEmployee from "./AddEmployee";
 
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
+
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+}
+
 export default function EmployeeDirectoryPage() {
   const [list, setList] = useState<any[]>([]);
   const [SnackbarOpen, setSnackbarOpen] = useState(false);
@@ -39,15 +53,14 @@ export default function EmployeeDirectoryPage() {
   const columns: GridColDef[] = [
     { field: "id", headerName: "Employee ID", width: 130 },
     { field: "name", headerName: "Full Name", width: 250 },
-
     { field: "address", headerName: "Address", width: 200 },
     { field: "contact", headerName: "Contact", width: 200 },
     { field: "department", headerName: "Department", width: 130 },
     { field: "designation", headerName: "Designation", width: 150 },
     { field: "level", headerName: "Level", width: 130 },
     { field: "gender", headerName: "Gender", width: 130 },
-    { field: "dateofbirth", headerName: "Date of Birth", width: 200 },
-    { field: "remainingLeaves", headerName: "Remaining Leaves", width: 130 },
+    //{ field: "dateofbirth", headerName: "Date of Birth", width: 200 },
+    //{ field: "remainingLeaves", headerName: "Remaining Leaves", width: 130 },
     // { field: "twRating", headerName: "TW Rating", width: 100 },
     { field: "dateJoined", headerName: "Date Joined", width: 130 },
     { field: "onLeave", headerName: "On Leave", width: 130 },
@@ -69,29 +82,12 @@ export default function EmployeeDirectoryPage() {
     // },
   ];
 
-  // const is_empty = (option: string, description: string, id: string) => {
-  //   if (title == "" || aData == "" || id =="") {
-  //     if (title == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (aData == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (id = "")
-  //     {
-  //         alert("id is empty")
-  //     }
-  //     return 1;
-  //   }
-  //   return 0;
-  // };
-
   const handleGetEmployees = async () => {
     let x: any = [];
     try {
-      const response = await axios.get("http://localhost:5001/ids");
+      const response = await axios.get("http://localhost:5001/ids", {
+        headers: { "access-token": getJwtToken() },
+      });
       const li = response.data.Items;
       x = li;
       setList(x);
@@ -140,14 +136,13 @@ export default function EmployeeDirectoryPage() {
       <GridToolbarContainer
         style={{ display: "flex", justifyContent: "space-between" }}
       >
-        
         <div>
           <GridToolbarColumnsButton style={{ margin: 10 }} />
           <GridToolbarFilterButton style={{ margin: 10 }} />
           <GridToolbarDensitySelector style={{ margin: 10 }} />
           <GridToolbarExport style={{ margin: 10 }} />
         </div>
-  
+
         <div>
           <AddEmployee setOpen={setModalOpen} open={modalOpen} />
         </div>
@@ -172,7 +167,9 @@ export default function EmployeeDirectoryPage() {
         rowsPerPageOptions={[10]}
         checkboxSelection
         filterModel={filterModel}
-        onFilterModelChange={(newFilterModel: any) => setFilterModel(newFilterModel)}
+        onFilterModelChange={(newFilterModel: any) =>
+          setFilterModel(newFilterModel)
+        }
       />
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

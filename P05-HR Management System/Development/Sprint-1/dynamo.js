@@ -149,12 +149,14 @@ const addNewEmployee = async (
   _department,
   _designation,
   _level,
+  _role,
+  _password,
   _dateJoined,
   _email,
   _contact,
   _address,
-  _remainingLeaves,
-  _twRating
+  _gender,
+  _dateOfBirth
 ) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
@@ -164,12 +166,15 @@ const addNewEmployee = async (
       department: _department,
       designation: _designation,
       level: _level,
+      role: _role,
+      password: _password,
       dateJoined: _dateJoined,
       email: _email,
       contact: _contact,
       address: _address,
-      remainingLeaves: _remainingLeaves,
-      twRating: _twRating,
+      gender: _gender,
+      //dateOfBirth: _dateOfBirth
+      //twRating: _twRating,
     },
   };
   return await dynamoClient.put(params).promise();

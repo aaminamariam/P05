@@ -9,6 +9,7 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import img from "./imglogin.svg";
+import useAuth from "../../hooks/useAuth";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -30,6 +31,7 @@ export function setJwtToken(token) {
 
 export default function LoginPage() {
   const classes = useStyles();
+  const { setAuth } = useAuth();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
