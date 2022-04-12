@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
       // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
       // refreshTokens.push(refreshToken);
       // res.json({ accessToken: accessToken, refreshToken: refreshToken });
-      const user = { id: userid, name: data.Items[0].name };
+      const user = { id: userid, name: data.Items[0].name, role:data.Items[0].role };
       const accessToken = createTokens(user);
 
       res.json(accessToken);

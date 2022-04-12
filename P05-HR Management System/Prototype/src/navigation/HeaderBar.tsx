@@ -14,6 +14,7 @@ import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { useGlobalContext } from "../components/GlobalContext";
 import { useNavigate } from "react-router-dom";
 export function getJwtToken() {
   const token = sessionStorage.getItem("jwt");
@@ -32,6 +33,7 @@ const HeaderBar = (props: any) => {
   const navigate = useNavigate();
   const { customClass, handleDrawerToggle } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { loggedIn, setLoggedIn } = useGlobalContext()
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -43,6 +45,7 @@ const HeaderBar = (props: any) => {
 
   const handleClose2 = () => {
     sessionStorage.clear();
+    setLoggedIn(false)
     navigate("/login");
   };
   // const classes = useStyles();
@@ -59,8 +62,10 @@ const HeaderBar = (props: any) => {
             onClick={handleDrawerToggle}
             className={customClass.menuButton}
           >
-            <MenuIcon />
+          <MenuIcon />
           </IconButton>
+          {loggedIn && (
+          <div>
           <Typography variant="h6" noWrap>
             Welcome {parseJwt(getJwtToken()).name}
           </Typography>
@@ -103,6 +108,8 @@ const HeaderBar = (props: any) => {
               Logout
             </MenuItem>
           </Menu>
+          </div>
+          )}
         </Toolbar>
       </AppBar>
     </React.Fragment>

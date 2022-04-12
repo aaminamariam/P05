@@ -16,6 +16,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Drawer, makeStyles } from "@material-ui/core";
+import { useGlobalContext } from "../../components/GlobalContext";
 
 const theme = createTheme();
 const useStyles = makeStyles((theme) => ({
@@ -31,10 +32,11 @@ export function setJwtToken(token) {
 
 export default function LoginPage() {
   const classes = useStyles();
-  const { setAuth } = useAuth();
+  const [loggedIn, setLoggedIn] = React.useState<boolean>(false)
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
 
     await axios({
       method: "post",
@@ -49,8 +51,10 @@ export default function LoginPage() {
         // window.location.href = "/";
         alert("Invalid ID or Password");
       } else {
+        setLoggedIn(true)
         window.location.href = "/";
         setJwtToken(response.data);
+
       }
     });
   };
