@@ -18,6 +18,7 @@ import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "./EmployeeTurnoverCard";
 import EmployeeRetentionCard from "./EmployeeRetentionCard";
 import Graph from "./Graph";
+import WorkingMode from "../../components/WorkingMode";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -140,6 +141,11 @@ const HomePage = () => {
         <Grid item lg={3}>
           <EnhancedCard title="Employee Gender">
             <EmployeeGenderCard />
+          </EnhancedCard>
+        </Grid>
+        <Grid item lg={3}>
+          <EnhancedCard title="Working Mode">
+            <WorkingMode />
           </EnhancedCard>
         </Grid>
 
