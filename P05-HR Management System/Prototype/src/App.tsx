@@ -89,14 +89,8 @@ function App() {
           <Route path="/hiringportal" element={<HiringPortalPage />} />
           <Route path="/addnewposting" element={<Addnewposting />} />
           <Route path="/apportal" element={<AppPortalPage />} />
-          <Route
-            path="/employeedirectorypage"
-            element={<EmployeeDirectoryPage />}
-          />
-          <Route
-            path="/employeerequests"
-            element={<EmployeeRequestsPageNew />}
-          />
+          <Route path="/employeedirectorypage" element={<EmployeeDirectoryPage />}/>
+          <Route path="/employeerequests" element={<EmployeeRequestsPageNew />}/>
           <Route path="/jobapplication" element={<JobApplication />} />
           <Route path="/employeedash" element={<EmployeePortalPage />} />
           <Route path="/employeesanalytics" element={<EmployeesAnalytics />} />

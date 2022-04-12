@@ -10,10 +10,12 @@ AWS.config.update({
 });
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
-// const TABLE_NAME = "employee_table";
+ const EMPLOYEE_STATS = "employee_stats";
 const EMPLOYEE_TABLE = "employee_directory";
 const REQUESTS_TABLE = "requests_table";
 const ANNOUNCEMENTS_TABLE = "announcements_table";
+//const EMPLOYEE_STATS="";
+
 
 // fetch from database
 const getEmployees = async () => {
@@ -23,6 +25,24 @@ const getEmployees = async () => {
   const employees = await dynamoClient.scan(params).promise();
   return employees;
 };
+
+//employee stats
+const getEmployeeStatsbyID = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_STATS,
+    ProjectionExpression: "#id, rating, teamworkScore, hoursWorked, comments,postdate",
+    KeyConditionExpression: "#id = :id",
+    ExpressionAttributeNames: {
+      "#id": "id"
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
+  const statsbyID = await dynamoClient.query(params).promise();
+  return statsbyID;
+};
+
 
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
@@ -138,27 +158,27 @@ const addOrUpdateEmployee = async (employee, name) => {
 };
 
 // fetch employee requests by status active or inactive
-const getEmployeeReqbystatus = async () => {
-  const params = {
-    TableName: REQUESTS_TABLE,
-    ProjectionExpression: "#id, #option, #des, #status, #name",
-    IndexName: "status-index",
-    KeyConditionExpression: "#status = :status",
-    ExpressionAttributeNames: {
-      "#id": "employeeID",
-      "#status": "status",
-      "#option": "option",
-      "#des": "description",
-      "#name": "name",
-    },
-    ExpressionAttributeValues: {
-      ":status": "active",
-    },
-  };
-  const reqbyStatus = await dynamoClient.query(params).promise();
-  console.log(reqbyStatus);
-  return reqbyStatus;
-};
+// const getEmployeeReqbystatus = async () => {
+//   const params = {
+//     TableName: REQUESTS_TABLE,
+//     ProjectionExpression: "#id, #option, #des, #status, #name",
+//     IndexName: "status-index",
+//     KeyConditionExpression: "#status = :status",
+//     ExpressionAttributeNames: {
+//       "#id": "employeeID",
+//       "#status": "status",
+//       "#option": "option",
+//       "#des": "description",
+//       "#name": "name",
+//     },
+//     ExpressionAttributeValues: {
+//       ":status": "active",
+//     },
+//   };
+//   const reqbyStatus = await dynamoClient.query(params).promise();
+//   console.log(reqbyStatus);
+//   return reqbyStatus;
+// };
 
 // fetch employee requests by id
 const getEmployeeReqbyID = async (id) => {
@@ -196,79 +216,97 @@ const deleteEmployee = async (employeeID) => {
   console.log("deleted");
   return;
 };
-
-//add employee statics
-const addstats = async (employeeID, comments, rating, teamworkScore, hours, postdate) => {
+//add employee stats
+const addstats =async(id, comments, rating, teamworkScore, hours, postdate) =>{ 
   const params = {
-    TableName: EMPLOYEE_TABLE,
-    Key: { employeeID: employeeID },
-    UpdateExpression:
-      "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours, #date_posted = :postdate",
-    ExpressionAttributeNames: {
-      "#comments": "comments",
-      "#rating": "rating",
-      "#teamscore": "teamworkScore",
-      "#hoursworked": "hoursworked",
-      "#date_posted": "postdate"
-    },
-    ExpressionAttributeValues: {
-      ":vals": [comments],
-      ":rating": [rating],
-      ":tscore": [teamworkScore],
-      ":hours": [hours],
-      ":postdate":postdate
-    },
-  };
-  const params2 = {
-    TableName: EMPLOYEE_TABLE,
-    Key: { employeeID: employeeID },
-    UpdateExpression:
-      "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours), #date_posted = :postdate",
-    ExpressionAttributeNames: {
-      "#com": "comments",
-      "#rating": "rating",
-      "#teamscore": "teamworkScore",
-      "#hoursworked": "hoursworked",
-      "#date_posted": "postdate"
-    },
-    ExpressionAttributeValues: {
-      ":vals": [comments],
-      ":rating": [rating],
-      ":tscore": [teamworkScore],
-      ":hours": [hours],
-      ":postdate":postdate
-    },
-  };
-  try {
-    c1 = await dynamoClient.update(params2).promise();
-  } catch (err) {
-    try {
-      c2 = await dynamoClient.update(params).promise();
-    } catch (err2) {
-      console.log(err2);
+    TableName: EMPLOYEE_STATS,
+    Item: {
+  
+      id: id, 
+      comments: comments, 
+      rating: rating, 
+      teamworkScore: teamworkScore, 
+      hoursworked: hours, 
+      postdate: postdate, 
+     
     }
   }
-};
+  return await dynamoClient.put(params).promise();
+}
 
-const getEmployeeStatsbyID = async (id) => {
-  const params = {
-    TableName: EMPLOYEE_TABLE,
-    ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
-    KeyConditionExpression: "#id = :id",
-    ExpressionAttributeNames: {
-      "#id": "employeeID",
-      "#Rating": "rating",
-      "#teamscore": "teamworkScore",
-      "#hoursWorked": "hoursworked",
-      "#comments": "comments",
-    },
-    ExpressionAttributeValues: {
-      ":id": id,
-    },
-  };
-  const statsbyID = await dynamoClient.query(params).promise();
-  return statsbyID;
-};
+// const addstats = async (employeeID, comments, rating, teamworkScore, hours, postdate) => {
+//   const params = {
+//     TableName: EMPLOYEE_TABLE,
+//     Key: { id: employeeID },
+//     UpdateExpression:
+//       "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours, #date_posted = :postdate",
+//     ExpressionAttributeNames: {
+//       "#comments": "comments",
+//       "#rating": "rating",
+//       "#teamscore": "teamworkScore",
+//       "#hoursworked": "hoursworked",
+//       "#date_posted": "postdate"
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": comments,
+//       ":rating": rating,
+//       ":tscore": teamworkScore,
+//       ":hours": hours,
+//       ":postdate":postdate
+//     },
+//   };
+//   return await dynamoClient.put(params).promise();
+// };
+//   const params2 = {
+//     TableName: EMPLOYEE_TABLE,
+//     Key: { employeeID: employeeID },
+//     UpdateExpression:
+//       "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours), #date_posted = :postdate",
+//     ExpressionAttributeNames: {
+//       "#com": "comments",
+//       "#rating": "rating",
+//       "#teamscore": "teamworkScore",
+//       "#hoursworked": "hoursworked",
+//       "#date_posted": "postdate"
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": [comments],
+//       ":rating": [rating],
+//       ":tscore": [teamworkScore],
+//       ":hours": [hours],
+//       ":postdate":postdate
+//     },
+//   };
+//   try {
+//     c1 = await dynamoClient.update(params2).promise();
+//   } catch (err) {
+//     try {
+//       c2 = await dynamoClient.update(params).promise();
+//     } catch (err2) {
+//       console.log(err2);
+//     }
+//   }
+// };
+
+// const getEmployeeStatsbyID = async (id) => {
+//   const params = {
+//     TableName: EMPLOYEE_TABLE,
+//     ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
+//     KeyConditionExpression: "#id = :id",
+//     ExpressionAttributeNames: {
+//       "#id": "employeeID",
+//       "#Rating": "rating",
+//       "#teamscore": "teamworkScore",
+//       "#hoursWorked": "hoursworked",
+//       "#comments": "comments",
+//     },
+//     ExpressionAttributeValues: {
+//       ":id": id,
+//     },
+//   };
+//   const statsbyID = await dynamoClient.query(params).promise();
+//   return statsbyID;
+// };
 
 // adding announcements
 // const addAnnouncements = async (employeeID, title, aData, date) => {
@@ -372,7 +410,7 @@ module.exports = {
   denyRequests,
   getEmployeeRequests,
   getEmployeeReqbyID,
-  getEmployeeReqbystatus,
+  //getEmployeeReqbystatus,
   
   
   addstats,

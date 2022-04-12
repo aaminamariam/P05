@@ -40,6 +40,7 @@ const EmployeesAnalytics = () => {
   const [id, setId] = useState("15");
   const [tws, setTws] = useState("0");
   const [hrs, setHrs] = useState("15");
+  const [rating, setRating] = useState("15");
   const [comments, setComments] = useState<any[]>([]);
 
   const link = "http://localhost:5001/getstats/" + id;
@@ -53,7 +54,7 @@ const EmployeesAnalytics = () => {
 
     // hoursworked
     //team score
-    const teamscore = data.teamworkScore;
+   const teamscore = data.teamworkScore;
     // console.log(teamscore);
     setTws(average(teamscore.map((i: string) => Number(i))).toFixed(2));
     // console.log(teamwork);
