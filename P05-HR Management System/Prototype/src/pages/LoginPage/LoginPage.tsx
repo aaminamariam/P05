@@ -29,15 +29,20 @@ const useStyles = makeStyles((theme) => ({
 export function setJwtToken(token) {
   sessionStorage.setItem("jwt", token);
 }
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
 export default function LoginPage() {
   const classes = useStyles();
-  const [loggedIn, setLoggedIn] = React.useState<boolean>(false)
+  const { loggedIn, setLoggedIn } = useGlobalContext();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-
     await axios({
       method: "post",
       url: "http://localhost:5001/login",
@@ -51,10 +56,11 @@ export default function LoginPage() {
         // window.location.href = "/";
         alert("Invalid ID or Password");
       } else {
-        setLoggedIn(true)
+        const role = parseJwt(response.data).role;
+        sessionStorage.setItem("role", role);
+        sessionStorage.setItem("loggedin", "true");
         window.location.href = "/";
         setJwtToken(response.data);
-
       }
     });
   };

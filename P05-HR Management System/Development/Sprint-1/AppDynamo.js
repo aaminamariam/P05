@@ -29,6 +29,14 @@ const addJob = async (title, des, dept, location) => {
   return await dynamoClient.put(params).promise();
 };
 
+//get number of jobs
+const jobcount = async () => {
+  const data = await dynamoClient
+    .scan({ Select: "COUNT", TableName: JOBS_TABLE })
+    .promise();
+  return data;
+};
+
 //get jobs
 const getjobs = async () => {
   const params = {
@@ -68,6 +76,7 @@ const addJobApplication = async (name, number, email, url, location) => {
 module.exports = {
   addJob,
   getjobs,
+  jobcount,
   deleteJob,
   addJobApplication,
 };

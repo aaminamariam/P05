@@ -17,10 +17,12 @@ const {
   getEmployeeReqbystatus,
   addstats,
   login,
+  employeecount,
   getEmployeeStatsbyID,
   addNewAnnouncement,
   addAnnouncements,
   getAnnouncements,
+  cvcount,
   addNewEmployee,
 } = require("./dynamo");
 
@@ -72,7 +74,11 @@ app.post("/login", async (req, res) => {
       // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
       // refreshTokens.push(refreshToken);
       // res.json({ accessToken: accessToken, refreshToken: refreshToken });
-      const user = { id: userid, name: data.Items[0].name, role:data.Items[0].role };
+      const user = {
+        id: userid,
+        name: data.Items[0].name,
+        role: data.Items[0].role,
+      };
       const accessToken = createTokens(user);
 
       res.json(accessToken);
@@ -96,6 +102,7 @@ app.post("/employee", async (req, res) => {
   const data = req.body;
   const employee = data.employeeID;
   const name = data.name;
+  const role = data.role;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(data.password, salt);
 
@@ -103,7 +110,8 @@ app.post("/employee", async (req, res) => {
     const newEmployee = await addOrUpdateEmployee(
       employee,
       name,
-      hashedPassword
+      hashedPassword,
+      role
     );
     res.json(newEmployee);
   } catch (err) {
@@ -112,16 +120,13 @@ app.post("/employee", async (req, res) => {
   }
 });
 
-app.post("/employee", async (req, res) => {
-  const data = req.body;
-  const employee = data.employeeID;
-  const name = data.name;
+//employee count
+app.get("/employeecount", validateToken, async (req, res) => {
   try {
-    const newEmployee = await addOrUpdateEmployee(employee, name);
-    res.json(newEmployee);
+    const count = await employeecount();
+    res.json(count);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ err: "Something went wrong" });
+    res.status(500).json({ err: "Something went wrong  in employeecount" });
   }
 });
 
@@ -133,6 +138,16 @@ app.get("/getcvs", validateToken, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
+//cv count
+app.get("/cvcount", validateToken, async (req, res) => {
+  try {
+    const count = await cvcount();
+    res.json(count);
+  } catch (err) {
+    res.status(500).json({ err: "Something went wrong  in cvcount" });
   }
 });
 
@@ -169,7 +184,7 @@ app.post("/addnewemployee", async (req, res) => {
       email,
       contact,
       address,
-      gender,
+      gender
       //dateOfBirth
     );
     res.json(newEmployee);
@@ -180,7 +195,7 @@ app.post("/addnewemployee", async (req, res) => {
 });
 
 //get all items
-app.get("/ids",validateToken, async (req, res) => {
+app.get("/ids", validateToken, async (req, res) => {
   try {
     const characters = await getEmployees();
     res.json(characters);

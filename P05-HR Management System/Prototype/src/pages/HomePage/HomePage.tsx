@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { createStyles, Grid, makeStyles } from "@material-ui/core";
 import GroupIcon from "@material-ui/icons/Group";
 import PersonOffIcon from "@material-ui/icons/Home";
-import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import ArchiveIcon from "@material-ui/icons/Archive";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-
+import { useGlobalContext } from "../../components/GlobalContext";
 import AnnouncementsCard from "./AnnouncementsCard";
 import EnhancedCard from "../../components/EnhancedCard";
 import RequestList from "../EmployeeRequestsPage/RequestList";
@@ -42,9 +42,11 @@ const useStyles = makeStyles(() =>
     },
   })
 );
-const getJwtToken = () => {
-  return sessionStorage.getItem("jwt");
-};
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+}
 
 const parseJwt = (token) => {
   try {
@@ -57,14 +59,15 @@ const parseJwt = (token) => {
 const HomePage = () => {
   const classes = useStyles();
   const [jobOpeningsNumber, setjobOpeningsNumber] = useState("0");
-
+  const [jobapplications, setJobApplications] = useState("0");
+  const { loggedIn, setLoggedIn } = useGlobalContext();
   const [EmployeeNumber, setEmployeeNumber] = useState("0");
 
   const getJobOpeningsNumber = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5001/jobs/jobpostings/"
-      );
+      const response = await axios.get("http://localhost:8000/jobcount/", {
+        headers: { "access-token": getJwtToken() },
+      });
       // console.log(response.data.length);
       setjobOpeningsNumber(response.data.ScannedCount.toString());
     } catch (error) {
@@ -77,9 +80,22 @@ const HomePage = () => {
   };
   const getEmployeeNumber = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/ids/");
+      const response = await axios.get("http://localhost:5001/employeecount", {
+        headers: { "access-token": getJwtToken() },
+      });
       // console.log(response.data.ScannedCount);
       setEmployeeNumber(response.data.ScannedCount.toString());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getcvcount = async () => {
+    try {
+      const response = await axios.get("http://localhost:5001/cvcount", {
+        headers: { "access-token": getJwtToken() },
+      });
+      console.log(response.data.ScannedCount);
+      setJobApplications(response.data.ScannedCount.toString());
     } catch (error) {
       console.error(error);
     }
@@ -88,10 +104,12 @@ const HomePage = () => {
   useEffect(() => {
     getJobOpeningsNumber();
     getEmployeeNumber();
+    getcvcount();
   }, []);
 
   return (
     <div className={classes.root}>
+      <p>{loggedIn}</p>
       <Grid container spacing={1} className={classes.stats}>
         <Grid item lg={3}>
           <StatCard
@@ -103,7 +121,7 @@ const HomePage = () => {
         <Grid item lg={3}>
           <StatCard
             icon={<PersonOffIcon />}
-            title="Number on Leave"
+            title="Employees on Leave"
             data="32"
           />
         </Grid>
@@ -124,9 +142,9 @@ const HomePage = () => {
         </Grid>
         <Grid item lg={3}>
           <StatCard
-            icon={<MonetizationOnIcon />}
-            title="Next payroll"
-            data="25th August"
+            icon={<ArchiveIcon />}
+            title="Number of Job Applications"
+            data={jobapplications}
           />
         </Grid>
       </Grid>

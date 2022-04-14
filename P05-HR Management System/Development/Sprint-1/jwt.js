@@ -2,7 +2,7 @@ const { sign, verify } = require("jsonwebtoken");
 
 const createTokens = (user) => {
   const accessToken = sign(
-    { name: user.name, id: user.id },
+    { name: user.name, id: user.id, role: user.role },
     process.env.TOKEN_SECRET
   );
 

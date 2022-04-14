@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     background: "#ffffff",
-    borderRadius: "50px",
+    borderRadius: "5px",
   },
 }));
 
@@ -115,7 +115,7 @@ const EmpStatsForm = () => {
             maxRows={4}
           />
 
-          <FormControl style ={{width: '95%'}}>
+          <FormControl style={{ width: "95%" }}>
             <InputLabel id="demo-simple-select-label">Rating</InputLabel>
             <Select
               labelId="demo-simple-select-label"

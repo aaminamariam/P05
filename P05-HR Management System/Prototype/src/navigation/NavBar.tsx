@@ -78,6 +78,9 @@ const NavBar = (props: any) => {
       <ListItem button component={Link} to="/view_resumes">
         View Applications
       </ListItem>
+      <ListItem button component={Link} to="/empstats">
+        Add Employee Stats
+      </ListItem>
     </React.Fragment>
   );
 

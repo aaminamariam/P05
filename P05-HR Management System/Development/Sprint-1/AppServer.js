@@ -5,6 +5,7 @@ const {
   addJob,
   getjobs,
   deleteJob,
+  jobcount,
   addJobApplication,
 } = require("./AppDynamo");
 const { createTokens, validateToken } = require("./jwt");
@@ -48,6 +49,17 @@ app.get("/hiringportal", validateToken, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: "Something went wrong in getJobs" });
+  }
+});
+
+//get number of jobs
+app.get("/jobcount", validateToken, async (req, res) => {
+  try {
+    const jobcounts = await jobcount();
+    res.json(jobcounts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong in jobcount" });
   }
 });
 

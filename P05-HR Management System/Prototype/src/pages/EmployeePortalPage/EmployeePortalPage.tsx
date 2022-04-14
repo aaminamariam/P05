@@ -5,16 +5,15 @@ import StatCard from "../../components/StatCard";
 import EnhancedCard from "../../components/EnhancedCard";
 
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import PersonOffIcon from "@material-ui/icons/Home";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import KeyIcon from "@mui/icons-material/Key";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import ToDo from "../../components/ToDo/ToDo";
 import RequestList from "../EmployeeRequestsPage/RequestList";
 import ReqHist from "../Requestshistory/employeerequests";
 import AnnouncementList from "./AnnouncementsList";
-
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -49,23 +48,18 @@ const EmployeePortalPage = () => {
             }}
           >
             <StatCard
-              icon={<LeaderboardIcon />}
+              icon={<LeaderboardIcon fontSize="large" />}
               title="Performance statistics"
             />
           </Link>
         </Grid>
         <Grid item>
           <StatCard
-            icon={<PersonOffIcon />}
-            title="Number on Leave"
-            data="32"
+            icon={<KeyIcon fontSize="large" />}
+            title="change password"
           />
         </Grid>
-        <Grid
-          item
-          //   onMouseEnter={changeBackground}
-          //     onMouseLeave={changeBackground_white}
-        >
+        <Grid item>
           <Link
             to="/addreq"
             style={{
@@ -73,7 +67,10 @@ const EmployeePortalPage = () => {
               color: "white",
             }}
           >
-            <StatCard icon={<PersonAddIcon />} title="Add requests" />
+            <StatCard
+              icon={<PersonAddIcon fontSize="large" />}
+              title="Add requests"
+            />
           </Link>
         </Grid>
         <Grid item>
@@ -86,35 +83,30 @@ const EmployeePortalPage = () => {
       </Grid>
       <Grid container spacing={2} className={classes.content}>
         <Grid item>
-          <EnhancedCard title="Employee Gender">SHOW</EnhancedCard>
-        </Grid>
-        <Grid item>
-        <Link
+          <Link
             to="/reqhist"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
-          <EnhancedCard title="Requests">
-            <RequestList />
-          </EnhancedCard>
+            <EnhancedCard title="Requests">
+              <RequestList />
+            </EnhancedCard>
           </Link>
         </Grid>
 
         <Grid item>
-        <Link
+          <Link
             to="/getAnnouncements"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
-          <EnhancedCard title="Announcements">
-            <AnnouncementList/>
-          </EnhancedCard>
+            <EnhancedCard title="Announcements">
+              <AnnouncementList />
+            </EnhancedCard>
           </Link>
         </Grid>
-
-        <Grid item>
-          <EnhancedCard title="Employee Turnover">SHOW</EnhancedCard>
-        </Grid>
-        <Grid item>
-          <EnhancedCard title="Employee Retention">SHOW</EnhancedCard>
+        <Grid item lg={3}>
+          <EnhancedCard title="To Do List">
+            <ToDo />
+          </EnhancedCard>
         </Grid>
       </Grid>
     </div>

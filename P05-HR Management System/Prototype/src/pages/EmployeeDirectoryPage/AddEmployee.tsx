@@ -51,7 +51,6 @@ export default function AddEmployee(props: IAddEmployeeProps) {
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
   const [employeeID, setEmployeeID] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [value, setValue] = useState<Date | null>(new Date());
   const classes = useStyles();
 

@@ -135,10 +135,6 @@ const denyRequests = async (id) => {
       ":status": "Denied",
     },
   };
-  // dynamoClient.batchGet(params, function(err, data) {
-  //   if (err) console.log(err, err.stack); // an error occurred
-  //   else  console.log(data);// successful response
-  // });
 
   return await dynamoClient.update(params).promise();
 };
@@ -156,7 +152,7 @@ const addNewEmployee = async (
   _email,
   _contact,
   _address,
-  _gender,
+  _gender
 ) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
@@ -180,14 +176,22 @@ const addNewEmployee = async (
   return await dynamoClient.put(params).promise();
 };
 
+const employeecount = async () => {
+  const data = await dynamoClient
+    .scan({ Select: "COUNT", TableName: EMPLOYEE_TABLE })
+    .promise();
+  return data;
+};
+
 // add to database
-const addOrUpdateEmployee = async (employee, name, password) => {
+const addOrUpdateEmployee = async (employee, name, password, role) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
       id: employee,
       name: name,
       password: password,
+      role: role,
     },
   };
   return await dynamoClient.put(params).promise();
@@ -365,6 +369,12 @@ const getAnnouncements = async () => {
   const announcements = await dynamoClient.scan(params).promise();
   return announcements;
 };
+const cvcount = async () => {
+  const data = await dynamoClient
+    .scan({ Select: "COUNT", TableName: "cv_table" })
+    .promise();
+  return data;
+};
 
 // const getAnnouncements = async () => {
 //   const params = {
@@ -393,10 +403,11 @@ module.exports = {
   getEmployeeRequests,
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
-
+  employeecount,
   addstats,
   getEmployeeStatsbyID,
   addNewAnnouncement,
   getAnnouncements,
+  cvcount,
   login,
 };
