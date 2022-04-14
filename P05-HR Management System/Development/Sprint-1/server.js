@@ -23,6 +23,8 @@ const {
   addAnnouncements,
   getAnnouncements,
   cvcount,
+  changepassword,
+  get_password,
   addNewEmployee,
 } = require("./dynamo");
 
@@ -92,6 +94,31 @@ app.post("/login", async (req, res) => {
   }
 });
 
+//change password
+
+app.post("/changepassword", validateToken, async (req, res) => {
+  const data = req.body;
+  const id = data.id;
+  const newpass = data.newpassword;
+  const currpass = data.password;
+  // console.log(data);
+
+  try {
+    // const changepass = await changepassword(id,newpass);
+    const dbpass = await get_password(id);
+    const test_pas = dbpass.Items[0].password;
+
+    const validPassword = await bcrypt.compare(currpass, test_pas);
+    if (validPassword) {
+      const changepass = await changepassword(id, newpass);
+      res.json("Success");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong" });
+  }
+});
+
 //for user authentication
 app.get("/profile", validateToken, (req, res) => {
   res.json("profile");
@@ -100,7 +127,7 @@ app.get("/profile", validateToken, (req, res) => {
 //post
 app.post("/employee", async (req, res) => {
   const data = req.body;
-  const employee = data.employeeID;
+  const employee = data.id;
   const name = data.name;
   const role = data.role;
   const salt = await bcrypt.genSalt(10);

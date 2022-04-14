@@ -45,6 +45,38 @@ const login = async (id) => {
   return loginpass;
 };
 
+const get_password = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    KeyConditionExpression: "#ids = :id",
+    ProjectionExpression: "#ids, #password",
+    ExpressionAttributeNames: {
+      "#ids": "id",
+      "#password": "password",
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
+
+  const loginpass = await dynamoClient.query(params).promise();
+  return loginpass;
+};
+const changepassword = async (id, password) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    Key: { id: id },
+    UpdateExpression: "SET #password = :password",
+    ExpressionAttributeNames: {
+      "#password": "password",
+    },
+    ExpressionAttributeValues: {
+      ":password": password,
+    },
+  };
+  return await dynamoClient.update(params).promise();
+};
+
 // const generateAccessToken = (username) => {
 //   return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
 // };
@@ -410,4 +442,6 @@ module.exports = {
   getAnnouncements,
   cvcount,
   login,
+  changepassword,
+  get_password,
 };

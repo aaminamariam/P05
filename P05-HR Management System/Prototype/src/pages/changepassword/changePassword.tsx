@@ -6,7 +6,7 @@ import { Box, Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+import FormHelperText from "@mui/material/FormHelperText";
 import axios from "axios";
 import SendIcon from "@mui/icons-material/Send";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,21 @@ const BootstrapButton = styled(Button)({
   fontSize: 16,
   color: "#ffffff",
 });
-
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
+const getJwtToken = () => {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+};
+const getid = () => {
+  return parseJwt(getJwtToken()).id;
+};
 const useStyles = makeStyles((theme) => ({
   rot: {
     display: "flex",
@@ -42,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     padding: "3% 0%",
   },
+  rot2: {
+    // display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    left: "12%",
+  },
   sqr: {
     color: "black",
     variant: "permanent",
@@ -62,54 +82,71 @@ const ChangePassword = () => {
   const [password, setPassword] = useState("");
   const [newpass, setnewpass] = useState("");
   const [retype, setretype] = useState("");
-  //   const [password, setPassword] = useState({
-  //     firstPassword: '',
-  //     secondPassword: ''
-  //   })
   const [validLength, setValidLength] = useState(false);
   const [hasNumber, setHasNumber] = useState(false);
   const [upperCase, setUpperCase] = useState(false);
   const [lowerCase, setLowerCase] = useState(false);
   const [specialChar, setSpecialChar] = useState(false);
   const [match, setMatch] = useState(false);
-  const [requiredLength, setRequiredLength] = useState(8);
+  const [requiredLength, setRequiredLength] = useState(7);
+  const [helperText, setHelperText] = React.useState(
+    "Password must be aleast 8 characters long and contain at least one number, one uppercase and one lowercase letter and one special character"
+  );
   const navigate = useNavigate();
-  const submission = () => {
-    // const checker = check();
-    // if (0 == 0) {
-    //   await axios({
-    //     method: "put",
-    //     url: "http://localhost:5001/addstats",
-    //     data: {
-    //       employeeID: id,
-    //       rating: rating,
-    //       hoursworked: hoursworked,
-    //       comments: comments,
-    //       teamworkScore: teamscore,
-    //     },
-    //   }).then((response: { data: any }) => {
-    //     console.log(response.data);
-    //     var today = new Date().toLocaleDateString();
-    //     console.log(today);
-    //     alert("Employee stats have been submitted");
-    //   });
-    // }
-    alert("hi");
+
+  const handlepassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setnewpass(event.target.value);
+    setValidLength(newpass.length >= requiredLength ? true : false);
+    setUpperCase(newpass.toUpperCase() !== newpass);
+    setLowerCase(newpass.toLowerCase() !== newpass);
+    setSpecialChar(/[ `!@#$%^&*()_+\-=\]{};':"\\|,.<>?~]/.test(newpass));
     setHasNumber(/\d/.test(newpass));
-    console.log("match", hasNumber);
+    setMatch(newpass == retype);
+
+    if (hasNumber && upperCase && lowerCase && specialChar && validLength) {
+      console.log("all true");
+      setHelperText("valid password");
+    } else {
+      setHelperText(
+        "Password must be aleast 8 characters long and contain at least one number, one uppercase and one lowercase letter and one special character"
+      );
+    }
   };
 
-  useEffect(() => {
-    setValidLength(newpass.length >= requiredLength ? true : false);
-    setUpperCase(newpass.toLowerCase() !== newpass);
-    setLowerCase(newpass.toUpperCase() !== newpass);
-    setHasNumber(/\d/.test(newpass));
-    setSpecialChar(/[ `!@#$%^&*()_+\-=\]{};':"\\|,.<>?~]/.test(newpass));
-  }, []);
+  const submission = () => {
+    // const checker = handlepassword();
+    // if (0 == 0) {
+    const data = {
+      id: getid(),
+      password: password,
+      newpassword: newpass,
+    };
+
+    const headers = { "access-token": getJwtToken() };
+    axios
+      .post(
+        "http://localhost:5001/changepassword",
+        {
+          id: getid(),
+          password: password,
+          newpassword: newpass,
+        },
+        {
+          headers: { "access-token": getJwtToken() },
+        }
+      )
+      .then((response: { data: any }) => {
+        console.log(response.data);
+        alert("Password has been updated");
+      });
+    console.log(data);
+  };
+
   return (
     <Box
       className={classes.sqr}
       component="form"
+      //   onSubmit={submission}
       //   noValidate
       sx={{ mt: 1 }}
     >
@@ -128,7 +165,7 @@ const ChangePassword = () => {
           variant="outlined"
           autoComplete="current-password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(event) => setPassword(event.target.value)}
         />
         <TextField
           margin="normal"
@@ -140,15 +177,17 @@ const ChangePassword = () => {
           id="password"
           variant="outlined"
           value={newpass}
-          onChange={(e) => setnewpass(e.target.value)}
+          onChange={handlepassword}
         />
-
+        {/* <div className={classes.rot2}> */}
+        <FormHelperText>{helperText}</FormHelperText>
+        {/* </div> */}
         <TextField
           margin="normal"
           required
           fullWidth
-          name="new password"
-          label="New password"
+          name="confirm password"
+          label="Confirm password"
           type="password"
           id="password"
           variant="outlined"
@@ -161,9 +200,8 @@ const ChangePassword = () => {
             <BootstrapButton variant="contained" onClick={() => navigate(-1)}>
               Back
             </BootstrapButton>
-            {/* </NavLink> */}
             <BootstrapButton
-              type="submit"
+              //   type="submit"
               variant="contained"
               onClick={submission}
               endIcon={<SendIcon />}
