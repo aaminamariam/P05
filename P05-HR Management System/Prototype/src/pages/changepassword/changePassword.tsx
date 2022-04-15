@@ -12,7 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import Paper from "@material-ui/core/Paper";
 const BootstrapButton = styled(Button)({
   boxShadow: "none",
   backgroundColor: "rgba(253, 106, 0, 1)",
@@ -144,73 +144,82 @@ const ChangePassword = () => {
 
   return (
     <Box
-      className={classes.sqr}
+      //   className={classes.sqr}
       component="form"
-      //   onSubmit={submission}
+      onSubmit={submission}
       //   noValidate
-      sx={{ mt: 1 }}
+
+      sx={{
+        mt: 1,
+        display: "flex",
+        flexWrap: "wrap",
+        // border: "2px solid blue",
+      }}
     >
-      <form className={classes.rot}>
-        <Typography variant="h4" noWrap>
-          Change Password
-        </Typography>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Current password"
-          type="password"
-          id="password"
-          variant="outlined"
-          autoComplete="current-password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="new password"
-          label="New password"
-          type="password"
-          id="password"
-          variant="outlined"
-          value={newpass}
-          onChange={handlepassword}
-        />
-        {/* <div className={classes.rot2}> */}
-        <FormHelperText>{helperText}</FormHelperText>
-        {/* </div> */}
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="confirm password"
-          label="Confirm password"
-          type="password"
-          id="password"
-          variant="outlined"
-          autoComplete="new password"
-          value={retype}
-          onChange={(e) => setretype(e.target.value)}
-        />
-        <div>
-          <Stack className={classes.buttons} direction="row" spacing={50}>
-            <BootstrapButton variant="contained" onClick={() => navigate(-1)}>
-              Back
-            </BootstrapButton>
-            <BootstrapButton
-              //   type="submit"
-              variant="contained"
-              onClick={submission}
-              endIcon={<SendIcon />}
-            >
-              Submit
-            </BootstrapButton>
-          </Stack>
-        </div>
-      </form>
+      <Paper elevation={5} className={classes.sqr}>
+        <form className={classes.rot}>
+          <Typography variant="h4" noWrap>
+            Change Password
+          </Typography>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Current password"
+            type="password"
+            id="password"
+            variant="outlined"
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="new password"
+            label="New password"
+            type="password"
+            id="password"
+            variant="outlined"
+            value={newpass}
+            onChange={handlepassword}
+          />
+          <div>
+            <FormHelperText>{helperText}</FormHelperText>
+          </div>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirm password"
+            label="Confirm password"
+            type="password"
+            id="password"
+            variant="outlined"
+            autoComplete="new password"
+            value={retype}
+            onChange={(e) => setretype(e.target.value)}
+          />
+          <div>
+            <Stack className={classes.buttons} direction="row" spacing={50}>
+              <BootstrapButton variant="contained" onClick={() => navigate(-1)}>
+                Back
+              </BootstrapButton>
+              <BootstrapButton
+                type="submit"
+                variant="contained"
+                // onClick={submission}
+                endIcon={<SendIcon />}
+              >
+                Submit
+              </BootstrapButton>
+            </Stack>
+          </div>
+        </form>
+      </Paper>
     </Box>
   );
 };
