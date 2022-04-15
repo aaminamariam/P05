@@ -53,6 +53,7 @@ const HeaderBar = (props: any) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    navigate("/changepassword");
   };
 
   const handleClose2 = () => {
@@ -121,14 +122,10 @@ const HeaderBar = (props: any) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
-
+                <MenuItem onClick={handleClose}>change password</MenuItem>
                 <Stack direction="row">
                   <div onClick={handleClose2}>
-                    <IconButton>
-                      <LogoutIcon />
-                      <MenuItem sx={{ color: "red" }}>Logout</MenuItem>
-                    </IconButton>
+                    <MenuItem sx={{ color: "red" }}>Logout</MenuItem>
                   </div>
                 </Stack>
               </Menu>
