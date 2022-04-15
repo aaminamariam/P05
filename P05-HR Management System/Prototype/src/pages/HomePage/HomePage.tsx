@@ -17,6 +17,7 @@ import EmployeeGenderCard from "./EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "./EmployeeTurnoverCard";
 import EmployeeRetentionCard from "./EmployeeRetentionCard";
+import EmployeeHoursWorkedCard from "./EmployeeHoursWorkedCard";
 import Graph from "./Graph";
 import WorkingMode from "../../components/WorkingMode";
 
@@ -152,12 +153,16 @@ const HomePage = () => {
         <Grid item lg={3}>
           <EmployeeTurnoverCard />
         </Grid>
+
         <Grid item lg={3}>
           {/* <EmployeeTurnoverCard /> */}
         </Grid>
 
         <Grid item lg={3}>
           <EmployeeRetentionCard />
+        </Grid>
+        <Grid item lg={3}>
+          <EmployeeHoursWorkedCard />
         </Grid>
 
         {/* <Grid item lg={3}>
