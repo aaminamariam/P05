@@ -11,13 +11,14 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import { CanvasJSChart } from "canvasjs-react-charts";
+import { lightBlue } from "@mui/material/colors";
 
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
       height: 400,
       paddingBottom: 20,
-      width: "572px",
+      // width: "400px",
       display: "flex",
       flexDirection: "column",
     },
@@ -28,7 +29,31 @@ const useStyles = makeStyles(() =>
       color: "rgba(0, 82, 204, 1)",
     },
     select: {
+      // minWidth: "100px",
+      // height: "50px",
+    },
+    selectMenu: {
       minWidth: "100px",
+      // minHeight: 200,
+      display: "flex",
+      // flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-around",
+      paddingLeft: 10,
+      fontSize: 16,
+      color: "primary",
+    },
+    selectMenuItem: {
+      // minWidth: "120px",
+      // minHeight: 200,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "space-around",
+      paddingTop: 4,
+      paddingBottom: 3,
+      fontSize: 16,
+      color: "#2566c4",
     },
 
     divider: {
@@ -37,7 +62,9 @@ const useStyles = makeStyles(() =>
     contentsub: {
       display: "flex",
       padding: 0,
-      // paddingBottom: 8,
+      justifyContent: "space-around",
+      alignItems: "center",
+      paddingTop: 8,
     },
     contentgraph: {},
   })
@@ -47,51 +74,75 @@ export default function EmployeeHoursWorkedCard(
   props: IEmployeeHoursWorkedCardProps
 ) {
   const classes = useStyles();
+  const [month, setMonth] = useState("");
 
-  const [hoursWorked, sethoursWorked] = useState([
-    { day: 0, hours: 7 },
-    { day: 2, hours: 5 },
-    { day: 3, hours: 4 },
-    { day: 4, hours: 6 },
-    { day: 5, hours: 7 },
-    { day: 6, hours: 8 },
-    { day: 7, hours: 6 },
-    { day: 8, hours: 5 },
-    { day: 9, hours: 4 },
-    { day: 10, hours: 6 },
-    { day: 11, hours: 6 },
-    { day: 12, hours: 7 },
-    { day: 13, hours: 5 },
-    { day: 14, hours: 4 },
-    { day: 15, hours: 6 },
-    { day: 16, hours: 7 },
-    { day: 17, hours: 5 },
-    { day: 18, hours: 4 },
-    { day: 19, hours: 5 },
-    { day: 20, hours: 6 },
-    { day: 21, hours: 7 },
-    { day: 22, hours: 6 },
-    { day: 23, hours: 5 },
-    { day: 24, hours: 4 },
-    { day: 25, hours: 5 },
-    { day: 26, hours: 5 },
-    { day: 27, hours: 6 },
-    { day: 28, hours: 7 },
-    { day: 29, hours: 6 },
-    { day: 30, hours: 5 },
-    { day: 31, hours: 4 },
-  ]);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
-  const [year, setyear] = React.useState("");
+  const [hoursWorked, sethoursWorked] = useState({
+    key: "january",
+    value: [
+      { day: 0, hours: 7 },
+      { day: 2, hours: 5 },
+      { day: 3, hours: 4 },
+      { day: 4, hours: 6 },
+      { day: 5, hours: 7 },
+      { day: 6, hours: 8 },
+      { day: 7, hours: 6 },
+      { day: 8, hours: 5 },
+      { day: 9, hours: 4 },
+      { day: 10, hours: 6 },
+      { day: 11, hours: 6 },
+      { day: 12, hours: 7 },
+      { day: 13, hours: 5 },
+      { day: 14, hours: 4 },
+      { day: 15, hours: 6 },
+      { day: 16, hours: 7 },
+      { day: 17, hours: 5 },
+      { day: 18, hours: 4 },
+      { day: 19, hours: 5 },
+      { day: 20, hours: 6 },
+      { day: 21, hours: 7 },
+      { day: 22, hours: 6 },
+      { day: 23, hours: 5 },
+      { day: 24, hours: 4 },
+      { day: 25, hours: 5 },
+      { day: 26, hours: 5 },
+      { day: 27, hours: 6 },
+      { day: 28, hours: 7 },
+      { day: 29, hours: 6 },
+      { day: 30, hours: 5 },
+      { day: 31, hours: 4 },
+    ],
+  });
 
   const handleChange = (event: SelectChangeEvent) => {
-    setyear(event.target.value as string);
+    setMonth(event.target.value);
+    console.log("HHHH", hoursWorked["january"]);
   };
 
-  const dp = hoursWorked.map(({ day, hours }) => ({ x: day, y: hours }));
+  // const dp = hoursWorked.map(({ day, hours }) => ({
+  //   x: day,
+  //   y: hours,
+  // }));
+
+  // console.log("HHHH", hoursWorked["january"]);
 
   const options = {
     animationEnabled: true,
+
     axisX: {
       valueFormatString: "#",
       interval: 1,
@@ -106,24 +157,11 @@ export default function EmployeeHoursWorkedCard(
         yValueFormatString: "## Hours",
         xValueFormatString: "Date: #th",
         type: "spline",
-
-        // dataPoints: [
-        //   { x: new Date(2017, 0, 0), y: 100 },
-        //   { x: new Date(2017, 1), y: 108 },
-        //   { x: new Date(2017, 2), y: 101 },
-        //   { x: new Date(2017, 3), y: 113 },
-        //   { x: new Date(2017, 4), y: 131 },
-        //   { x: new Date(2017, 5), y: 169 },
-        //   { x: new Date(2017, 6), y: 127 },
-        //   { x: new Date(2017, 7), y: 121 },
-        //   { x: new Date(2017, 8), y: 115 },
-        //   { x: new Date(2017, 9), y: 162 },
-        //   { x: new Date(2017, 10), y: 122 },
-        //   { x: new Date(2017, 11), y: 144 },
-        // ],
-        dataPoints: dp,
+        dataPoints: hoursWorked[month],
       },
     ],
+    theme: "light2",
+    colorSet: "greenShades",
   };
   return (
     <div>
@@ -142,22 +180,24 @@ export default function EmployeeHoursWorkedCard(
           <Typography variant="caption">
             Average daily hours worked in the current month
           </Typography>
-          {/* <Box className={classes.select}>
+          <Box className={classes.select}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">year</InputLabel>
+              <InputLabel id="demo-simple-select-label">month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={year}
-                label="year"
+                value={month}
+                label="month"
                 onChange={handleChange}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {months.map((m, i) => (
+                  <MenuItem className={classes.selectMenuItem} value={m}>
+                    {m}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-          </Box> */}
+          </Box>
         </CardContent>
 
         <CanvasJSChart
