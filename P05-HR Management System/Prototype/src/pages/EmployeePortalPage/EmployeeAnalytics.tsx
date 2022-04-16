@@ -1,14 +1,21 @@
 import React from "react";
-import {makeStyles,createStyles,Grid,Typography,Button,Container,} from "@material-ui/core";
+import {
+  makeStyles,
+  createStyles,
+  Grid,
+  Typography,
+  Button,
+  Container,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { green } from "@material-ui/core/colors";
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import DashCard from "../../components/DashCard";
 import List from "@mui/material/List";
 import DashCharts from "../../components/DashCharts";
-import {Bar} from 'react-chartjs-2';
+import { Bar } from "react-chartjs-2";
 import BarChart from "./EmployeeGraphs";
 import { hslToRgb } from "@mui/material";
 import CardContent from "@material-ui/core/CardContent";
@@ -22,7 +29,7 @@ const useStyles = makeStyles(() =>
     root: {
       height: 400,
       paddingBottom: 20,
-      paddingTop:60,
+      paddingTop: 60,
       width: "572px",
       display: "flex",
       flexDirection: "column",
@@ -48,75 +55,81 @@ const useStyles = makeStyles(() =>
   })
 );
 
-
-
 const EmployeesAnalytics = () => {
   //state variables
   const classes = useStyles();
-  const[stats,setStats]=useState([])
+  const [stats, setStats] = useState<any[]>([]);
   const [id, setId] = useState("22100270");
-  const [tws, setTws] = useState([""]);
-  const [hrs, setHrs] = useState([""]);
-  const [rating, setRating] = useState([""]);
-  const [comments, setComments] = useState([""]);
-  const[postdate,setPostdate]=useState([""]);
+  const [tws, setTws] = useState([]);
+  const [hrs, setHrs] = useState([]);
+  const [rating, setRating] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [postdate, setPostdate] = useState([]);
   const link = "http://localhost:5001/getstats/" + id;
-//    const avg = arr => {
-//    let total=0
-//    var array = arr.map(Number);
-//    for ( let i = 0; i < array.length; i++ ) {
-//      total += array[i];
-//    }
-//    return (total/array.length);
-//  }
- 
+  //    const avg = arr => {
+  //    let total=0
+  //    var array = arr.map(Number);
+  //    for ( let i = 0; i < array.length; i++ ) {
+  //      total += array[i];
+  //    }
+  //    return (total/array.length);
+  //  }
+
   const getStats = async () => {
-  
-    try{
-     const result = await axios.get(link);
-    const data_points = result.data.Items;
-    setStats(data_points)
-    for(var i = 0; i < data_points.length; i++) {
-      
-      setTws(tws => [...tws,data_points[i].teamworkScore]);
-      setHrs(hrs => [...hrs, data_points[i].hoursworked]);
-      setRating(rating => [...rating, data_points[i].rating]);
-      setComments(comments => [...comments,data_points[i].comments]);
-      setPostdate(postdate => [...postdate,data_points[i].postdate]);
-     
-  }
- 
-  
-    }
-    catch (error) {
+    try {
+      const result = await axios.get(link);
+      const data_points = result.data.Items;
+      setStats(data_points);
+      // console.log("DATAPOINTS", data_points);
+      setHrs(data_points.map((item) => item.hoursworked));
+      setTws(data_points.map((item) => item.teamworkScore));
+      setRating(data_points.map((item) => item.rating));
+      setComments(data_points.map((item) => item.comments));
+      setPostdate(data_points.map((item) => item.postdate));
+      console.log(
+        new Date(2017, 1),
+        stats.map((item) => ({
+          x: item.postdate,
+          y: item.hoursworked,
+        }))
+      );
+
+      // setHrs(data_points.map((item) => console.log(item)));
+
+      // for (var i = 0; i < data_points.length; i++) {
+      //   // eslint-disable-next-line no-loop-func
+      //   // setTws((tws) => [...tws, data_points[i].teamworkScore]);
+      //   // eslint-disable-next-line no-loop-func
+      //   setHrs(data_points[i].hoursworked);
+      //   // setRating((rating) => [...rating, data_points[i].rating]);
+      //   // setComments((comments) => [...comments, data_points[i].comments]);
+      //   // setPostdate((postdate) => [...postdate, data_points[i].postdate]);
+      // }
+    } catch (error) {
       console.error(error);
     }
   };
- 
 
-    // hoursworked
-    //team score
-    //const teamscore = data.teamworkScore;
-     //console.log(teamscore);
-    //setTws(average(teamscore.map((i: string) => Number(i))).toFixed(2));
-    
+  // hoursworked
+  //team score
+  //const teamscore = data.teamworkScore;
+  //console.log(teamscore);
+  //setTws(average(teamscore.map((i: string) => Number(i))).toFixed(2));
 
-    //const hoursworked = data.hoursworked;
-    //console.log(hoursworked)
-   // setHrs(average(hoursworked.map((i: string) => Number(i))).toFixed(2));
-    //setComments(data.comments);
+  //const hoursworked = data.hoursworked;
+  //console.log(hoursworked)
+  // setHrs(average(hoursworked.map((i: string) => Number(i))).toFixed(2));
+  //setComments(data.comments);
 
-   
-    // rating
+  // rating
 
   useEffect(() => {
     getStats();
-    console.log("hrs",hrs)
+    // console.log("hrs", hrs);
   }, []);
   //let hours=hrs.map((i) => Number(i));
   //console.log("hrs")
   //const avg_hrs=avg({hours})
-
 
   const options = {
     animationEnabled: true,
@@ -135,8 +148,12 @@ const EmployeesAnalytics = () => {
       {
         yValueFormatString: "#.##",
         xValueFormatString: "MMMM",
-        type: "area",
-        dataPoints: stats["hoursworked"],
+        type: "line",
+        dataPoints: stats.map((item) => ({
+          // x: item.postdate[0],
+          x: new Date(item.postdate.substr(0, 4), item.postdate.substr(5, 2)),
+          y: parseInt(item.hoursworked),
+        })),
       },
     ],
     theme: "light2",
@@ -185,31 +202,25 @@ const EmployeesAnalytics = () => {
         </Grid>
       </Grid>
       <div>
-      <Card className={classes.root} data-testid="card">
-        <CardHeader
-          title={
-            //typography was used to override the default typography here because we cant target the header class or id and change fontSize or pass as props
-            <Typography className={classes.title}>
-              Worked Hours Summary
-            </Typography>
-          }
-          data-testid="card-title"
-        />
-        <Divider className={classes.divider} />
-        <CardContent className={classes.contentsub}>
-          
-         
-        </CardContent>
+        <Card className={classes.root} data-testid="card">
+          <CardHeader
+            title={
+              //typography was used to override the default typography here because we cant target the header class or id and change fontSize or pass as props
+              <Typography className={classes.title}>
+                Worked Hours Summary
+              </Typography>
+            }
+            data-testid="card-title"
+          />
+          <Divider className={classes.divider} />
+          <CardContent className={classes.contentsub}></CardContent>
 
-        <CanvasJSChart
-          options={options}
-          /* onRef={ref => this.chart = ref} */
-        />
-      </Card>
-
+          <CanvasJSChart
+            options={options}
+            /* onRef={ref => this.chart = ref} */
+          />
+        </Card>
       </div>
-     
-  
     </React.Fragment>
   );
 };
