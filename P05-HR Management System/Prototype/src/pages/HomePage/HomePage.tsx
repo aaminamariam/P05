@@ -87,21 +87,21 @@ const HomePage = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={1} className={classes.stats}>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <StatCard
             icon={<GroupIcon />}
             title="Number of Employees"
             data={EmployeeNumber}
           />
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <StatCard
             icon={<PersonOffIcon />}
             title="Number on Leave"
             data="32"
           />
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <Link
             to="/hiringportal"
             style={{
@@ -116,7 +116,7 @@ const HomePage = () => {
             />
           </Link>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <StatCard
             icon={<MonetizationOnIcon />}
             title="Next payroll"
@@ -124,50 +124,49 @@ const HomePage = () => {
           />
         </Grid>
       </Grid>
+
       <Grid container spacing={1} className={classes.content}>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
           <Link
             to="/employeerequests"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
             <EnhancedCard title="New Requests">
-              {/* <RequestList /> */}
+              <RequestList />
             </EnhancedCard>
           </Link>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
           <EnhancedCard title="New Announcements">
             <AnnouncementsCard />
           </EnhancedCard>
         </Grid>
-
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <EnhancedCard title="To Do List">
             <ToDo />
           </EnhancedCard>
         </Grid>
-
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <EnhancedCard title="Employee Gender">
             <EmployeeGenderCard />
           </EnhancedCard>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <EnhancedCard title="Working Mode">
             <WorkingMode />
           </EnhancedCard>
         </Grid>
-        <Grid item lg={9}>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <EmployeeHoursWorkedCard />
         </Grid>
       </Grid>
 
       <Grid container spacing={1} className={classes.content2}>
-        <Grid item lg={6}>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <EmployeeTurnoverCard />
         </Grid>
 
-        <Grid item lg={6}>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <EmployeeRetentionCard />
         </Grid>
       </Grid>
