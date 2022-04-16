@@ -1,31 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
 import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
-
-import {
-  DataGrid,
-  GridColDef,
-  GridFilterModel,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-} from "@mui/x-data-grid";
-
+import {DataGrid,GridColDef,GridFilterModel,GridToolbarColumnsButton,GridToolbarContainer,GridToolbarDensitySelector,GridToolbarExport,GridToolbarFilterButton,} from "@mui/x-data-grid";
 import AddEmployee from "./AddEmployee";
-
 export default function EmployeeDirectoryPage() {
   const [list, setList] = useState<any[]>([]);
   const [SnackbarOpen, setSnackbarOpen] = useState(false);
   const [loader, setloader] = useState(true);
   const [firstRender, setfirstRender] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
       {

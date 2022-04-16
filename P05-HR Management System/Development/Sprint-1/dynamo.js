@@ -98,7 +98,7 @@ const getWorkingModeRemote = async () => {
 const getEmployeeStatsbyID = async (id) => {
   const params = {
     TableName: EMPLOYEE_STATS,
-    ProjectionExpression: "#id, rating, teamworkScore, hoursWorked, comments,postdate",
+    ProjectionExpression: "#id, rating, teamworkScore, hoursworked, comments,postdate",
     KeyConditionExpression: "#id = :id",
     ExpressionAttributeNames: {
       "#id": "id"
@@ -107,6 +107,7 @@ const getEmployeeStatsbyID = async (id) => {
       ":id": id,
     },
   };
+  ConditionExpression='attribute_exists(id)'
   const statsbyID = await dynamoClient.query(params).promise();
   return statsbyID;
 };
