@@ -83,7 +83,9 @@ export default function AddEmployee(props: IAddEmployeeProps) {
   const handleChange = (event: SelectChangeEvent) => {
     setRole(event.target.value as string);
   };
-
+  const handlechangegender = (event: SelectChangeEvent) => {
+    setGender(event.target.value as string);
+  };
   return (
     <div>
       <Button onClick={handleOpen} startIcon={<PersonAdd />}>
@@ -194,15 +196,30 @@ export default function AddEmployee(props: IAddEmployeeProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <TextField
+            {/* <TextField
               id="Gender"
               label="Gender"
               required
               variant="standard"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-            />
-
+            /> */}
+            <Box sx={{ minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={gender}
+                label="Gender"
+                sx={{ minWidth: 200 }}
+                variant="standard"
+                onChange={handlechangegender}
+              >
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+                <MenuItem value={"Other"}>Other</MenuItem>
+              </Select>
+            </Box>
             <Button onClick={handleAddEmployee}>ADD</Button>
           </div>
         </Box>

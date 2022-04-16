@@ -123,11 +123,9 @@ const HeaderBar = (props: any) => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>change password</MenuItem>
-                <Stack direction="row">
-                  <div onClick={handleClose2}>
-                    <MenuItem sx={{ color: "red" }}>Logout</MenuItem>
-                  </div>
-                </Stack>
+                <div onClick={handleClose2}>
+                  <MenuItem sx={{ color: "red" }}>Logout</MenuItem>
+                </div>
               </Menu>
             </Toolbar>
           </AppBar>

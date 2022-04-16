@@ -69,13 +69,6 @@ app.post("/login", async (req, res) => {
       data.Items[0].password
     );
     if (validPassword) {
-      // {
-      //   res.json("Success");
-
-      // const accessToken = generateAccessToken(user);
-      // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-      // refreshTokens.push(refreshToken);
-      // res.json({ accessToken: accessToken, refreshToken: refreshToken });
       const user = {
         id: userid,
         name: data.Items[0].name,
@@ -87,7 +80,7 @@ app.post("/login", async (req, res) => {
 
       // res.json("Success");
     } else {
-      res.status(400).send("Invalid Credentials");
+      res.status(200).send("Invalid Credentials");
     }
   } catch {
     res.status(500).send();

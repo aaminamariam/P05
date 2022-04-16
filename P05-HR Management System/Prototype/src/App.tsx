@@ -5,6 +5,7 @@ import { makeStyles, Toolbar } from "@material-ui/core";
 import HeaderBar from "./navigation/HeaderBar";
 import NavBar from "./navigation/NavBar";
 import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
+import AnnouncementsPage2 from "./pages/AnnouncementsPage/employeeAnnouncements";
 import AppPortalPage from "./pages/AppPortalPage/AppPortalPage";
 import EmployeeRequestsPageNew from "./pages/EmployeeRequestsPage/EmployeeRequestPageNew";
 import HiringPortalPage from "./pages/Hiring Portal/HiringPortalPage";
@@ -22,7 +23,6 @@ import EmpStatsForm from "./components/empStatsForm";
 import AddReq from "./pages/addrequest/addrequest";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ChangePassword from "./pages/changepassword/changePassword";
-import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
 
 const drawerWidth = 240;
 const parseJwt = (token) => {
@@ -37,6 +37,12 @@ export function getJwtToken() {
   const name: string = token as string;
   return name;
 }
+const getrole = () => {
+  // const role = parseJwt(getJwtToken()).role;
+  if (getJwtToken()) {
+    return parseJwt(getJwtToken()).role;
+  } else return null;
+};
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -80,9 +86,13 @@ function App() {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState<boolean>(false);
+
   const [user, setUser] = React.useState<any | null>({
-    role: [parseJwt(getJwtToken()).role],
+    role: [getrole()],
   });
+  // {
+  // role: [parseJwt(getJwtToken()).role],
+  // }
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -144,6 +154,10 @@ function App() {
           <Route path="/reqhist" element={<ReqHist />} />
           {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
           <Route path="/AnnouncementsPage" element={<AnnouncementsPage />} />
+          <Route
+            path="/employeeannouncements"
+            element={<AnnouncementsPage2 />}
+          />
           <Route
             path="*"
             element={

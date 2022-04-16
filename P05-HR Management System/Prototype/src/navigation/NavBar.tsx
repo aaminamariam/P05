@@ -13,7 +13,7 @@ import {
   // ListItemText,
 } from "@material-ui/core";
 import React from "react";
-
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
 
 // const drawerWidth = 240;
@@ -99,7 +99,9 @@ const NavBar = (props: any) => {
       </List> */}
 
       <Toolbar>
-        <div className="navbar">icon + heading</div>
+        <div className="navbar">
+          <AccountCircle />
+        </div>
       </Toolbar>
       <Divider />
       <List>{links}</List>

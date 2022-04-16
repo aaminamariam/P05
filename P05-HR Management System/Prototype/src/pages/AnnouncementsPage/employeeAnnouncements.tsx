@@ -28,7 +28,7 @@ const columns: GridColDef[] = [
   { field: "data", headerName: "Announcement", width: 300 },
 ];
 
-export default function AnnouncementsPage() {
+export default function AnnouncementsPage2() {
   const [list, setList] = useState<any[]>([]);
 
   const [SnackbarOpen, setSnackbarOpen] = useState(false);
@@ -106,10 +106,6 @@ export default function AnnouncementsPage() {
           <GridToolbarDensitySelector style={{ margin: 10 }} />
           <GridToolbarExport style={{ margin: 10 }} />
         </div>
-
-        <div>
-          <AddAnnouncements setOpen={setModalOpen} open={modalOpen} />
-        </div>
       </GridToolbarContainer>
     );
   }
@@ -127,7 +123,7 @@ export default function AnnouncementsPage() {
           LoadingOverlay: LinearProgress,
           Toolbar: CustomGridToolbar,
         }}
-        // checkboxSelection
+        checkboxSelection
         filterModel={filterModel}
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
       />

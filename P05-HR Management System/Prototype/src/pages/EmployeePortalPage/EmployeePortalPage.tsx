@@ -8,8 +8,9 @@ import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import KeyIcon from "@mui/icons-material/Key";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import LogoutIcon from "@mui/icons-material/Logout";
 import ToDo from "../../components/ToDo/ToDo";
 import RequestList from "../EmployeeRequestsPage/RequestList";
 import ReqHist from "../Requestshistory/employeerequests";
@@ -35,6 +36,11 @@ const useStyles = makeStyles(() =>
 const EmployeePortalPage = () => {
   const classes = useStyles();
   const [job_openeings, setjob_openeings] = useState("0");
+  const navigate = useNavigate();
+  const logout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
 
   return (
     <div className={classes.root}>
@@ -73,12 +79,9 @@ const EmployeePortalPage = () => {
             />
           </Link>
         </Grid>
-        <Grid item>
-          <StatCard
-            icon={<MonetizationOnIcon />}
-            title="Next payroll"
-            data="25th August"
-          />
+        <Grid item onClick={logout}>
+          <StatCard icon={<LogoutIcon fontSize="large" />} title="Logout" />
+          {/* </Link> */}
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.content}>
@@ -95,7 +98,7 @@ const EmployeePortalPage = () => {
 
         <Grid item>
           <Link
-            to="/getAnnouncements"
+            to="/employeeannouncements"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
             <EnhancedCard title="Announcements">

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,10 +9,10 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import img from "./imglogin.svg";
-import useAuth from "../../hooks/useAuth";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import FormHelperText from "@mui/material/FormHelperText";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Drawer, makeStyles } from "@material-ui/core";
@@ -40,6 +40,7 @@ const parseJwt = (token) => {
 export default function LoginPage() {
   const classes = useStyles();
   const { loggedIn, setLoggedIn } = useGlobalContext();
+  const [invalid, setInvalid] = useState<boolean>(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -51,15 +52,21 @@ export default function LoginPage() {
         password: data.get("password"),
       },
     }).then((response: { data: string }) => {
-      console.log(response);
+      // console.log(response);
       if (response.data === "Invalid Credentials") {
         // window.location.href = "/";
-        alert("Invalid ID or Password");
+        setInvalid(true);
       } else {
         const role = parseJwt(response.data).role;
         sessionStorage.setItem("role", role);
+
         sessionStorage.setItem("loggedin", "true");
-        window.location.href = "/";
+        if (role === "Admin" || role === "HR") {
+          window.location.href = "/";
+        } else if (role === "Employee") {
+          window.location.href = "/employeedash";
+        }
+
         setJwtToken(response.data);
       }
     });
@@ -119,6 +126,15 @@ export default function LoginPage() {
                   onSubmit={handleSubmit}
                   sx={{ mt: 1 }}
                 >
+                  {invalid && (
+                    <FormHelperText
+                      sx={{
+                        color: "red",
+                      }}
+                    >
+                      Invalid ID or Password
+                    </FormHelperText>
+                  )}
                   <TextField
                     margin="normal"
                     required
