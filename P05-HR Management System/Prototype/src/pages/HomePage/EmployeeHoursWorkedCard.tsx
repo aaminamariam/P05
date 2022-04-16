@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -12,6 +12,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import { CanvasJSChart } from "canvasjs-react-charts";
 import { lightBlue } from "@mui/material/colors";
+import { utcDays } from "d3";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -74,7 +75,7 @@ export default function EmployeeHoursWorkedCard(
   props: IEmployeeHoursWorkedCardProps
 ) {
   const classes = useStyles();
-  const [month, setMonth] = useState("");
+  const [month, setMonth] = useState("January");
 
   const months = [
     "January",
@@ -92,8 +93,7 @@ export default function EmployeeHoursWorkedCard(
   ];
 
   const [hoursWorked, sethoursWorked] = useState({
-    key: "january",
-    value: [
+    "january": [
       { day: 0, hours: 7 },
       { day: 2, hours: 5 },
       { day: 3, hours: 4 },
@@ -129,40 +129,14 @@ export default function EmployeeHoursWorkedCard(
   });
 
   const handleChange = (event: SelectChangeEvent) => {
-    setMonth(event.target.value);
-    console.log("HHHH", hoursWorked["january"]);
+    let val = event.target.value;
+    setMonth(val);
   };
 
-  // const dp = hoursWorked.map(({ day, hours }) => ({
-  //   x: day,
-  //   y: hours,
-  // }));
+  useEffect(() => {
+    // console.log("hw in", month, hoursWorked[month.toLowerCase()]);
+  }, []);
 
-  // console.log("HHHH", hoursWorked["january"]);
-
-  const options = {
-    animationEnabled: true,
-
-    axisX: {
-      valueFormatString: "#",
-      interval: 1,
-      title: "Date",
-    },
-    axisY: {
-      title: "Number of Hours",
-      // prefix: "$",
-    },
-    data: [
-      {
-        yValueFormatString: "## Hours",
-        xValueFormatString: "Date: #th",
-        type: "spline",
-        dataPoints: hoursWorked[month],
-      },
-    ],
-    theme: "light2",
-    colorSet: "greenShades",
-  };
   return (
     <div>
       <Card className={classes.root} data-testid="card">
@@ -201,8 +175,31 @@ export default function EmployeeHoursWorkedCard(
         </CardContent>
 
         <CanvasJSChart
-          options={options}
-          /* onRef={ref => this.chart = ref} */
+          options={{
+            animationEnabled: true,
+            axisX: {
+              valueFormatString: "#",
+              interval: 1,
+              title: "Date",
+            },
+            axisY: {
+              title: "Number of Hours",
+              // prefix: "$",
+            },
+            data: [
+              {
+                yValueFormatString: "## Hours",
+                xValueFormatString: "Date: #th",
+                type: "spline",
+                dataPoints: hoursWorked[month.toLowerCase()].map((item) => ({
+                  x: item.day,
+                  y: item.hours,
+                })),
+              },
+            ],
+            theme: "light2",
+            colorSet: "greenShades",
+          }}
         />
       </Card>
     </div>
