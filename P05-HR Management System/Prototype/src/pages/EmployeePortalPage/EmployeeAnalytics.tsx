@@ -1,132 +1,142 @@
 import React from "react";
-import {
-  makeStyles,
-  createStyles,
-  Grid,
-  Typography,
-  Button,
-  Container,
-} from "@material-ui/core";
+import {makeStyles,createStyles,Grid,Typography,Button,Container,} from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { green } from "@material-ui/core/colors";
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Box from "@mui/material/Box";
 import DashCard from "../../components/DashCard";
 import List from "@mui/material/List";
 import DashCharts from "../../components/DashCharts";
 import {Bar} from 'react-chartjs-2';
 import BarChart from "./EmployeeGraphs";
+import { hslToRgb } from "@mui/material";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
+import Card from "@material-ui/core/Card";
+import { CanvasJSChart } from "canvasjs-react-charts";
 
-// const EmployeeReview = withStyles({
-//   root: {
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      height: 400,
+      paddingBottom: 20,
+      paddingTop:60,
+      width: "572px",
+      display: "flex",
+      flexDirection: "column",
+    },
 
-//     background: "#c4c4c4",
-//     backgroundColor: green[500],
-//     "&:hover": {
-//       backgroundColor: green[700],
-//     },
-//   },
-// })(Button);
+    title: {
+      fontSize: 14,
+      fontWeight: 600,
+      color: "rgba(0, 82, 204, 1)",
+    },
+    select: {
+      minWidth: "100px",
+    },
 
-
+    divider: {
+      width: "95%",
+    },
+    contentsub: {
+      display: "flex",
+      padding: 0,
+    },
+    contentgraph: {},
+  })
+);
 
 
 
 const EmployeesAnalytics = () => {
-  const average = (arr: any) =>
-    arr.reduce((a: any, b: any) => a + b, 0) / arr.length;
   //state variables
-  const [id, setId] = useState("15");
-  const [tws, setTws] = useState("0");
-  const [hrs, setHrs] = useState("15");
-  const [rating, setRating] = useState("15");
-  const [comments, setComments] = useState<any[]>([]);
-
+  const classes = useStyles();
+  const[stats,setStats]=useState([])
+  const [id, setId] = useState("22100270");
+  const [tws, setTws] = useState([""]);
+  const [hrs, setHrs] = useState([""]);
+  const [rating, setRating] = useState([""]);
+  const [comments, setComments] = useState([""]);
+  const[postdate,setPostdate]=useState([""]);
   const link = "http://localhost:5001/getstats/" + id;
-
+//    const avg = arr => {
+//    let total=0
+//    var array = arr.map(Number);
+//    for ( let i = 0; i < array.length; i++ ) {
+//      total += array[i];
+//    }
+//    return (total/array.length);
+//  }
+ 
   const getStats = async () => {
-    //
-    const result = await axios.get(link);
-    const data = result.data.Items[0];
-    console.log(data);
-    console.log(new Date());
+  
+    try{
+     const result = await axios.get(link);
+    const data_points = result.data.Items;
+    setStats(data_points)
+    for(var i = 0; i < data_points.length; i++) {
+      
+      setTws(tws => [...tws,data_points[i].teamworkScore]);
+      setHrs(hrs => [...hrs, data_points[i].hoursworked]);
+      setRating(rating => [...rating, data_points[i].rating]);
+      setComments(comments => [...comments,data_points[i].comments]);
+      setPostdate(postdate => [...postdate,data_points[i].postdate]);
+     
+  }
+ 
+  
+    }
+    catch (error) {
+      console.error(error);
+    }
+  };
+ 
 
     // hoursworked
     //team score
-   const teamscore = data.teamworkScore;
-    // console.log(teamscore);
-    setTws(average(teamscore.map((i: string) => Number(i))).toFixed(2));
-    // console.log(teamwork);
+    //const teamscore = data.teamworkScore;
+     //console.log(teamscore);
+    //setTws(average(teamscore.map((i: string) => Number(i))).toFixed(2));
+    
 
-    const hoursworked = data.hoursworked;
-    console.log(hoursworked)
-    setHrs(average(hoursworked.map((i: string) => Number(i))).toFixed(2));
-    setComments(data.comments);
+    //const hoursworked = data.hoursworked;
+    //console.log(hoursworked)
+   // setHrs(average(hoursworked.map((i: string) => Number(i))).toFixed(2));
+    //setComments(data.comments);
 
-    // let abc = ["1", "2", "3", "4"].map((i) => Number(i));
-    // console.log(abc);
+   
     // rating
-  };
-  getStats();
 
-  const EmployeeData = [
-    [
-      "Month",
-      "Incomplete Tasks",
-      { role: "annotation" },
-      "Completed Tasks",
-      { role: "annotation" },
+  useEffect(() => {
+    getStats();
+  }, []);
+  let hours=hrs.map((i) => Number(i));
+  //const avg_hrs=avg({hours})
+
+
+  const options = {
+    animationEnabled: true,
+
+    axisX: {
+      valueFormatString: "MMM",
+    },
+    axisY: {
+      title: "HoursWorked",
+    
+    },
+    data: [
+      {
+        yValueFormatString: "$#,###",
+        xValueFormatString: "MMMM",
+        type: "spline",
+        dataPoints: [
+          { x:{hours}, y: {postdate}},
+        ],
+      },
     ],
-    ["June", 8.94, 5, 9.94, 2],
-    ["July", 10.49, 7, 11.49, 3],
-    ["Aug", 24.45, 3, 25.45, 10],
-    ["Sept", 21.45, 4, 22.45, 4],
-    ["Oct", 19.3, 6, 20.3, 7],
-  ];
-
-  const EmployeeOptions = {
-    bar: { groupWidth: "20%" },
-    colors: ["#EB4D47", "#46B988"],
-    title: "Employee Effenciency",
-    vAxis: {
-      title: "Tasks completed",
-    },
-    hAxis: {
-      title: "Month",
-    },
   };
-
-  const WeeklyData = [
-    [
-      "Days",
-      "Overtime",
-      { role: "annotation" },
-      "Regular",
-      { role: "annotation" },
-      "Early Leave",
-      { role: "annotation" },
-    ],
-    ["Mon", 8.94, 4, 40.94, null, 0, null],
-    ["Tue", null, null, 31.49, null, 10.45, 2],
-    ["Wed", 24.45, 7, 45.45, null, 0, null],
-    ["Thu", null, null, 52.45, null, 0, null],
-    ["Fri", 19.3, 5, 50.3, null, null, null],
-  ];
-
-  const WeeklyOptions = {
-    bar: { groupWidth: "25%" },
-    colors: ["#EBC747", "#46B988", "#EB4D47"],
-    title: "Weekly Hours Summary",
-    vAxis: {
-      title: "Hours",
-    },
-    hAxis: {
-      title: "Day",
-    },
-  };
-
- 
 
   return (
     <React.Fragment>
@@ -156,7 +166,7 @@ const EmployeesAnalytics = () => {
           <DashCard
             cardTitle={"Average hours worked"}
             cardIconBG={"rgba(254,248,230,255)"}
-            cardDescription={hrs}
+            cardDescription={""}
             cardIcon={<EmployeeSickIcon size="1.5em" color="#a79048" />}
           />
         </Grid>
@@ -169,68 +179,32 @@ const EmployeesAnalytics = () => {
           />
         </Grid>
       </Grid>
+      <div>
+      <Card className={classes.root} data-testid="card">
+        <CardHeader
+          title={
+            //typography was used to override the default typography here because we cant target the header class or id and change fontSize or pass as props
+            <Typography className={classes.title}>
+              Worked Hours Summary
+            </Typography>
+          }
+          data-testid="card-title"
+        />
+        <Divider className={classes.divider} />
+        <CardContent className={classes.contentsub}>
+          
+         
+        </CardContent>
 
-      <Container maxWidth={"xl"}>
-        <Grid
-          container
-          spacing={3}
-          alignItems="center"
-          justifyContent="center"
-          style={{ marginTop: "3rem" }}
-        >
-          <Grid item lg={6} xs={12}>
-            <DashCharts data={EmployeeData} options={EmployeeOptions} />
-          </Grid>
-          <Grid item lg={6} xs={12}>
-            <DashCharts data={WeeklyData} options={WeeklyOptions} />
-          </Grid>
-        </Grid>
-      </Container>
+        <CanvasJSChart
+          options={options}
+          /* onRef={ref => this.chart = ref} */
+        />
+      </Card>
 
-      {/* <EmployeeReview
-        variant="contained"
-        color="primary"
-        disableElevation
-        style={{ position: "fixed", bottom: "2%", right: "1%" }}
-      >
-        View Employee Review
-      </EmployeeReview> */}
-      <Typography variant="h5">Comments:</Typography>
-
-      <div style={{ width: "100%" }}>
-        {comments.map((item: string) => (
-          <ul>
-            <List
-              sx={{
-                position: "relative",
-                // maxHeight: 300,
-                "& ul": { padding: 0 },
-              }}
-            >
-              <Box
-                component="span"
-                sx={{
-                  display: "block",
-                  p: 1,
-                  m: 1,
-                  bgcolor: (theme) =>
-                    theme.palette.mode === "dark" ? "#101010" : "#fff",
-                  color: (theme) =>
-                    theme.palette.mode === "dark" ? "grey.300" : "grey.800",
-                  border: "1px solid",
-                  borderColor: (theme) =>
-                    theme.palette.mode === "dark" ? "grey.800" : "grey.300",
-                  borderRadius: 2,
-                  fontSize: "0.875rem",
-                  fontWeight: "700",
-                }}
-              >
-                {item}
-              </Box>
-            </List>
-          </ul>
-        ))}
       </div>
+     
+  
     </React.Fragment>
   );
 };
