@@ -111,31 +111,36 @@ const EmployeesAnalytics = () => {
 
   useEffect(() => {
     getStats();
+    console.log("hrs",hrs)
   }, []);
-  let hours=hrs.map((i) => Number(i));
+  //let hours=hrs.map((i) => Number(i));
+  //console.log("hrs")
   //const avg_hrs=avg({hours})
 
 
   const options = {
     animationEnabled: true,
-
+    // title: {
+    //   text: "Monthly Sales - 2017",
+    // },
     axisX: {
       valueFormatString: "MMM",
+      // interval: 100,
     },
     axisY: {
-      title: "HoursWorked",
-    
+      title: "",
+      // prefix: "$",
     },
     data: [
       {
-        yValueFormatString: "$#,###",
+        yValueFormatString: "#.##",
         xValueFormatString: "MMMM",
-        type: "spline",
-        dataPoints: [
-          { x:{hours}, y: {postdate}},
-        ],
+        type: "area",
+        dataPoints: stats["hoursworked"],
       },
     ],
+    theme: "light2",
+    colorSet: "greenShades",
   };
 
   return (
