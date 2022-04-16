@@ -31,7 +31,7 @@ export default function EmployeeDirectoryPage() {
     { field: "department", headerName: "Department", width: 130 },
     { field: "designation", headerName: "Designation", width: 150 },
     { field: "level", headerName: "Level", width: 130 },
-    { field: "gender", headerName: "Gender", width: 130 },
+    { field: "Gender", headerName: "Gender", width: 130 },
     { field: "dateofbirth", headerName: "Date of Birth", width: 200 },
     { field: "remainingLeaves", headerName: "Remaining Leaves", width: 130 },
     // { field: "twRating", headerName: "TW Rating", width: 100 },

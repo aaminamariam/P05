@@ -26,6 +26,74 @@ const getEmployees = async () => {
   return employees;
 };
 
+const getEmployeeGenderMale = async () => {
+  const paramsMale = {
+    TableName: EMPLOYEE_TABLE,
+    FilterExpression: "#Gender = :Gender",
+    // KeyConditionExpression: "",
+    ExpressionAttributeNames: {
+      "#Gender": "Gender"
+    },
+    ExpressionAttributeValues: {
+      ":Gender": "Male",
+    },
+  };
+
+  const male = await dynamoClient.scan(paramsMale).promise();
+  return male;
+};
+const getEmployeeGenderFemale = async () => {
+
+  const paramsFemale = {
+    TableName: EMPLOYEE_TABLE,
+    FilterExpression: "#Gender = :Gender",
+    // KeyConditionExpression: "",
+    ExpressionAttributeNames: {
+      "#Gender": "Gender"
+    },
+    ExpressionAttributeValues: {
+      ":Gender": "Female",
+    },
+  };
+  const female = await dynamoClient.scan(paramsFemale).promise();
+
+  return female;
+};
+
+const getWorkingModeOnSite = async () => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    FilterExpression: "#WorkingMode = :WorkingMode",
+    // KeyConditionExpression: "",
+    ExpressionAttributeNames: {
+      "#WorkingMode": "WorkingMode"
+    },
+    ExpressionAttributeValues: {
+      ":WorkingMode": "OnSite",
+    },
+  };
+  const onsite = await dynamoClient.scan(params).promise();
+  return onsite;
+};
+
+const getWorkingModeRemote = async () => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    FilterExpression: "#WorkingMode = :WorkingMode",
+    // KeyConditionExpression: "",
+    ExpressionAttributeNames: {
+      "#WorkingMode": "WorkingMode"
+    },
+    ExpressionAttributeValues: {
+      ":WorkingMode": "Remote",
+    },
+  };
+  const remote = await dynamoClient.scan(params).promise();
+  return remote;
+};
+
+
+
 //employee stats
 const getEmployeeStatsbyID = async (id) => {
   const params = {
@@ -412,6 +480,8 @@ module.exports = {
   getEmployeeRequests,
   getEmployeeReqbyID,
   //getEmployeeReqbystatus,
+  getEmployeeGenderMale,
+  getEmployeeGenderFemale,
   
   
   addstats,
@@ -419,6 +489,8 @@ module.exports = {
   // addAnnouncements,
   addNewAnnouncement,
   getAnnouncements,
+  getWorkingModeRemote,
+  getWorkingModeOnSite,
 };
 
 

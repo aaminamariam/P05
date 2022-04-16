@@ -17,7 +17,9 @@ import EmployeeGenderCard from "./EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "./EmployeeTurnoverCard";
 import EmployeeRetentionCard from "./EmployeeRetentionCard";
+import EmployeeHoursWorkedCard from "./EmployeeHoursWorkedCard";
 import Graph from "./Graph";
+import WorkingMode from "../../components/WorkingMode";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -36,7 +38,15 @@ const useStyles = makeStyles(() =>
       // justifyContent: "stretch",
     },
     content: {
+      display: "flex",
       marginTop: "25px",
+      flexGrow: 1,
+    },
+    content2: {
+      display: "flex",
+      marginTop: "25px",
+      columnWidth: 500,
+      flexGrow: 2,
     },
   })
 );
@@ -142,37 +152,23 @@ const HomePage = () => {
             <EmployeeGenderCard />
           </EnhancedCard>
         </Grid>
-
         <Grid item lg={3}>
+          <EnhancedCard title="Working Mode">
+            <WorkingMode />
+          </EnhancedCard>
+        </Grid>
+        <Grid item lg={9}>
+          <EmployeeHoursWorkedCard />
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={1} className={classes.content2}>
+        <Grid item lg={6}>
           <EmployeeTurnoverCard />
         </Grid>
-        <Grid item lg={3}>
-          {/* <EmployeeTurnoverCard /> */}
-        </Grid>
 
-        <Grid item lg={3}>
+        <Grid item lg={6}>
           <EmployeeRetentionCard />
-        </Grid>
-
-        {/* <Grid item lg={3}>
-          <Link
-            to="/empstats"
-            style={{
-              textDecoration: "none",
-              color: "white",
-            }}
-          >
-            <StatCard
-              icon={<GroupIcon />}
-              title="Add Employee Statics"
-              // backgroundColor= "#FD6A00"
-            />
-          </Link>
-        </Grid> */}
-        <Grid item lg={3}>
-          {/* <EnhancedCard title="Sample graph"> */}
-          {/* <Graph /> */}
-          {/* </EnhancedCard> */}
         </Grid>
       </Grid>
     </div>

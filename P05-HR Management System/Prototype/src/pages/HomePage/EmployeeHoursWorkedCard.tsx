@@ -11,7 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import { CanvasJSChart } from "canvasjs-react-charts";
-import { Button } from "@material-ui/core";
+import { lightBlue } from "@mui/material/colors";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -53,7 +53,7 @@ const useStyles = makeStyles(() =>
       paddingTop: 4,
       paddingBottom: 3,
       fontSize: 16,
-      color: "blue",
+      color: "#2566c4",
     },
 
     divider: {
@@ -69,83 +69,95 @@ const useStyles = makeStyles(() =>
     contentgraph: {},
   })
 );
-export interface IEmployeeRetentionCardProps {}
-export default function EmployeeRetentionCard(
-  props: IEmployeeRetentionCardProps
+export interface IEmployeeHoursWorkedCardProps {}
+export default function EmployeeHoursWorkedCard(
+  props: IEmployeeHoursWorkedCardProps
 ) {
   const classes = useStyles();
+  const [month, setMonth] = useState("");
 
-  const [year, setyear] = React.useState(2017);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
-  const [RetentionRate, setRetentionRate] = useState({
-    2017: [
-      { x: new Date(year, 0), y: 2 },
-      { x: new Date(year, 1), y: 2 },
-      { x: new Date(year, 2), y: 4 },
-      { x: new Date(year, 3), y: 3 },
-      { x: new Date(year, 4), y: 1 },
-      { x: new Date(year, 5), y: 1 },
-      { x: new Date(year, 6), y: 4 },
-      { x: new Date(year, 7), y: 5 },
-      { x: new Date(year, 8), y: 3 },
-      { x: new Date(year, 9), y: 4 },
-      { x: new Date(year, 10), y: 3 },
-      { x: new Date(year, 11), y: 3 },
-    ],
-    2018: [
-      { x: new Date(year, 0), y: 1 },
-      { x: new Date(year, 1), y: 1 },
-      { x: new Date(year, 2), y: 3 },
-      { x: new Date(year, 3), y: 2 },
-      { x: new Date(year, 4), y: 5 },
-      { x: new Date(year, 5), y: 3 },
-      { x: new Date(year, 6), y: 2 },
-      { x: new Date(year, 7), y: 3 },
-      { x: new Date(year, 8), y: 1 },
-      { x: new Date(year, 9), y: 2 },
-      { x: new Date(year, 10), y: 3 },
-      { x: new Date(year, 11), y: 1 },
-    ],
-    2019: [
-      { x: new Date(year, 0), y: 3 },
-      { x: new Date(year, 1), y: 3 },
-      { x: new Date(year, 2), y: 2 },
-      { x: new Date(year, 3), y: 5 },
-      { x: new Date(year, 4), y: 2 },
-      { x: new Date(year, 5), y: 1 },
-      { x: new Date(year, 6), y: 4 },
-      { x: new Date(year, 7), y: 3 },
-      { x: new Date(year, 8), y: 1 },
-      { x: new Date(year, 9), y: 1 },
-      { x: new Date(year, 10), y: 1 },
-      { x: new Date(year, 11), y: 3 },
+  const [hoursWorked, sethoursWorked] = useState({
+    key: "january",
+    value: [
+      { day: 0, hours: 7 },
+      { day: 2, hours: 5 },
+      { day: 3, hours: 4 },
+      { day: 4, hours: 6 },
+      { day: 5, hours: 7 },
+      { day: 6, hours: 8 },
+      { day: 7, hours: 6 },
+      { day: 8, hours: 5 },
+      { day: 9, hours: 4 },
+      { day: 10, hours: 6 },
+      { day: 11, hours: 6 },
+      { day: 12, hours: 7 },
+      { day: 13, hours: 5 },
+      { day: 14, hours: 4 },
+      { day: 15, hours: 6 },
+      { day: 16, hours: 7 },
+      { day: 17, hours: 5 },
+      { day: 18, hours: 4 },
+      { day: 19, hours: 5 },
+      { day: 20, hours: 6 },
+      { day: 21, hours: 7 },
+      { day: 22, hours: 6 },
+      { day: 23, hours: 5 },
+      { day: 24, hours: 4 },
+      { day: 25, hours: 5 },
+      { day: 26, hours: 5 },
+      { day: 27, hours: 6 },
+      { day: 28, hours: 7 },
+      { day: 29, hours: 6 },
+      { day: 30, hours: 5 },
+      { day: 31, hours: 4 },
     ],
   });
 
   const handleChange = (event: SelectChangeEvent) => {
-    console.log("setting year to ", event.target.value);
-    setyear(parseInt(event.target.value));
+    setMonth(event.target.value);
+    console.log("HHHH", hoursWorked["january"]);
   };
+
+  // const dp = hoursWorked.map(({ day, hours }) => ({
+  //   x: day,
+  //   y: hours,
+  // }));
+
+  // console.log("HHHH", hoursWorked["january"]);
 
   const options = {
     animationEnabled: true,
-    // title: {
-    //   text: "Monthly Sales - 2017",
-    // },
+
     axisX: {
-      valueFormatString: "MMM",
-      // interval: 100,
+      valueFormatString: "#",
+      interval: 1,
+      title: "Date",
     },
     axisY: {
-      title: "Employee Retention Rate",
+      title: "Number of Hours",
       // prefix: "$",
     },
     data: [
       {
-        yValueFormatString: "#.##",
-        xValueFormatString: "MMMM",
-        type: "area",
-        dataPoints: RetentionRate[year],
+        yValueFormatString: "## Hours",
+        xValueFormatString: "Date: #th",
+        type: "spline",
+        dataPoints: hoursWorked[month],
       },
     ],
     theme: "light2",
@@ -158,7 +170,7 @@ export default function EmployeeRetentionCard(
           title={
             //typography was used to override the default typography here because we cant target the header class or id and change fontSize or pass as props
             <Typography className={classes.title}>
-              Employee Retention
+              Employee Hours Worked
             </Typography>
           }
           data-testid="card-title"
@@ -166,28 +178,23 @@ export default function EmployeeRetentionCard(
         <Divider className={classes.divider} />
         <CardContent className={classes.contentsub}>
           <Typography variant="caption">
-            Proportion of your workforce who leave during a period of time
+            Average daily hours worked in the current month
           </Typography>
           <Box className={classes.select}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Year</InputLabel>
+              <InputLabel id="demo-simple-select-label">month</InputLabel>
               <Select
-                className={classes.selectMenu}
-                // labelId="demo-simple-select-label"
-                // id="demo-simple-select"
-                value={year.toString()}
-                label="Year"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={month}
+                label="month"
                 onChange={handleChange}
               >
-                <MenuItem className={classes.selectMenuItem} value={2017}>
-                  <Typography>2017</Typography>
-                </MenuItem>
-                <MenuItem className={classes.selectMenuItem} value={2018}>
-                  <Typography>2018</Typography>
-                </MenuItem>
-                <MenuItem className={classes.selectMenuItem} value={2019}>
-                  <Typography>2019</Typography>
-                </MenuItem>
+                {months.map((m, i) => (
+                  <MenuItem className={classes.selectMenuItem} value={m}>
+                    {m}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>

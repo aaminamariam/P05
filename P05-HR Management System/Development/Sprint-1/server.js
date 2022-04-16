@@ -19,6 +19,10 @@ const {
   addAnnouncements,
   getAnnouncements,
   addNewEmployee,
+  getWorkingModeOnSite,
+  getWorkingModeRemote,
+  getEmployeeGenderMale,
+  getEmployeeGenderFemale
 } = require("./dynamo");
 
 const cors = require("cors");
@@ -33,6 +37,31 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
+
+app.get("/getEmployeeGender", async(req, res) => {
+  try {
+    const male = await getEmployeeGenderMale();
+    const female = await getEmployeeGenderFemale();
+
+    res.json([male, female]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong with getGender" });
+  }
+})
+
+app.get("/getWorkingMode", async(req, res) => {
+  try {
+    const remote = await getWorkingModeRemote();
+    const onsite = await getWorkingModeOnSite();
+
+    res.json([remote, onsite]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong with getWorkignMode" });
+  }
+
+})
 
 // rest apis
 //post
