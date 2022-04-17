@@ -4,6 +4,9 @@ import {
   createStyles,
   Card,
   Typography,
+  Box,
+  Paper,
+  Drawer,
 } from "@material-ui/core";
 
 import axios from "axios";
@@ -17,7 +20,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { useState, useEffect } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-
+import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
 import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles(() =>
@@ -32,9 +36,10 @@ const useStyles = makeStyles(() =>
     listheader: {
       display: "flex",
       flexDirection: "row",
-      flex: 0.2,
+      flex: "100%",
       width: "100%",
       justifyContent: "space-around",
+      backgroundColor: "#371BB1",
     },
     listbody: {},
     menu: {
@@ -51,7 +56,7 @@ const useStyles = makeStyles(() =>
     card: {
       backgroundColor: "#371BB1",
       align: "inherit",
-      minWidth: "90%",
+      minWidth: "100%",
       color: "#FFFFFF",
       textAlign: "center",
       borderRadius: "20px",
@@ -66,9 +71,32 @@ const useStyles = makeStyles(() =>
       fontWeight: "bold",
       fontSize: "10rem",
     },
+    sqr: {
+      color: "black",
+      display: "flex",
+      flexGrow: 1,
+      left: "12%",
+      top: "80%",
+      width: "75%",
+      height: "100%",
+      // boxSizing: "border-box"  ,
+    },
     footer: {
       display: "flex",
       justifyContent: "center",
+      textAlign: "center",
+      flexGrow: 1,
+    },
+    appBar: {
+      top: "auto",
+      justifyContent: "center",
+      backgroundColor: "#371BB1",
+      // bottom: "90%"
+    },
+    paper: {
+      background: "#ffffff",
+      width: "100%",
+      flexShrink: 0,
     },
   })
 );
@@ -111,46 +139,68 @@ const AppPortalPage = () => {
   }, []);
   fetchJobs();
   return (
-    <div className={classes.root}>
-      {/* <div className={classes.listheader}>
-        <AddPosting setOpen={setModalOpen} open={modalOpen} />
-      </div> */}
-
-      <div className={classes.listbody}>
-        <List
-          sx={{
-            width: "80%",
-            bgcolor: "background.paper",
-            position: "relative",
-            overflow: "clip",
-            maxWidth: window.innerWidth - 150,
-            maxHeight: window.innerHeight - 150,
-            "& ul": { padding: 1 },
-          }}
-        >
+    <>
+      <Drawer
+        classes={{ paper: classes.paper }}
+        variant="permanent"
+        anchor="left"
+      >
+        {/* <div className={classes.root}> */}
+        {/* <AppBar color="primary" className={classes.appBar}>
+        <Toolbar>
           <Typography variant="h4" className={classes.footer}>
             Job openings
           </Typography>
-          {HiringPortalListItems.map((item) => (
-            <ListItem key={item.date_posted}>
-              <Card
-                className={classes.card}
-                onClick={() => {
-                  toComponentB(item.title, item.description, item.location);
+        </Toolbar>
+      </AppBar> */}
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="h4" className={classes.footer}>
+              Job openings
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <div className={classes.root}>
+          <Box mt={10}>
+            <Paper elevation={5}>
+              <List
+                sx={{
+                  width: "100%",
+                  bgcolor: "background.paper",
+                  position: "relative",
+                  overflow: "hidden",
+                  // maxWidth: window.innerWidth - 150,
+                  // maxHeight: window.innerHeight - 150,
+                  "& ul": { padding: 1 },
                 }}
               >
-                <CardContent>
-                  <ListItemText className={classes.header}>
-                    {item.title}
-                  </ListItemText>
-                  <ListItemText>{item.location}</ListItemText>
-                </CardContent>
-              </Card>
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    </div>
+                {HiringPortalListItems.map((item) => (
+                  <ListItem key={item.date_posted}>
+                    <Card
+                      className={classes.card}
+                      onClick={() => {
+                        toComponentB(
+                          item.title,
+                          item.description,
+                          item.location
+                        );
+                      }}
+                    >
+                      <CardContent>
+                        <ListItemText className={classes.header}>
+                          {item.title}
+                        </ListItemText>
+                        <ListItemText>{item.location}</ListItemText>
+                      </CardContent>
+                    </Card>
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
+          </Box>
+        </div>
+      </Drawer>
+    </>
   );
 };
 // function forceUpdate() {

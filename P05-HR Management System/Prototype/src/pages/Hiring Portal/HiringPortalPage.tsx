@@ -113,7 +113,7 @@ const Hiringportal = () => {
             bgcolor: "background.paper",
             position: "relative",
             overflow: "auto",
-            maxHeight: window.innerHeight - 150,
+            // maxHeight: window.innerHeight - 150,
             "& ul": { padding: 0 },
           }}
         >

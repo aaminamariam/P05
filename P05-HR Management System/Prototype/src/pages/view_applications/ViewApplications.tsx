@@ -93,6 +93,12 @@ const View_Resumes = () => {
       sortable: false,
     },
     {
+      field: "job",
+      headerName: "job applied to",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+    },
+    {
       field: "cv",
       headerName: "CV",
       renderCell: renderDetailsButton,

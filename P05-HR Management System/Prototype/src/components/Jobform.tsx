@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Drawer } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -7,7 +7,10 @@ import { useLocation } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Divider from "@mui/material/Divider";
 import axios from "axios";
+import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
 // import { pdf_parser } from "./parser";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     alignItems: "center",
     padding: theme.spacing(2),
-    position: "absolute",
     top: "7%",
     left: "12%",
     "& .MuiTextField-root": {
@@ -28,12 +30,16 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+  paper: {
+    background: "#ffffff",
+    width: "100%",
+    flexShrink: 0,
+  },
   sqr: {
     color: "black",
-    variant: "permanent",
     position: "absolute",
     left: "12%",
-    top: "20%",
+    top: "10%",
     width: "75%",
     height: "100%",
     boxSizing: "border-box",
@@ -41,12 +47,28 @@ const useStyles = makeStyles((theme) => ({
   text: {
     display: "flex",
     background: "#ffffff",
-    borderRadius: "50px",
+    borderRadius: "5px",
     justifyContent: "flex-end",
   },
   footer: {
     display: "flex",
     justifyContent: "center",
+    textAlign: "center",
+    flexGrow: 1,
+    padding: theme.spacing(2),
+  },
+  des: {
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "left",
+    flexGrow: 1,
+    padding: theme.spacing(2),
+  },
+  appBar: {
+    top: "auto",
+    justifyContent: "center",
+    backgroundColor: "#371BB1",
+    // bottom: "90%"
   },
 }));
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -116,65 +138,85 @@ const Form = () => {
   };
   return (
     <>
-      <Box>
-        <Paper elevation={5} className={classes.sqr}>
-          <Typography variant="h4" className={classes.footer}>
-            Job:{location.state.title}
-          </Typography>
-          <Typography variant="h6" className={classes.footer}>
-            Location:{location.state.location}
-          </Typography>
-          <form className={classes.rot}>
-            <TextField
-              className={classes.text}
-              label="Full Name"
-              variant="outlined"
-              required
-              value={name}
-              onChange={(e) => setname(e.target.value)}
-            />
-            <TextField
-              className={classes.text}
-              label="Phone Number"
-              variant="outlined"
-              required
-              value={phoneno}
-              onChange={(e) => setphoneno(e.target.value)}
-            />
-            <TextField
-              className={classes.text}
-              label="Email"
-              variant="outlined"
-              required
-              value={email}
-              onChange={(e) => setemail(e.target.value)}
-            />
-            <TextField
-              className={classes.text}
-              label="LinkedInProfileUrl"
-              variant="outlined"
-              required
-              value={linkedinprofile}
-              onChange={(e) => setlinkedinprofile(e.target.value)}
-            />
-            <TextField
-              className={classes.text}
-              label="City"
-              variant="outlined"
-              required
-              value={city}
-              onChange={(e) => setcity(e.target.value)}
-            />
-            <TextField
-              className={classes.text}
-              label="state/Province"
-              variant="outlined"
-              required
-              value={state}
-              onChange={(e) => setstate(e.target.value)}
-            />
+      <Drawer
+        classes={{ paper: classes.paper }}
+        variant="permanent"
+        anchor="left"
+      >
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="h4" className={classes.footer}>
+              Job:{location.state.title}
+            </Typography>
+            <Typography variant="h6" className={classes.footer}>
+              Location:{location.state.location}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Box>
+          <Paper elevation={5} className={classes.sqr}>
+            <Typography variant="h5" className={classes.footer}>
+              Job Description
+            </Typography>
+            <Typography variant="body2" className={classes.des} gutterBottom>
+              {location.state.description}
+            </Typography>
+            <Divider variant="middle" />
+            <form className={classes.rot}>
+              <Box mt={3}>
+                <Typography variant="h5" className={classes.footer}>
+                  Job Application
+                </Typography>
+                <TextField
+                  className={classes.text}
+                  label="Full Name"
+                  variant="outlined"
+                  required
+                  value={name}
+                  onChange={(e) => setname(e.target.value)}
+                />
+                <TextField
+                  className={classes.text}
+                  label="Phone Number"
+                  variant="outlined"
+                  required
+                  value={phoneno}
+                  onChange={(e) => setphoneno(e.target.value)}
+                />
+                <TextField
+                  className={classes.text}
+                  label="Email"
+                  variant="outlined"
+                  required
+                  value={email}
+                  onChange={(e) => setemail(e.target.value)}
+                />
+                <TextField
+                  className={classes.text}
+                  label="LinkedInProfileUrl"
+                  variant="outlined"
+                  required
+                  value={linkedinprofile}
+                  onChange={(e) => setlinkedinprofile(e.target.value)}
+                />
+                <TextField
+                  className={classes.text}
+                  label="City"
+                  variant="outlined"
+                  required
+                  value={city}
+                  onChange={(e) => setcity(e.target.value)}
+                />
+                <TextField
+                  className={classes.text}
+                  label="state/Province"
+                  variant="outlined"
+                  required
+                  value={state}
+                  onChange={(e) => setstate(e.target.value)}
+                />
 
-            {/* <Button
+                {/* <Button
           variant="contained"
           component="label"
           style={{
@@ -191,54 +233,60 @@ const Form = () => {
           <input type="file" hidden />
         </Button> */}
 
-            <Button
-              variant="contained"
-              component="label"
-              style={{
-                borderRadius: "5px",
-                maxWidth: "170px",
-                maxHeight: "50px",
-                minWidth: "30px",
-                minHeight: "30px",
-                backgroundColor: "#ffffff",
-                color: "grey",
-              }}
-            >
-              Upload Resume
-              <input
-                type="file"
-                onChange={(e) => setUploadFile(e.target.files)}
-                hidden
-                required
-              />
-            </Button>
-            <div>
-              <Button
-                style={{
-                  backgroundColor: "#46b988",
-                  color: "#FFFFFF",
-                  maxWidth: "170px",
-                  minWidth: "100px",
-                  borderRadius: "5px",
-                }}
-                variant="outlined"
-                onClick={submission}
-              >
-                Submit
-              </Button>
-            </div>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-              <Alert
-                onClose={handleClose}
-                severity="success"
-                sx={{ width: "100%" }}
-              >
-                Your Application has been successfully submitted.
-              </Alert>
-            </Snackbar>
-          </form>
-        </Paper>
-      </Box>
+                <Button
+                  variant="contained"
+                  component="label"
+                  style={{
+                    borderRadius: "5px",
+                    maxWidth: "170px",
+                    maxHeight: "50px",
+                    minWidth: "30px",
+                    minHeight: "30px",
+                    backgroundColor: "#ffffff",
+                    color: "grey",
+                  }}
+                >
+                  Upload Resume
+                  <input
+                    type="file"
+                    onChange={(e) => setUploadFile(e.target.files)}
+                    hidden
+                    required
+                  />
+                </Button>
+                <div>
+                  <Button
+                    style={{
+                      backgroundColor: "#46b988",
+                      color: "#FFFFFF",
+                      maxWidth: "170px",
+                      minWidth: "100px",
+                      borderRadius: "5px",
+                    }}
+                    variant="outlined"
+                    onClick={submission}
+                  >
+                    Submit
+                  </Button>
+                </div>
+                <Snackbar
+                  open={open}
+                  autoHideDuration={6000}
+                  onClose={handleClose}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                  >
+                    Your Application has been successfully submitted.
+                  </Alert>
+                </Snackbar>
+              </Box>
+            </form>
+          </Paper>
+        </Box>
+      </Drawer>
     </>
   );
 };
