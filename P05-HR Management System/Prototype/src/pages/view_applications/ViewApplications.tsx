@@ -17,7 +17,11 @@ const openpdf = (pdflink) => {
     </div>
   );
 };
-
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+}
 const View_Resumes = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -28,6 +32,7 @@ const View_Resumes = () => {
     console.log(row.cv);
     setFlag(true);
   };
+
   const renderDetailsButton = (params) => {
     return (
       <Button
@@ -43,7 +48,7 @@ const View_Resumes = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: "date", headerName: "date", width: 90 },
+    { field: "date", headerName: "date" },
     {
       field: "name",
       headerName: "Name",
@@ -88,6 +93,12 @@ const View_Resumes = () => {
       sortable: false,
     },
     {
+      field: "job",
+      headerName: "job applied to",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+    },
+    {
       field: "cv",
       headerName: "CV",
       renderCell: renderDetailsButton,
@@ -96,7 +107,9 @@ const View_Resumes = () => {
   ];
 
   const getCVs = async () => {
-    const response = await axios.get("http://localhost:5001/getcvs");
+    const response = await axios.get("http://localhost:5001/getcvs", {
+      headers: { "access-token": getJwtToken() },
+    });
     const li = response.data.Items;
     console.log(li);
     for (let i = 0; i < li.length; i++) {
@@ -112,7 +125,7 @@ const View_Resumes = () => {
     <div style={{ height: 400, width: "100%" }}>
       <Box
         sx={{
-          width: "80%",
+          width: "100%",
           maxWidth: "100%",
           padding: 2,
         }}

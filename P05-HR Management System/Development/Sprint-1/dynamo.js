@@ -108,6 +108,42 @@ const getEmployeeStatsbyID = async (id) => {
   const statsbyID = await dynamoClient.query(params).promise();
   return statsbyID;
 };
+const changepassword = async (id, password) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    Key: { id: id },
+    UpdateExpression: "SET #password = :password",
+    ExpressionAttributeNames: {
+      "#password": "password",
+    },
+    ExpressionAttributeValues: {
+      ":password": password,
+    },
+  };
+  return await dynamoClient.update(params).promise();
+};
+
+// const generateAccessToken = (username) => {
+//   return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
+// };
+
+// auth token
+// const authenticateToken = (req, res, next) => {
+//   const authHeader = req.headers["authorization"];
+//   const token = authHeader && authHeader.split(" ")[1];
+
+//   if (token == null) return res.sendStatus(401);
+
+//   jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+//     console.log(err);
+
+//     if (err) return res.sendStatus(403);
+
+//     req.user = user;
+
+//     next();
+//   });
+// };
 
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
@@ -177,10 +213,6 @@ const denyRequests = async (id) => {
       ":status": "Denied",
     },
   };
-  // dynamoClient.batchGet(params, function(err, data) {
-  //   if (err) console.log(err, err.stack); // an error occurred
-  //   else  console.log(data);// successful response
-  // });
 
   return await dynamoClient.update(params).promise();
 };
@@ -192,12 +224,13 @@ const addNewEmployee = async (
   _department,
   _designation,
   _level,
+  _role,
+  _password,
   _dateJoined,
   _email,
   _contact,
   _address,
-  _remainingLeaves,
-  _twRating
+  _gender
 ) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
@@ -207,25 +240,36 @@ const addNewEmployee = async (
       department: _department,
       designation: _designation,
       level: _level,
+      role: _role,
+      password: _password,
       dateJoined: _dateJoined,
       email: _email,
       contact: _contact,
       address: _address,
-      remainingLeaves: _remainingLeaves,
-      twRating: _twRating,
+      gender: _gender,
+      //dateOfBirth: _dateOfBirth
+      //twRating: _twRating,
     },
   };
   return await dynamoClient.put(params).promise();
 };
 
+const employeecount = async () => {
+  const data = await dynamoClient
+    .scan({ Select: "COUNT", TableName: EMPLOYEE_TABLE })
+    .promise();
+  return data;
+};
+
 // add to database
-const addOrUpdateEmployee = async (employee, name, password) => {
+const addOrUpdateEmployee = async (employee, name, password, role) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
     Item: {
       id: employee,
       name: name,
       password: password,
+      role: role,
     },
   };
   return await dynamoClient.put(params).promise();
@@ -313,80 +357,6 @@ const addstats = async (
   return await dynamoClient.put(params).promise();
 };
 
-// const addstats = async (employeeID, comments, rating, teamworkScore, hours, postdate) => {
-//   const params = {
-//     TableName: EMPLOYEE_TABLE,
-//     Key: { id: employeeID },
-//     UpdateExpression:
-//       "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours, #date_posted = :postdate",
-//     ExpressionAttributeNames: {
-//       "#comments": "comments",
-//       "#rating": "rating",
-//       "#teamscore": "teamworkScore",
-//       "#hoursworked": "hoursworked",
-//       "#date_posted": "postdate"
-//     },
-//     ExpressionAttributeValues: {
-//       ":vals": comments,
-//       ":rating": rating,
-//       ":tscore": teamworkScore,
-//       ":hours": hours,
-//       ":postdate":postdate
-//     },
-//   };
-//   return await dynamoClient.put(params).promise();
-// };
-//   const params2 = {
-//     TableName: EMPLOYEE_TABLE,
-//     Key: { employeeID: employeeID },
-//     UpdateExpression:
-//       "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours), #date_posted = :postdate",
-//     ExpressionAttributeNames: {
-//       "#com": "comments",
-//       "#rating": "rating",
-//       "#teamscore": "teamworkScore",
-//       "#hoursworked": "hoursworked",
-//       "#date_posted": "postdate"
-//     },
-//     ExpressionAttributeValues: {
-//       ":vals": [comments],
-//       ":rating": [rating],
-//       ":tscore": [teamworkScore],
-//       ":hours": [hours],
-//       ":postdate":postdate
-//     },
-//   };
-//   try {
-//     c1 = await dynamoClient.update(params2).promise();
-//   } catch (err) {
-//     try {
-//       c2 = await dynamoClient.update(params).promise();
-//     } catch (err2) {
-//       console.log(err2);
-//     }
-//   }
-// };
-
-// const getEmployeeStatsbyID = async (id) => {
-//   const params = {
-//     TableName: EMPLOYEE_TABLE,
-//     ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
-//     KeyConditionExpression: "#id = :id",
-//     ExpressionAttributeNames: {
-//       "#id": "employeeID",
-//       "#Rating": "rating",
-//       "#teamscore": "teamworkScore",
-//       "#hoursWorked": "hoursworked",
-//       "#comments": "comments",
-//     },
-//     ExpressionAttributeValues: {
-//       ":id": id,
-//     },
-//   };
-//   const statsbyID = await dynamoClient.query(params).promise();
-//   return statsbyID;
-// };
-
 const addNewAnnouncement = async (
   id,
   postedBy,
@@ -423,6 +393,12 @@ const getAnnouncements = async () => {
   const announcements = await dynamoClient.scan(params).promise();
   return announcements;
 };
+const cvcount = async () => {
+  const data = await dynamoClient
+    .scan({ Select: "COUNT", TableName: "cv_table" })
+    .promise();
+  return data;
+};
 
 // const getAnnouncements = async () => {
 //   const params = {
@@ -456,11 +432,15 @@ module.exports = {
   getEmployeeGenderMale,
   getEmployeeGenderFemale,
 
+  employeecount,
   addstats,
   getEmployeeStatsbyID,
   addNewAnnouncement,
   getAnnouncements,
+  cvcount,
   login,
   getWorkingModeRemote,
   getWorkingModeOnSite,
+  changepassword,
+  get_password,
 };

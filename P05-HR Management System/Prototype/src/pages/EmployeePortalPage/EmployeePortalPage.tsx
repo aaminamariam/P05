@@ -5,12 +5,13 @@ import StatCard from "../../components/StatCard";
 import EnhancedCard from "../../components/EnhancedCard";
 
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import PersonOffIcon from "@material-ui/icons/Home";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import KeyIcon from "@mui/icons-material/Key";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import LogoutIcon from "@mui/icons-material/Logout";
+import ToDo from "../../components/ToDo/ToDo";
 import RequestList from "../EmployeeRequestsPage/RequestList";
 // import ReqHist from "../Requestshistory/employeerequests";
 import AnnouncementList from "./AnnouncementsList";
@@ -35,6 +36,11 @@ const useStyles = makeStyles(() =>
 const EmployeePortalPage = () => {
   const classes = useStyles();
   const [job_openeings, setjob_openeings] = useState("0");
+  const navigate = useNavigate();
+  const logout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
 
   return (
     <div className={classes.root}>
@@ -48,23 +54,18 @@ const EmployeePortalPage = () => {
             }}
           >
             <StatCard
-              icon={<LeaderboardIcon />}
+              icon={<LeaderboardIcon fontSize="large" />}
               title="Performance statistics"
             />
           </Link>
         </Grid>
         <Grid item>
           <StatCard
-            icon={<PersonOffIcon />}
-            title="Number on Leave"
-            data="32"
+            icon={<KeyIcon fontSize="large" />}
+            title="change password"
           />
         </Grid>
-        <Grid
-          item
-          //   onMouseEnter={changeBackground}
-          //     onMouseLeave={changeBackground_white}
-        >
+        <Grid item>
           <Link
             to="/addreq"
             style={{
@@ -72,22 +73,25 @@ const EmployeePortalPage = () => {
               color: "white",
             }}
           >
-            <StatCard icon={<PersonAddIcon />} title="Add requests" />
+            <StatCard
+              icon={<PersonAddIcon fontSize="large" />}
+              title="Add requests"
+            />
           </Link>
         </Grid>
-        <Grid item>
-          <StatCard
-            icon={<MonetizationOnIcon />}
-            title="Next payroll"
-            data="25th August"
-          />
+        <Grid item onClick={logout}>
+          <StatCard icon={<LogoutIcon fontSize="large" />} title="Logout" />
+          {/* </Link> */}
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.content}>
         <Grid item>
+<<<<<<< HEAD
           <EnhancedCard title="Employee Gender">SHOW</EnhancedCard>
         </Grid>
         <Grid item>
+=======
+>>>>>>> feature/authentication
           <Link
             to="/reqhist"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
@@ -100,7 +104,11 @@ const EmployeePortalPage = () => {
 
         <Grid item>
           <Link
+<<<<<<< HEAD
             to="/getAnnouncements"
+=======
+            to="/employeeannouncements"
+>>>>>>> feature/authentication
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
             <EnhancedCard title="Announcements">
@@ -108,12 +116,10 @@ const EmployeePortalPage = () => {
             </EnhancedCard>
           </Link>
         </Grid>
-
-        <Grid item>
-          <EnhancedCard title="Employee Turnover">SHOW</EnhancedCard>
-        </Grid>
-        <Grid item>
-          <EnhancedCard title="Employee Retention">SHOW</EnhancedCard>
+        <Grid item lg={3}>
+          <EnhancedCard title="To Do List">
+            <ToDo />
+          </EnhancedCard>
         </Grid>
       </Grid>
     </div>

@@ -39,8 +39,8 @@ const useStyles = makeStyles(() =>
     listbody: {},
     menu: {
       position: "relative",
-      right: "0.1%",
-      transform: "scale(1.5)",
+      right: "1%",
+      transform: "scale(1)",
     },
     addpostingButton: {
       backgroundColor: "#46b988",
@@ -66,8 +66,17 @@ const useStyles = makeStyles(() =>
       fontWeight: "bold",
       fontSize: "10rem",
     },
+    footer: {
+      display: "flex",
+      justifyContent: "center",
+    },
   })
 );
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+}
 
 const Hiringportal = () => {
   const classes = useStyles();
@@ -76,12 +85,14 @@ const Hiringportal = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const fetchJobs = async () => {
-    const result = await axios.get("http://localhost:8000/hiringportal");
+    const result = await axios.get("http://localhost:8000/hiringportal", {
+      headers: { "access-token": getJwtToken() },
+    });
     setHiringPortalListItems(result.data.Items);
   };
   const handleDelete = async (date_posted: string) => {
     const dlt = "http://localhost:8000/hiringportal/" + date_posted;
-    await axios.delete(dlt);
+    await axios.delete(dlt, { headers: { "access-token": getJwtToken() } });
     fetchJobs();
   };
 
@@ -102,10 +113,13 @@ const Hiringportal = () => {
             bgcolor: "background.paper",
             position: "relative",
             overflow: "auto",
-            maxHeight: window.innerHeight - 150,
+            // maxHeight: window.innerHeight - 150,
             "& ul": { padding: 0 },
           }}
         >
+          <Typography variant="h4" className={classes.footer}>
+            Job Openings
+          </Typography>
           {HiringPortalListItems.map((item) => (
             <ListItem key={item.date_posted}>
               <Card className={classes.card}>

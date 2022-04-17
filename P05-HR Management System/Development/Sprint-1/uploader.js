@@ -12,7 +12,7 @@ const dynamoClient = new AWS.DynamoDB.DocumentClient();
 
 const CV_TABLE = "cv_table";
 
-const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp) => {
+const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp, job) => {
   date = new Date();
   //sp is for state/province
   let dt = date.toString();
@@ -20,7 +20,7 @@ const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp) => {
     TableName: "cv_table",
     Key: { date: dt },
     UpdateExpression:
-      "SET #name = :name, #city = :city, #linkedin = :linkedin, #phone = :phone, #email = :email, #cv = :cv, #sp = :sp",
+      "SET #name = :name, #city = :city, #linkedin = :linkedin, #phone = :phone, #email = :email, #cv = :cv, #sp = :sp,#job = :job",
     ExpressionAttributeNames: {
       "#name": "name",
       "#city": "city",
@@ -29,6 +29,7 @@ const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp) => {
       "#email": "email",
       "#cv": "cv",
       "#sp": "sp",
+      "#job": "job_applied",
     },
     ExpressionAttributeValues: {
       ":name": Name,
@@ -38,6 +39,7 @@ const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp) => {
       ":email": email,
       ":cv": cv,
       ":sp": sp,
+      ":job": job,
     },
   };
   return await dynamoClient.update(params).promise();

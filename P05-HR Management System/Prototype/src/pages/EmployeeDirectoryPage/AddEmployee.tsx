@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { PersonAdd } from "@mui/icons-material";
 import { Box, Button, Modal, TextField } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
@@ -8,10 +10,15 @@ import { createStyles, makeStyles } from "@mui/styles";
 const useStyles = makeStyles(() =>
   createStyles({
     root: {},
-    
-  
   })
 );
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
 const style = {
   position: "absolute",
@@ -35,14 +42,16 @@ export default function AddEmployee(props: IAddEmployeeProps) {
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [level, setLevel] = useState("");
+  const [role, setRole] = useState("");
+  const [password, setPassword] = useState("");
   const [contact, setContact] = useState("");
   const [designation, setDesignation] = useState("");
   const [address, setAddress] = useState("");
   const [dateJoined, setDateJoined] = useState("");
   const [email, setEmail] = useState("");
-  const [rating, setRating] = useState("");
-  const [leaves, setLeaves] = useState("");
+  const [gender, setGender] = useState("");
   const [employeeID, setEmployeeID] = useState("");
+  const [value, setValue] = useState<Date | null>(new Date());
   const classes = useStyles();
 
   const handleAddEmployee = async () => {
@@ -58,18 +67,25 @@ export default function AddEmployee(props: IAddEmployeeProps) {
         department: department,
         designation: designation,
         level: level,
+        role: role,
+        password: password,
         dateJoined: dateJoined,
         email: email,
         contact: contact,
         address: address,
-        remainingLeaves: leaves,
-        twRating: rating,
+        gender: gender,
       },
     });
     props.setOpen(false);
     // }
   };
 
+  const handleChange = (event: SelectChangeEvent) => {
+    setRole(event.target.value as string);
+  };
+  const handlechangegender = (event: SelectChangeEvent) => {
+    setGender(event.target.value as string);
+  };
   return (
     <div>
       <Button onClick={handleOpen} startIcon={<PersonAdd />}>
@@ -115,6 +131,23 @@ export default function AddEmployee(props: IAddEmployeeProps) {
               value={level}
               onChange={(e) => setLevel(e.target.value)}
             />
+
+            <Box sx={{ minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Role</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={role}
+                label="Role"
+                sx={{ minWidth: 200 }}
+                variant="standard"
+                onChange={handleChange}
+              >
+                <MenuItem value={"Employee"}>Employee</MenuItem>
+                <MenuItem value={"HR"}>HR</MenuItem>
+                <MenuItem value={"Admin"}>Admin</MenuItem>
+              </Select>
+            </Box>
             <TextField
               id="contact"
               label="Contact"
@@ -156,21 +189,37 @@ export default function AddEmployee(props: IAddEmployeeProps) {
               onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
-              id="twRating"
-              label="TW Rating"
+              id="Password"
+              label="Password"
               required
               variant="standard"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <TextField
-              id="remainingLeaves"
-              label="Remaining Leaves"
+            {/* <TextField
+              id="Gender"
+              label="Gender"
               required
               variant="standard"
-              value={leaves}
-              onChange={(e) => setLeaves(e.target.value)}
-            />
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            /> */}
+            <Box sx={{ minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={gender}
+                label="Gender"
+                sx={{ minWidth: 200 }}
+                variant="standard"
+                onChange={handlechangegender}
+              >
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+                <MenuItem value={"Other"}>Other</MenuItem>
+              </Select>
+            </Box>
             <Button onClick={handleAddEmployee}>ADD</Button>
           </div>
         </Box>

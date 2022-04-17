@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,9 +12,11 @@ import img from "./imglogin.svg";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import FormHelperText from "@mui/material/FormHelperText";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Drawer, makeStyles } from "@material-ui/core";
+import { useGlobalContext } from "../../components/GlobalContext";
 
 const theme = createTheme();
 const useStyles = makeStyles((theme) => ({
@@ -24,18 +26,24 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
   },
 }));
+export function setJwtToken(token) {
+  sessionStorage.setItem("jwt", token);
+}
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
 export default function LoginPage() {
   const classes = useStyles();
+  const { loggedIn, setLoggedIn } = useGlobalContext();
+  const [invalid, setInvalid] = useState<boolean>(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    console.log({
-      id: data.get("id"),
-      password: data.get("password"),
-    });
-
     await axios({
       method: "post",
       url: "http://localhost:5001/login",
@@ -44,11 +52,22 @@ export default function LoginPage() {
         password: data.get("password"),
       },
     }).then((response: { data: string }) => {
-      console.log(response);
-      if (response.data === "Success") {
-        window.location.href = "/";
+      // console.log(response);
+      if (response.data === "Invalid Credentials") {
+        // window.location.href = "/";
+        setInvalid(true);
       } else {
-        alert("Invalid ID or Password");
+        const role = parseJwt(response.data).role;
+        sessionStorage.setItem("role", role);
+
+        sessionStorage.setItem("loggedin", "true");
+        if (role === "Admin" || role === "HR") {
+          window.location.href = "/";
+        } else if (role === "Employee") {
+          window.location.href = "/employeedash";
+        }
+
+        setJwtToken(response.data);
       }
     });
   };
@@ -107,6 +126,15 @@ export default function LoginPage() {
                   onSubmit={handleSubmit}
                   sx={{ mt: 1 }}
                 >
+                  {invalid && (
+                    <FormHelperText
+                      sx={{
+                        color: "red",
+                      }}
+                    >
+                      Invalid ID or Password
+                    </FormHelperText>
+                  )}
                   <TextField
                     margin="normal"
                     required

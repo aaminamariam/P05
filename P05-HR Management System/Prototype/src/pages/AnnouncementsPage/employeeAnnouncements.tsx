@@ -2,38 +2,39 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, Button, Snackbar } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
-
+import TouchRipple from "@material-ui/core/ButtonBase/TouchRipple";
 import {
   DataGrid,
   GridColDef,
   GridFilterModel,
-  // GridSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import { AnyAaaaRecord } from "dns";
 
-const getJwtToken = () => {
-  const token = sessionStorage.getItem("jwt");
-  const name: string = token as string;
-  return name;
-};
+import AddAnnouncements from "./addAnnouncements";
 
-export default function EmployeeRequestsPage() {
+const columns: GridColDef[] = [
+  // { field: "id", headerName: "Employee ID", width: 130 },
+  { field: "title", headerName: "Title", width: 250 },
+  { field: "postedOn", headerName: "Posted On", width: 200 },
+  { field: "postedBy", headerName: "Full Name", width: 130 },
+  { field: "department", headerName: "Department", width: 130 },
+  { field: "data", headerName: "Announcement", width: 300 },
+];
+
+export default function AnnouncementsPage2() {
   const [list, setList] = useState<any[]>([]);
+
   const [SnackbarOpen, setSnackbarOpen] = useState(false);
   const [loader, setloader] = useState(true);
   const [firstRender, setfirstRender] = useState(true);
-  const [modalOpen] = useState(false);
-
-  //const [selectedIndex, setSelectedIndex] = useState<any[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState<any>();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
@@ -45,86 +46,31 @@ export default function EmployeeRequestsPage() {
     ],
   });
 
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "Employee ID", width: 130 },
-    { field: "type", headerName: "Type", width: 150 },
-    { field: "title", headerName: "Title", width: 250 },
-    { field: "status", headerName: "Status", width: 300 },
-    { field: "data", headerName: "Request", width: 700 },
-    { field: "dateAdded", headerName: "Date Added", width: 150 },
-  ];
-
-  // const is_empty = (option: string, description: string, id: string) => {
-  //   if (title == "" || aData == "" || id =="") {
-  //     if (title == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (aData == "")
-  //     {
-  //         alert("title is empty")
-  //     }
-  //     if (id = "")
-  //     {
-  //         alert("id is empty")
-  //     }
-  //     return 1;
-  //   }
-  //   return 0;
-  // };
-
-  const handleGetRequests = async () => {
+  const handleGetAnnouncements = async () => {
     let x: any = [];
     try {
       const response = await axios.get(
-        "http://localhost:5001/getEmployeeRequests",
-        { headers: { "access-token": getJwtToken() } }
+        "http://localhost:5001/getAnnouncements"
       );
 
       const li = response.data.Items;
       x = li;
       setList(x);
-      // console.log("Employee REQ  IETMSSSSSSSS", li);
+      console.log("ANNOUNCE ITEMS", li);
       setfirstRender(false);
       setloader(false);
     } catch (error) {
       console.error(error);
     }
   };
-
-  const handleApproveRequest = async () => {
-    await axios({
-      method: "post",
-      url: "http://localhost:5001/approveRequests",
-      data: {
-        id: selectedIndex[0],
-      },
-    });
-  };
-
-  const handleDenyRequest = async () => {
-    await axios({
-      method: "post",
-      url: "http://localhost:5001/denyRequests",
-      data: {
-        ids: selectedIndex,
-      },
-    });
-  };
-
   useEffect(() => {
-    handleGetRequests().then(() => {
+    handleGetAnnouncements().then(() => {
       if (firstRender === false && modalOpen === false) {
         setSnackbarOpen(true);
       }
     });
-    // handleClick();
   }, [modalOpen, firstRender]);
 
-  useEffect(() => {
-    console.log("SELECTED INDEX:", selectedIndex);
-  }, selectedIndex);
-  //[selectedIndex]
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: string
@@ -160,34 +106,24 @@ export default function EmployeeRequestsPage() {
           <GridToolbarDensitySelector style={{ margin: 10 }} />
           <GridToolbarExport style={{ margin: 10 }} />
         </div>
-
-        <div>
-          {/* <AddEmployee setOpen={setModalOpen} open={modalOpen} /> */}
-        </div>
       </GridToolbarContainer>
     );
   }
 
   return (
     <div style={{ height: 400, width: "100%" }}>
+      {/* <Button onClick={handleAddAnnouncement}>ADD ANNOUNCEMENT</Button> */}
       <DataGrid
+        loading={loader}
+        rows={list}
+        columns={columns}
+        autoHeight
+        rowsPerPageOptions={[10]}
         components={{
           LoadingOverlay: LinearProgress,
           Toolbar: CustomGridToolbar,
         }}
-        loading={loader}
-        // loading
-        rows={list}
-        columns={columns}
-        autoHeight
-        // autoPageSize
-        // pageSize={5}
-
-        rowsPerPageOptions={[10]}
         checkboxSelection
-        onSelectionModelChange={(ids) => {
-          setSelectedIndex(ids);
-        }}
         filterModel={filterModel}
         onFilterModelChange={(newFilterModel) => setFilterModel(newFilterModel)}
       />
@@ -200,13 +136,9 @@ export default function EmployeeRequestsPage() {
         action={action}
       >
         <Alert onClose={handleClose} severity="success">
-          Requests Updated
+          New Announcement added!!
         </Alert>
       </Snackbar>
-
-      <Button onClick={handleApproveRequest}>Approve Selected Request</Button>
-
-      <Button onClick={handleDenyRequest}>Deny Selected Request</Button>
     </div>
   );
 }
