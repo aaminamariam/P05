@@ -18,7 +18,6 @@ import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "./EmployeeTurnoverCard";
 import EmployeeRetentionCard from "./EmployeeRetentionCard";
 import EmployeeHoursWorkedCard from "./EmployeeHoursWorkedCard";
-import Graph from "./Graph";
 import WorkingMode from "../../components/WorkingMode";
 
 const useStyles = makeStyles(() =>
@@ -165,7 +164,6 @@ const HomePage = () => {
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <EmployeeTurnoverCard />
         </Grid>
-
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <EmployeeRetentionCard />
         </Grid>
