@@ -18,6 +18,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddAnnouncements from "../AnnouncementsPage/addAnnouncements";
+import EnhancedButton from "../../components/EnhancedButton";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -89,7 +90,7 @@ export const AnnouncementCard = (props: IAnnouncementListProps) => {
       <div className={classes.buttons}>
         <AddAnnouncements open={open} setOpen={setOpen} />
         <Link to="/AnnouncementsPage">
-          <Button size="small">See History</Button>
+          <EnhancedButton variant="text">See History</EnhancedButton>
         </Link>
       </div>
       {/* <CardActions> */}
