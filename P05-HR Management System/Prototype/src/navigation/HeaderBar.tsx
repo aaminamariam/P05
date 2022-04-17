@@ -52,8 +52,8 @@ const HeaderBar = (props: any) => {
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
     navigate("/changepassword");
+    setAnchorEl(null);
   };
 
   const handleClose2 = () => {

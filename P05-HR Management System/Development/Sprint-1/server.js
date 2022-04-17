@@ -380,11 +380,14 @@ app.put("/addresume_info", async (req, res) => {
   const sp = data.sp;
   const linkedin = data.linkedin;
   const cv = data.cv;
+  job = data.job;
   const today = new Date().toISOString().slice(0, 19);
   const id = today;
 
   try {
-    res.json(await add_cv_data(name, city, linkedin, phone, email, cv, sp));
+    res.json(
+      await add_cv_data(name, city, linkedin, phone, email, cv, sp, job)
+    );
   } catch (err) {
     console.error(err);
     res.status(500).json({

@@ -39,8 +39,8 @@ const useStyles = makeStyles(() =>
     listbody: {},
     menu: {
       position: "relative",
-      right: "0.1%",
-      transform: "scale(1.5)",
+      right: "1%",
+      transform: "scale(1)",
     },
     addpostingButton: {
       backgroundColor: "#46b988",
@@ -65,6 +65,10 @@ const useStyles = makeStyles(() =>
     header: {
       fontWeight: "bold",
       fontSize: "10rem",
+    },
+    footer: {
+      display: "flex",
+      justifyContent: "center",
     },
   })
 );
@@ -113,6 +117,9 @@ const Hiringportal = () => {
             "& ul": { padding: 0 },
           }}
         >
+          <Typography variant="h4" className={classes.footer}>
+            Job Openings
+          </Typography>
           {HiringPortalListItems.map((item) => (
             <ListItem key={item.date_posted}>
               <Card className={classes.card}>

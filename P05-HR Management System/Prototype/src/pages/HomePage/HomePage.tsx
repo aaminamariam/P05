@@ -177,18 +177,6 @@ const HomePage = () => {
           </EnhancedCard>
         </Grid>
         <Grid item lg={3}>
-          <EnhancedCard title="Employee Turnover">
-            <EmployeeTurnoverCard />
-          </EnhancedCard>
-        </Grid>
-
-        <Grid item lg={3}>
-          <EnhancedCard title="Employee Retention">
-            <EmployeeRetentionCard />
-          </EnhancedCard>
-        </Grid>
-
-        <Grid item lg={3}>
           <Link
             to="/empstats"
             style={{

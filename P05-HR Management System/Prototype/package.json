@@ -20,6 +20,7 @@
     "axios": "^0.24.0",
     "d3": "^7.3.0",
     "mui-date-picker": "^0.1.10",
+    "pdfreader": "^1.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-google-charts": "^4.0.0",

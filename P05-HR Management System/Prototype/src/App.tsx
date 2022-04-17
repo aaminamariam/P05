@@ -81,12 +81,20 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
 }));
+export function getloggedin() {
+  const token = sessionStorage.getItem("loggedin");
+  const name: string = token as string;
+  if (name == "true") {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 function App() {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [loggedIn, setLoggedIn] = React.useState<boolean>(false);
-
+  const [loggedIn, setLoggedIn] = React.useState<boolean>(getloggedin());
   const [user, setUser] = React.useState<any | null>({
     role: [getrole()],
   });
@@ -104,17 +112,52 @@ function App() {
         customClass={classes}
         handleDrawerToggle={handleDrawerToggle}
       />
-      <NavBar
-        customClass={classes}
-        handleDrawerToggle={handleDrawerToggle}
-        mobileOpen={mobileOpen}
-      />
+      {loggedIn && (
+        <NavBar
+          customClass={classes}
+          handleDrawerToggle={handleDrawerToggle}
+          mobileOpen={mobileOpen}
+        />
+      )}
       <main className={classes.content}>
         <Toolbar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/hiringportal" element={<HiringPortalPage />} />
-          <Route path="/addnewposting" element={<Addnewposting />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/hiringportal"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <HiringPortalPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/addnewposting"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <Addnewposting />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/apportal" element={<AppPortalPage />} />
 
           <Route
@@ -130,33 +173,134 @@ function App() {
             element={
               <ProtectedRoute
                 redirectPath="/login"
-                isAllowed={!!user && user.role.includes("Admin")}
+                isAllowed={!!user && user.role.includes("HR")}
               >
                 <View_Resumes />
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/employeedirectorypage"
-            element={<EmployeeDirectoryPage />}
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <EmployeeDirectoryPage />
+              </ProtectedRoute>
+            }
           />
+
           <Route path="/login" element={<LoginPage />} />
+
           <Route
             path="/employeerequests"
-            element={<EmployeeRequestsPageNew />}
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <EmployeeRequestsPageNew />
+              </ProtectedRoute>
+            }
           />
+
           <Route path="/jobapplication" element={<JobApplication />} />
-          <Route path="/employeedash" element={<EmployeePortalPage />} />
-          <Route path="/employeesanalytics" element={<EmployeesAnalytics />} />
-          <Route path="/addreq" element={<AddReq />} />
-          <Route path="/todolist" element={<ToDo />} />
-          <Route path="/empstats" element={<EmpStatsForm />} />
-          <Route path="/reqhist" element={<ReqHist />} />
+
+          <Route
+            path="/employeedash"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("Employee")}
+              >
+                <EmployeePortalPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/employeesanalytics"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("Employee")}
+              >
+                <EmployeesAnalytics />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/addreq"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("Employee")}
+              >
+                <AddReq />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/todolist"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <ToDo />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/empstats"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <EmpStatsForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/reqhist"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <ReqHist />
+              </ProtectedRoute>
+            }
+          />
           {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
-          <Route path="/AnnouncementsPage" element={<AnnouncementsPage />} />
           <Route
             path="/employeeannouncements"
-            element={<AnnouncementsPage2 />}
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <AnnouncementsPage2 />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/AnnouncementsPage"
+            element={
+              <ProtectedRoute
+                redirectPath="/login"
+                isAllowed={!!user && user.role.includes("HR")}
+              >
+                <AnnouncementsPage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="*"

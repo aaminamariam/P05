@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import { useLocation } from "react-router-dom";
+import Paper from "@material-ui/core/Paper";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import axios from "axios";
+// import { pdf_parser } from "./parser";
 
 const useStyles = makeStyles((theme) => ({
   rot: {
@@ -29,22 +32,28 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     variant: "permanent",
     position: "absolute",
-    left: "23%",
+    left: "12%",
     top: "20%",
     width: "75%",
-    height: "120%",
+    height: "100%",
     boxSizing: "border-box",
   },
   text: {
+    display: "flex",
     background: "#ffffff",
     borderRadius: "50px",
+    justifyContent: "flex-end",
+  },
+  footer: {
+    display: "flex",
+    justifyContent: "center",
   },
 }));
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref
 ) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} ref={ref} variant="outlined" {...props} />;
 });
 
 const Form = () => {
@@ -57,10 +66,11 @@ const Form = () => {
   const [email, setemail] = useState("");
   const [open, setOpen] = React.useState(false);
   const [uploadFile, setUploadFile] = useState<any | null>(null);
+  const location = useLocation();
 
   const submission = async () => {
     let formField = new FormData();
-    formField.append("title", "CV");
+    // formField.append("title", "CV");
     formField.append("document", uploadFile[0]);
     const name =
       Math.random().toString(36).substring(2, 7) + uploadFile[0].name;
@@ -81,11 +91,21 @@ const Form = () => {
         email: email,
         cv: cv_link,
         sp: state,
+        job: location.state.title,
       },
     }).then(() => {
       setOpen(true);
     });
+
+    // pdf_parser(uploadFile[0]);
+    //   console.log(uploadFile[0]);
+    //   axios({
+    //     method: "post",
+    //     url: "http://localhost:8000/parsedcv",
+    //     data: formField,
+    //   });
   };
+
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -96,58 +116,65 @@ const Form = () => {
   };
   return (
     <>
-      <Box className={classes.sqr}>
-        <form className={classes.rot}>
-          <TextField
-            className={classes.text}
-            label="Full Name"
-            variant="filled"
-            required
-            value={name}
-            onChange={(e) => setname(e.target.value)}
-          />
-          <TextField
-            className={classes.text}
-            label="Phone Number"
-            variant="filled"
-            required
-            value={phoneno}
-            onChange={(e) => setphoneno(e.target.value)}
-          />
-          <TextField
-            className={classes.text}
-            label="Email"
-            variant="filled"
-            required
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
-          />
-          <TextField
-            className={classes.text}
-            label="LinkedInProfileUrl"
-            variant="filled"
-            required
-            value={linkedinprofile}
-            onChange={(e) => setlinkedinprofile(e.target.value)}
-          />
-          <TextField
-            className={classes.text}
-            label="City"
-            variant="filled"
-            required
-            value={city}
-            onChange={(e) => setcity(e.target.value)}
-          />
-          <TextField
-            className={classes.text}
-            label="state/Province"
-            variant="filled"
-            required
-            value={state}
-            onChange={(e) => setstate(e.target.value)}
-          />
+      <Box>
+        <Paper elevation={5} className={classes.sqr}>
+          <Typography variant="h4" className={classes.footer}>
+            Job:{location.state.title}
+          </Typography>
+          <Typography variant="h6" className={classes.footer}>
+            Location:{location.state.location}
+          </Typography>
+          <form className={classes.rot}>
+            <TextField
+              className={classes.text}
+              label="Full Name"
+              variant="outlined"
+              required
+              value={name}
+              onChange={(e) => setname(e.target.value)}
+            />
+            <TextField
+              className={classes.text}
+              label="Phone Number"
+              variant="outlined"
+              required
+              value={phoneno}
+              onChange={(e) => setphoneno(e.target.value)}
+            />
+            <TextField
+              className={classes.text}
+              label="Email"
+              variant="outlined"
+              required
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
+            />
+            <TextField
+              className={classes.text}
+              label="LinkedInProfileUrl"
+              variant="outlined"
+              required
+              value={linkedinprofile}
+              onChange={(e) => setlinkedinprofile(e.target.value)}
+            />
+            <TextField
+              className={classes.text}
+              label="City"
+              variant="outlined"
+              required
+              value={city}
+              onChange={(e) => setcity(e.target.value)}
+            />
+            <TextField
+              className={classes.text}
+              label="state/Province"
+              variant="outlined"
+              required
+              value={state}
+              onChange={(e) => setstate(e.target.value)}
+            />
 
-          {/* <Button
+            {/* <Button
           variant="contained"
           component="label"
           style={{
@@ -164,51 +191,53 @@ const Form = () => {
           <input type="file" hidden />
         </Button> */}
 
-          <Button
-            variant="contained"
-            component="label"
-            style={{
-              borderRadius: "50px",
-              maxWidth: "170px",
-              maxHeight: "50px",
-              minWidth: "30px",
-              minHeight: "30px",
-              backgroundColor: "#ffffff",
-              color: "grey",
-            }}
-          >
-            Upload Resume
-            <input
-              type="file"
-              onChange={(e) => setUploadFile(e.target.files)}
-              hidden
-              required
-            />
-          </Button>
-          <div>
             <Button
+              variant="contained"
+              component="label"
               style={{
-                backgroundColor: "#46b988",
-                color: "#FFFFFF",
+                borderRadius: "5px",
                 maxWidth: "170px",
-                minWidth: "100px",
-                borderRadius: "50px",
+                maxHeight: "50px",
+                minWidth: "30px",
+                minHeight: "30px",
+                backgroundColor: "#ffffff",
+                color: "grey",
               }}
-              onClick={submission}
             >
-              Submit
+              Upload Resume
+              <input
+                type="file"
+                onChange={(e) => setUploadFile(e.target.files)}
+                hidden
+                required
+              />
             </Button>
-          </div>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert
-              onClose={handleClose}
-              severity="success"
-              sx={{ width: "100%" }}
-            >
-              Your Application has been successfully submitted.
-            </Alert>
-          </Snackbar>
-        </form>
+            <div>
+              <Button
+                style={{
+                  backgroundColor: "#46b988",
+                  color: "#FFFFFF",
+                  maxWidth: "170px",
+                  minWidth: "100px",
+                  borderRadius: "5px",
+                }}
+                variant="outlined"
+                onClick={submission}
+              >
+                Submit
+              </Button>
+            </div>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Your Application has been successfully submitted.
+              </Alert>
+            </Snackbar>
+          </form>
+        </Paper>
       </Box>
     </>
   );
