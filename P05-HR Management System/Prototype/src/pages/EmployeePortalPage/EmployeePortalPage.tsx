@@ -86,12 +86,9 @@ const EmployeePortalPage = () => {
       </Grid>
       <Grid container spacing={2} className={classes.content}>
         <Grid item>
-<<<<<<< HEAD
           <EnhancedCard title="Employee Gender">SHOW</EnhancedCard>
         </Grid>
         <Grid item>
-=======
->>>>>>> feature/authentication
           <Link
             to="/reqhist"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
@@ -104,11 +101,8 @@ const EmployeePortalPage = () => {
 
         <Grid item>
           <Link
-<<<<<<< HEAD
-            to="/getAnnouncements"
-=======
+            // to="/getAnnouncements"
             to="/employeeannouncements"
->>>>>>> feature/authentication
             style={{ textDecoration: "none", textDecorationColor: "white" }}
           >
             <EnhancedCard title="Announcements">

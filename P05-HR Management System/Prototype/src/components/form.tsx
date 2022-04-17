@@ -1,12 +1,18 @@
-import { useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import React, { useState } from "react";
+import { makeStyles, Paper } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
-// import { useHistory } from 'react-router-dom';
-import Popoverfunc from "../pages/EmployeeRequestsPage/Popup";
+import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
 import Popover from "@mui/material/Popover";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,20 +34,38 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   square: {
-    // color: "black",
-    // variant: "permanent",
-    // position: "absolute",
-    // left: "23%",
-    // top: "20%",
-    // width: "75%",
-    // height: "75%",
+    display: "flex",
+    left: "50%",
+    top: "10%",
+    width: "100%",
+    height: "100%",
+    flexGrow: 1,
     // boxSizing: "border-box",
-    //background: "#c4c4c4",
   },
-  text: {
-    background: "#ffffff",
+
+  buttons: {
+    justifyContent: "space-around",
+  },
+  footer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    textAlign: "center",
+    flexGrow: 1,
+    padding: theme.spacing(2),
   },
 }));
+const BootstrapButton = styled(Button)({
+  boxShadow: "none",
+  textTransform: "none",
+  fontSize: 16,
+  backgroundColor: "#fc6404",
+});
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="outlined" {...props} />;
+});
 const Form = () => {
   const classes = useStyles();
 
@@ -51,98 +75,127 @@ const Form = () => {
   const [jobtitle, setJobtitle] = useState("");
   const [jobdescription, setJobdescription] = useState("");
   const [departmentname, setDepartmentname] = useState("");
+  const [jobtype, setJobtype] = useState("");
   const [location, setLocation] = useState("");
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [open, setOpen] = useState(false);
 
   const addNewJob = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    let formField = new FormData();
-    formField.append("job_title", jobtitle);
-    formField.append("jd", jobdescription);
-    formField.append("dept_name", departmentname);
-    formField.append("location", location);
-    console.log(formField);
+
     await axios({
       method: "post",
-      url: "http://localhost:5001/jobs/jobpostings/",
-      data: formField,
-    }).then((response: { data: any }) => {});
+      url: "http://localhost:8000/addnewposting",
+      data: {
+        title: jobtitle,
+        description: jobdescription,
+        department: departmentname,
+        type: jobtype,
+        location: location,
+      },
+    }).then((response: { data: any }) => {
+      setOpen(true);
+    });
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   return (
-    <Box className={classes.square}>
-      <form className={classes.root}>
-        <TextField
-          className={classes.text}
-          label="Job Title"
-          variant="filled"
-          required
-          value={jobtitle}
-          onChange={(e) => setJobtitle(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          label="Job Description"
-          variant="filled"
-          required
-          value={jobdescription}
-          onChange={(e) => setJobdescription(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          label="Department name"
-          variant="filled"
-          required
-          value={departmentname}
-          onChange={(e) => setDepartmentname(e.target.value)}
-        />
-        <TextField
-          className={classes.text}
-          label="Location"
-          variant="filled"
-          required
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-        {/* <NavLink to="/hiringportal">
-          <Button
-            style={{ backgroundColor: "#46b988", color: "#FFFFFF" }}
-            onClick={addNewJob}
+    <Box mt={3}>
+      <Paper elevation={5} className={classes.square}>
+        <form className={classes.root}>
+          <Typography variant="h5" className={classes.footer}>
+            Add Job
+          </Typography>
+          <Divider variant="middle" />
+          <TextField
+            label="Job Title"
+            variant="outlined"
+            required
+            value={jobtitle}
+            onChange={(e) => setJobtitle(e.target.value)}
+          />
+          <TextField
+            id="outlined-multiline-static"
+            label="Job Description"
+            multiline
+            rows={8}
+            value={jobdescription}
+            onChange={(e) => setJobdescription(e.target.value)}
+            variant="outlined"
+            fullWidth={true}
+          />
+          <TextField
+            label="Department name"
+            variant="outlined"
+            required
+            value={departmentname}
+            onChange={(e) => setDepartmentname(e.target.value)}
+          />
+          <TextField
+            label="Location"
+            variant="outlined"
+            required
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+          <InputLabel id="demo-simple-select-label">Job type</InputLabel>
+          <Select
+            // labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={jobtype}
+            label="Job type"
+            variant="outlined"
+            required
+            sx={{ minWidth: "90%" }}
+            onChange={(e) => setJobtype(e.target.value)}
           >
-            Upload
-          </Button>
-        </NavLink> */}
-        <div>
-          <NavLink to="/hiringportal">
-            <Button
-              aria-describedby={id}
-              variant="contained"
-              onClick={addNewJob}
-            >
-              Upload
-            </Button>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <Typography sx={{ p: 2 }}>Job has been posted</Typography>
-            </Popover>
-          </NavLink>
-        </div>
-      </form>
+            <MenuItem value={"Remote"}>Remote</MenuItem>
+            <MenuItem value={"Hybrid"}>Hybrid</MenuItem>
+            <MenuItem value={"On-site"}>On-site</MenuItem>
+          </Select>
+          <div>
+            <Stack className={classes.buttons} direction="row">
+              {/* <Link
+                to="/employeedash"
+                style={{ textDecoration: "none", textDecorationColor: "white" }} */}
+              {/* > */}
+              <BootstrapButton variant="contained">Back</BootstrapButton>
+              {/* </Link> */}
+              {/* <BootstrapButton
+            variant="contained"
+            endIcon={<SendIcon />}
+            onClick={submitRequest}
+          >
+            Submit
+          </BootstrapButton> */}
+              <BootstrapButton variant="contained" onClick={addNewJob}>
+                Submit
+              </BootstrapButton>
+              <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="success"
+                  sx={{ width: "100%" }}
+                >
+                  Job has been posted successfully
+                </Alert>
+              </Snackbar>
+            </Stack>
+          </div>
+        </form>
+      </Paper>
     </Box>
   );
 };

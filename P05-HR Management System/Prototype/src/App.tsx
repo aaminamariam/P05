@@ -281,7 +281,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="/addAnnouncements" element={<AddAnnouncements />} /> */}
+
           <Route
             path="/employeeannouncements"
             element={

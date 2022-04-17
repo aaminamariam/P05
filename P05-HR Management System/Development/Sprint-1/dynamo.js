@@ -123,27 +123,25 @@ const changepassword = async (id, password) => {
   return await dynamoClient.update(params).promise();
 };
 
-// const generateAccessToken = (username) => {
-//   return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
-// };
+const login = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    KeyConditionExpression: "#ids = :id",
+    ProjectionExpression: "#ids, #password,#name, #role",
+    ExpressionAttributeNames: {
+      "#ids": "id",
+      "#password": "password",
+      "#name": "name",
+      "#role": "role",
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
 
-// auth token
-// const authenticateToken = (req, res, next) => {
-//   const authHeader = req.headers["authorization"];
-//   const token = authHeader && authHeader.split(" ")[1];
-
-//   if (token == null) return res.sendStatus(401);
-
-//   jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-//     console.log(err);
-
-//     if (err) return res.sendStatus(403);
-
-//     req.user = user;
-
-//     next();
-//   });
-// };
+  const loginpass = await dynamoClient.query(params).promise();
+  return loginpass;
+};
 
 //fetch requests from database and approve/deny request
 const getEmployeeRequests = async (id) => {
@@ -274,7 +272,23 @@ const addOrUpdateEmployee = async (employee, name, password, role) => {
   };
   return await dynamoClient.put(params).promise();
 };
+const get_password = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    KeyConditionExpression: "#ids = :id",
+    ProjectionExpression: "#ids, #password",
+    ExpressionAttributeNames: {
+      "#ids": "id",
+      "#password": "password",
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
 
+  const loginpass = await dynamoClient.query(params).promise();
+  return loginpass;
+};
 // fetch employee requests by status active or inactive
 // const getEmployeeReqbystatus = async () => {
 //   const params = {
@@ -426,7 +440,6 @@ module.exports = {
   denyRequests,
   getEmployeeRequests,
   getEmployeeReqbyID,
-  getEmployeeReqbystatus,
 
   //getEmployeeReqbystatus,
   getEmployeeGenderMale,

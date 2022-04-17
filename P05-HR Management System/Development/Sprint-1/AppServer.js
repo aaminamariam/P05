@@ -55,9 +55,10 @@ app.post("/addnewposting", async (req, res) => {
   const description = data.description;
   const dept = data.dept;
   const location = data.location;
+  const type = data.type;
 
   try {
-    const newJob = await addJob(title, description, dept, location);
+    const newJob = await addJob(title, description, dept, location, type);
     res.json(newJob);
   } catch (err) {
     console.error(err);

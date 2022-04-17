@@ -79,7 +79,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
   return (
     <div>
       <Button onClick={handleOpen} startIcon={<PersonAdd />}>
-        ADD POSTING
+        ADD Job
       </Button>
       <Modal
         open={props.open}
@@ -97,13 +97,23 @@ export default function AddEmployee(props: IAddEmployeeProps) {
               value={jobtitle}
               onChange={(e) => setJobtitle(e.target.value)}
             />
-            <TextField
+            {/* <TextField
               className={classes.text}
               label="Job Description"
               variant="filled"
               required
               value={jobdescription}
               onChange={(e) => setJobdescription(e.target.value)}
+            /> */}
+            <TextField
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              rows={8}
+              value={jobdescription}
+              onChange={(e) => setJobdescription(e.target.value)}
+              variant="outlined"
+              fullWidth={true}
             />
             <TextField
               className={classes.text}

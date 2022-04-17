@@ -12,29 +12,30 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@material-ui/icons/Delete";
-
+import Divider from "@mui/material/Divider";
 import AddPosting from "./AddPosting";
 import { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import CardContent from "@material-ui/core/CardContent";
+import { Stack } from "@mui/material";
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       display: "flex",
       flexDirection: "column",
       width: "100%",
-      height: window.innerHeight - 150,
+      height: "100%",
     },
 
     listheader: {
       display: "flex",
       flexDirection: "row",
-      flex: 0.2,
+
       width: "100%",
-      justifyContent: "space-around",
+      justifyContent: "flex-end",
     },
     listbody: {},
     menu: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles(() =>
     card: {
       backgroundColor: "#371BB1",
       align: "inherit",
-      minWidth: "90%",
+      minWidth: "100%",
       color: "#FFFFFF",
       textAlign: "center",
       borderRadius: "20px",
@@ -69,6 +70,16 @@ const useStyles = makeStyles(() =>
     footer: {
       display: "flex",
       justifyContent: "center",
+      padding: theme.spacing(2),
+    },
+    clr: {
+      backgroundColor: "#fc6404",
+      color: "#ffffff",
+      justifyContent: "space-around",
+      padding: theme.spacing(2),
+    },
+    buttons: {
+      justifyContent: "space-around",
     },
   })
 );
@@ -80,7 +91,7 @@ export function getJwtToken() {
 
 const Hiringportal = () => {
   const classes = useStyles();
-
+  const Navigate = useNavigate();
   const [HiringPortalListItems, setHiringPortalListItems] = useState<any[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -95,6 +106,9 @@ const Hiringportal = () => {
     await axios.delete(dlt, { headers: { "access-token": getJwtToken() } });
     fetchJobs();
   };
+  const nav = () => {
+    Navigate("/addnewposting");
+  };
 
   useEffect(() => {
     fetchJobs();
@@ -102,10 +116,6 @@ const Hiringportal = () => {
   fetchJobs();
   return (
     <div className={classes.root}>
-      <div className={classes.listheader}>
-        <AddPosting setOpen={setModalOpen} open={modalOpen} />
-      </div>
-
       <div className={classes.listbody}>
         <List
           sx={{
@@ -117,9 +127,18 @@ const Hiringportal = () => {
             "& ul": { padding: 0 },
           }}
         >
-          <Typography variant="h4" className={classes.footer}>
-            Job Openings
-          </Typography>
+          <Stack className={classes.buttons} direction="row">
+            <Typography variant="h5" className={classes.footer}>
+              Jobs
+            </Typography>
+            <div className={classes.listheader}>
+              <Button variant="contained" onClick={nav} className={classes.clr}>
+                Add Job
+              </Button>
+
+              <Divider variant="middle" flexItem={true} />
+            </div>
+          </Stack>
           {HiringPortalListItems.map((item) => (
             <ListItem key={item.date_posted}>
               <Card className={classes.card}>
@@ -128,6 +147,7 @@ const Hiringportal = () => {
                     {item.title}
                   </ListItemText>
                   <ListItemText>{item.location}</ListItemText>
+                  <ListItemText>{item.type}</ListItemText>
                   <Button
                     component="div"
                     onClick={() => {

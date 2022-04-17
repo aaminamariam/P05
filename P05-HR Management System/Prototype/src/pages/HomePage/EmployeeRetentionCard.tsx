@@ -12,8 +12,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import { CanvasJSChart } from "canvasjs-react-charts";
 
-
-
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
@@ -153,33 +151,6 @@ export default function EmployeeRetentionCard(
     colorSet: "greenShades",
   };
   return (
-<<<<<<< HEAD
- 
-    <div className={classes.root}>
-      <Typography variant="caption">
-        Proportion of your workforce who stay during a period of time
-      </Typography>
-      <div className={classes.body}>
-        <Box className={classes.select}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">year</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={year}
-              label="year"
-              onChange={handleChange}
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Typography variant="h6">15%</Typography>
-        <ThumbUpIcon fontSize="large" />
-      </div>
-=======
     <div>
       <Card className={classes.root} data-testid="card">
         <CardHeader
@@ -226,8 +197,6 @@ export default function EmployeeRetentionCard(
           /* onRef={ref => this.chart = ref} */
         />
       </Card>
->>>>>>> origin/feature/employee_analytics
     </div>
- 
   );
 }

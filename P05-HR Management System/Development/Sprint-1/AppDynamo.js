@@ -14,7 +14,7 @@ const JOBS_TABLE = "jobpostings";
 const APPLICATION_TABLE = "";
 
 //add new job
-const addJob = async (title, des, dept, location) => {
+const addJob = async (title, des, dept, location, type) => {
   const result = Math.random().toString(36).substring(2, 15);
   const params = {
     TableName: JOBS_TABLE,
@@ -24,6 +24,7 @@ const addJob = async (title, des, dept, location) => {
       dept: dept,
       location: location,
       date_posted: result,
+      type: type,
     },
   };
   return await dynamoClient.put(params).promise();
