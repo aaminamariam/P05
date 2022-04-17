@@ -21,6 +21,10 @@ const {
   addAnnouncements,
   getAnnouncements,
   addNewEmployee,
+  getWorkingModeOnSite,
+  getWorkingModeRemote,
+  getEmployeeGenderMale,
+  getEmployeeGenderFemale
 } = require("./dynamo");
 
 const { add_cv_data, getapplications } = require("./uploader");
@@ -43,6 +47,31 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
+
+app.get("/getEmployeeGender", async(req, res) => {
+  try {
+    const male = await getEmployeeGenderMale();
+    const female = await getEmployeeGenderFemale();
+
+    res.json([male, female]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong with getGender" });
+  }
+})
+
+app.get("/getWorkingMode", async(req, res) => {
+  try {
+    const remote = await getWorkingModeRemote();
+    const onsite = await getWorkingModeOnSite();
+
+    res.json([remote, onsite]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ err: "Something went wrong with getWorkignMode" });
+  }
+
+})
 
 // rest apis
 //post
@@ -240,22 +269,22 @@ app.post("/denyRequests", async (req, res) => {
 //add employee statistics
 //rating, comments, teamwork score
 //no of projects/tasks, no of leaves->from db
-app.put("/addstats", async (req, res) => {
+//post
+app.post("/addstats", async (req, res) => {
   const data = req.body;
-  console.log(data);
+
+  const id = data.id;
+  const comments = data.comments;
+  const rating=data.rating;
+  const teamworkScore=data.teamworkScore;
+  const hoursworked=data.hoursworked;
+  const postdate = new Date().toISOString().slice(0, 10);
   try {
-    res.json(
-      await addstats(
-        data.employeeID,
-        data.comments,
-        data.rating,
-        data.teamworkScore,
-        data.hoursworked
-      )
-    );
+    const _stats = await addstats(id, comments, rating, teamworkScore,hoursworked, postdate);
+    res.json(_stats);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ err: "Something went wrong" });
+    res.status(500).json({ err: "Something went wrong in employeestats" });
   }
 });
 
@@ -283,9 +312,11 @@ app.get("/getrequests/:id", async (req, res) => {
 //display stats of employee
 app.get("/getstats/:id", async (req, res) => {
   const { id } = req.params;
+  console.log("id",id)
   try {
     res.json(await getEmployeeStatsbyID(id));
   } catch (err) {
+   
     console.error(err);
     res.status(500).json({ err: "Something went wrong" });
   }

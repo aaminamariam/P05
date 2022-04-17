@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   title: {
     color: "rgba(0, 82, 204, 1)",
     fontSize: 16,
-    fontStyle: "Roboto",
+    fontStyle: "Poppins",
     padding: 0,
   },
   data: {

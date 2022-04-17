@@ -10,10 +10,11 @@ AWS.config.update({
 });
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
-// const TABLE_NAME = "employee_table";
+const EMPLOYEE_STATS = "employee_stats";
 const EMPLOYEE_TABLE = "employee_directory";
 const REQUESTS_TABLE = "requests_table";
 const ANNOUNCEMENTS_TABLE = "announcements_table";
+//const EMPLOYEE_STATS="";
 
 // fetch from database
 const getEmployees = async () => {
@@ -24,44 +25,88 @@ const getEmployees = async () => {
   return employees;
 };
 
-//login
-const login = async (id) => {
+const getEmployeeGenderMale = async () => {
+  const paramsMale = {
+    TableName: EMPLOYEE_TABLE,
+    FilterExpression: "#Gender = :Gender",
+    // KeyConditionExpression: "",
+    ExpressionAttributeNames: {
+      "#Gender": "Gender",
+    },
+    ExpressionAttributeValues: {
+      ":Gender": "Male",
+    },
+  };
+
+  const male = await dynamoClient.scan(paramsMale).promise();
+  return male;
+};
+const getEmployeeGenderFemale = async () => {
+  const paramsFemale = {
+    TableName: EMPLOYEE_TABLE,
+    FilterExpression: "#Gender = :Gender",
+    // KeyConditionExpression: "",
+    ExpressionAttributeNames: {
+      "#Gender": "Gender",
+    },
+    ExpressionAttributeValues: {
+      ":Gender": "Female",
+    },
+  };
+  const female = await dynamoClient.scan(paramsFemale).promise();
+
+  return female;
+};
+
+const getWorkingModeOnSite = async () => {
   const params = {
     TableName: EMPLOYEE_TABLE,
-    KeyConditionExpression: "#ids = :id",
-    ProjectionExpression: "#ids, #password",
+    FilterExpression: "#WorkingMode = :WorkingMode",
+    // KeyConditionExpression: "",
     ExpressionAttributeNames: {
-      "#ids": "id",
-      "#password": "password",
+      "#WorkingMode": "WorkingMode",
+    },
+    ExpressionAttributeValues: {
+      ":WorkingMode": "OnSite",
+    },
+  };
+  const onsite = await dynamoClient.scan(params).promise();
+  return onsite;
+};
+
+const getWorkingModeRemote = async () => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    FilterExpression: "#WorkingMode = :WorkingMode",
+    // KeyConditionExpression: "",
+    ExpressionAttributeNames: {
+      "#WorkingMode": "WorkingMode",
+    },
+    ExpressionAttributeValues: {
+      ":WorkingMode": "Remote",
+    },
+  };
+  const remote = await dynamoClient.scan(params).promise();
+  return remote;
+};
+
+//employee stats
+const getEmployeeStatsbyID = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_STATS,
+    ProjectionExpression:
+      "#id, rating, teamworkScore, hoursworked, comments,postdate",
+    KeyConditionExpression: "#id = :id",
+    ExpressionAttributeNames: {
+      "#id": "id",
     },
     ExpressionAttributeValues: {
       ":id": id,
     },
   };
-
-  const loginpass = await dynamoClient.query(params).promise();
-  return loginpass;
-};
-const generateAccessToken = (username) => {
-  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
-};
-
-// auth token
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (token == null) return res.sendStatus(401);
-
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-    console.log(err);
-
-    if (err) return res.sendStatus(403);
-
-    req.user = user;
-
-    next();
-  });
+  ConditionExpression = "attribute_exists(id)";
+  const statsbyID = await dynamoClient.query(params).promise();
+  return statsbyID;
 };
 
 //fetch requests from database and approve/deny request
@@ -187,27 +232,27 @@ const addOrUpdateEmployee = async (employee, name, password) => {
 };
 
 // fetch employee requests by status active or inactive
-const getEmployeeReqbystatus = async () => {
-  const params = {
-    TableName: REQUESTS_TABLE,
-    ProjectionExpression: "#id, #option, #des, #status, #name",
-    IndexName: "status-index",
-    KeyConditionExpression: "#status = :status",
-    ExpressionAttributeNames: {
-      "#id": "employeeID",
-      "#status": "status",
-      "#option": "option",
-      "#des": "description",
-      "#name": "name",
-    },
-    ExpressionAttributeValues: {
-      ":status": "active",
-    },
-  };
-  const reqbyStatus = await dynamoClient.query(params).promise();
-  console.log(reqbyStatus);
-  return reqbyStatus;
-};
+// const getEmployeeReqbystatus = async () => {
+//   const params = {
+//     TableName: REQUESTS_TABLE,
+//     ProjectionExpression: "#id, #option, #des, #status, #name",
+//     IndexName: "status-index",
+//     KeyConditionExpression: "#status = :status",
+//     ExpressionAttributeNames: {
+//       "#id": "employeeID",
+//       "#status": "status",
+//       "#option": "option",
+//       "#des": "description",
+//       "#name": "name",
+//     },
+//     ExpressionAttributeValues: {
+//       ":status": "active",
+//     },
+//   };
+//   const reqbyStatus = await dynamoClient.query(params).promise();
+//   console.log(reqbyStatus);
+//   return reqbyStatus;
+// };
 
 // fetch employee requests by id
 const getEmployeeReqbyID = async (id) => {
@@ -245,82 +290,102 @@ const deleteEmployee = async (employeeID) => {
   console.log("deleted");
   return;
 };
-
-//add employee statics
-const addstats = async (employeeID, comments, rating, teamworkScore, hours) => {
-  let now = new Date();
+//add employee stats
+const addstats = async (
+  id,
+  comments,
+  rating,
+  teamworkScore,
+  hours,
+  postdate
+) => {
   const params = {
-    TableName: EMPLOYEE_TABLE,
-    Key: { employeeID: employeeID },
-    UpdateExpression:
-      "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours, #lastupdated = :lastupdated",
-    ExpressionAttributeNames: {
-      "#comments": "comments",
-      "#rating": "rating",
-      "#teamscore": "teamworkScore",
-      "#hoursworked": "hoursworked",
-      "#lastupdated": "lastupdated",
-    },
-    ExpressionAttributeValues: {
-      ":vals": [comments],
-      ":rating": [rating],
-      ":tscore": [teamworkScore],
-      ":hours": [hours],
-      ":lastupdated": [now],
+    TableName: EMPLOYEE_STATS,
+    Item: {
+      id: id,
+      comments: comments,
+      rating: rating,
+      teamworkScore: teamworkScore,
+      hoursworked: hours,
+      postdate: postdate,
     },
   };
-  const params2 = {
-    TableName: EMPLOYEE_TABLE,
-    Key: { employeeID: employeeID },
-    UpdateExpression:
-      "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours), #lastupdated = list_append(:lastupdated)",
-    ExpressionAttributeNames: {
-      "#com": "comments",
-      "#rating": "rating",
-      "#teamscore": "teamworkScore",
-      "#hoursworked": "hoursworked",
-      "#lastupdated": "lastupdated",
-    },
-    ExpressionAttributeValues: {
-      ":vals": [comments],
-      ":rating": [rating],
-      ":tscore": [teamworkScore],
-      ":hours": [hours],
-      ":lastupdated": [now],
-    },
-  };
-  try {
-    c1 = await dynamoClient.update(params2).promise();
-  } catch (err) {
-    try {
-      c2 = await dynamoClient.update(params).promise();
-    } catch (err2) {
-      console.log(err2);
-    }
-  }
+  return await dynamoClient.put(params).promise();
 };
 
-const getEmployeeStatsbyID = async (id) => {
-  const params = {
-    TableName: EMPLOYEE_TABLE,
-    ProjectionExpression:
-      "#id, #Rating, #teamscore, #hoursWorked, #comments, #designation",
-    KeyConditionExpression: "#id = :id",
-    ExpressionAttributeNames: {
-      "#id": "employeeID",
-      "#Rating": "rating",
-      "#teamscore": "twRating",
-      "#hoursWorked": "hoursworked",
-      "#comments": "comments",
-      "#designation": "designation",
-    },
-    ExpressionAttributeValues: {
-      ":id": id,
-    },
-  };
-  const statsbyID = await dynamoClient.query(params).promise();
-  return statsbyID;
-};
+// const addstats = async (employeeID, comments, rating, teamworkScore, hours, postdate) => {
+//   const params = {
+//     TableName: EMPLOYEE_TABLE,
+//     Key: { id: employeeID },
+//     UpdateExpression:
+//       "SET #comments = :vals , #rating = :rating, #teamscore = :tscore, #hoursworked = :hours, #date_posted = :postdate",
+//     ExpressionAttributeNames: {
+//       "#comments": "comments",
+//       "#rating": "rating",
+//       "#teamscore": "teamworkScore",
+//       "#hoursworked": "hoursworked",
+//       "#date_posted": "postdate"
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": comments,
+//       ":rating": rating,
+//       ":tscore": teamworkScore,
+//       ":hours": hours,
+//       ":postdate":postdate
+//     },
+//   };
+//   return await dynamoClient.put(params).promise();
+// };
+//   const params2 = {
+//     TableName: EMPLOYEE_TABLE,
+//     Key: { employeeID: employeeID },
+//     UpdateExpression:
+//       "SET #com = list_append(#com,:vals), #rating = list_append(#rating,:rating), #teamscore = list_append(#teamscore,:tscore),#hoursworked = list_append(#hoursworked,:hours), #date_posted = :postdate",
+//     ExpressionAttributeNames: {
+//       "#com": "comments",
+//       "#rating": "rating",
+//       "#teamscore": "teamworkScore",
+//       "#hoursworked": "hoursworked",
+//       "#date_posted": "postdate"
+//     },
+//     ExpressionAttributeValues: {
+//       ":vals": [comments],
+//       ":rating": [rating],
+//       ":tscore": [teamworkScore],
+//       ":hours": [hours],
+//       ":postdate":postdate
+//     },
+//   };
+//   try {
+//     c1 = await dynamoClient.update(params2).promise();
+//   } catch (err) {
+//     try {
+//       c2 = await dynamoClient.update(params).promise();
+//     } catch (err2) {
+//       console.log(err2);
+//     }
+//   }
+// };
+
+// const getEmployeeStatsbyID = async (id) => {
+//   const params = {
+//     TableName: EMPLOYEE_TABLE,
+//     ProjectionExpression: "#id, #Rating, #teamscore, #hoursWorked, #comments",
+//     KeyConditionExpression: "#id = :id",
+//     ExpressionAttributeNames: {
+//       "#id": "employeeID",
+//       "#Rating": "rating",
+//       "#teamscore": "teamworkScore",
+//       "#hoursWorked": "hoursworked",
+//       "#comments": "comments",
+//     },
+//     ExpressionAttributeValues: {
+//       ":id": id,
+//     },
+//   };
+//   const statsbyID = await dynamoClient.query(params).promise();
+//   return statsbyID;
+// };
 
 const addNewAnnouncement = async (
   id,
@@ -387,9 +452,15 @@ module.exports = {
   getEmployeeReqbyID,
   getEmployeeReqbystatus,
 
+  //getEmployeeReqbystatus,
+  getEmployeeGenderMale,
+  getEmployeeGenderFemale,
+
   addstats,
   getEmployeeStatsbyID,
   addNewAnnouncement,
   getAnnouncements,
   login,
+  getWorkingModeRemote,
+  getWorkingModeOnSite,
 };

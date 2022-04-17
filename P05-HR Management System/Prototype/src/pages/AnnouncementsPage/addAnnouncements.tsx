@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { AddAlert } from "@mui/icons-material";
+import EnhancedButton from "../../components/EnhancedButton";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -64,9 +65,14 @@ export default function AddAnnouncements(props: {
 
   return (
     <div>
-      <Button onClick={handleOpen} startIcon={<AddAlert />}>
-        ADD ANNOUNCEMENT
-      </Button>
+      <EnhancedButton
+        variant="outlined"
+        color="primary"
+        onClick={handleOpen}
+        startIcon={<AddAlert />}
+      >
+        ADD
+      </EnhancedButton>
       <Modal
         open={props.open}
         onClose={handleClose}

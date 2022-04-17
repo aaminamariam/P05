@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ManIcon from "@mui/icons-material/Man";
 import WomanIcon from "@mui/icons-material/Woman";
+import { CanvasJSChart } from "canvasjs-react-charts";
+import axios from "axios";
 
 
 const useStyles = makeStyles({
@@ -46,67 +48,62 @@ export interface IEmployeeGenderStatCardProps {
  * Statistics Card component for use in Dashboard page. Use a grid type container to wrap in.
  */
 
-const EmployeeGenderStatCard: React.FC<IEmployeeGenderStatCardProps> = ({
-  male = "45",
-  female = "39",
-}: IEmployeeGenderStatCardProps) => {
+const EmployeeGenderStatCard = () => {
   const classes = useStyles();
 
-  function handleClick() {
-    console.log("Card was clicked");
-  }
-
-  //   const iconMan = React.cloneElement(<ManIcon />, {
-  //     className: classes.iconMan,
-  //   });
-  //   const iconWoman = React.cloneElement(<WomanIcon />, {
-  //     className: classes.iconWoman,
-  //   });
+  const [male, setMale] = useState(7);
+  const [female, setFemale] = useState(10);
 
   const malepercent = "49.4";
   const femalepercent = "51.6";
 
+  const getGender = async () => {
+    console.log("GET Gender");
+    try {
+      const response = await axios.get(
+        "http://localhost:5001/getEmployeeGender"
+      );
+      // console.log(response.data.ScannedCount);
+      console.log("GEN RESP", response.data);
+      setMale(response.data[0].Count);
+      setFemale(response.data[1].Count);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleClick = () => {
+    getGender();
+  };
+
+  useEffect(() => {
+    getGender();
+    // console.log("Gender", male, female);
+  }, [male, female]);
+
+  const options = {
+    // exportEnabled: true,
+    animationEnabled: true,
+    data: [
+      {
+        type: "pie",
+        startAngle: 75,
+        toolTipContent: "<b>{label}</b>: {y}%",
+        showInLegend: "true",
+        legendText: "{label}",
+        indexLabelFontSize: 12,
+        indexLabel: "{label} - {y}%",
+        dataPoints: [
+          { y: male, label: "Male", color: "blue" },
+          { y: female, label: "Female", color: "pink" },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div onClick={handleClick} className={classes.root}>
-      <div className={classes.columns}>
-        <Typography variant="h5" className={classes.title}>
-          Men
-        </Typography>
-        {/* {iconMan}
-         */}
-        <ManIcon
-          sx={{
-            // maxHeight: 245,
-            fontSize: 100,
-            color: "lightblue",
-          }}
-        />
-        <Typography variant="subtitle1" className={classes.number}>
-          {male}
-        </Typography>
-        <Typography variant="subtitle2" className={classes.percentage}>
-          {malepercent}%
-        </Typography>
-      </div>
-      <div className={classes.columns}>
-        <Typography variant="h5" className={classes.title}>
-          Women
-        </Typography>
-        {/* {iconWoman} */}
-        <WomanIcon
-          sx={{
-            // maxHeight: 245,
-            fontSize: 95,
-            color: "pink",
-          }}
-        />
-        <Typography variant="subtitle1" className={classes.number}>
-          {female}
-        </Typography>
-        <Typography variant="subtitle2" className={classes.percentage}>
-          {femalepercent}%
-        </Typography>
-      </div>
+    <div className={classes.root} onClick={handleClick}>
+      <CanvasJSChart options={options} />
     </div>
   );
 };

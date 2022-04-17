@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: theme.spacing(2),
     position: "absolute",
-    top: "7%",
-    left: "12%",
+    top: "17%",
+    left: "32%",
     "& .MuiTextField-root": {
       margin: theme.spacing(2),
       width: "600px",

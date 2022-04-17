@@ -1,31 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
 import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Snackbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LinearProgress from "@mui/material/LinearProgress";
-
-import {
-  DataGrid,
-  GridColDef,
-  GridFilterModel,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-} from "@mui/x-data-grid";
-
+import {DataGrid,GridColDef,GridFilterModel,GridToolbarColumnsButton,GridToolbarContainer,GridToolbarDensitySelector,GridToolbarExport,GridToolbarFilterButton,} from "@mui/x-data-grid";
 import AddEmployee from "./AddEmployee";
-
 export default function EmployeeDirectoryPage() {
   const [list, setList] = useState<any[]>([]);
   const [SnackbarOpen, setSnackbarOpen] = useState(false);
   const [loader, setloader] = useState(true);
   const [firstRender, setfirstRender] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [
       {
@@ -45,7 +31,7 @@ export default function EmployeeDirectoryPage() {
     { field: "department", headerName: "Department", width: 130 },
     { field: "designation", headerName: "Designation", width: 150 },
     { field: "level", headerName: "Level", width: 130 },
-    { field: "gender", headerName: "Gender", width: 130 },
+    { field: "Gender", headerName: "Gender", width: 130 },
     { field: "dateofbirth", headerName: "Date of Birth", width: 200 },
     { field: "remainingLeaves", headerName: "Remaining Leaves", width: 130 },
     // { field: "twRating", headerName: "TW Rating", width: 100 },

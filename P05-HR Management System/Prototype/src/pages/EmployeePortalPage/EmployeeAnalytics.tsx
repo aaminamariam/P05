@@ -1,121 +1,85 @@
 import React from "react";
-import {
-  makeStyles,
-  createStyles,
-  Grid,
-  Typography,
-  Button,
-  Container,
-} from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
-import { green } from "@material-ui/core/colors";
+import {Card, CardContent, Grid, ListItem, ListItemText} from "@material-ui/core";
 import axios from "axios";
-import { useState } from "react";
-import Box from "@mui/material/Box";
+import { useState, useEffect } from "react";
+import { createStyles, makeStyles } from "@mui/styles";
 import DashCard from "../../components/DashCard";
-import List from "@mui/material/List";
-import DashCharts from "../../components/DashCharts";
+import EmployeeWorkingHoursGraph from "../../components/EmployeeWorkingHoursGraph";
+import EmployeeRatingsGraph from "../../components/EmployeeRatingsGraph";
+import EmployeeTeamWorkScoreGraph from "../../components/EmployeeTeamWorkScoreGraph";
+import Typography from "@mui/material/Typography";
 
-// const EmployeeReview = withStyles({
-//   root: {
-
-//     background: "#c4c4c4",
-//     backgroundColor: green[500],
-//     "&:hover": {
-//       backgroundColor: green[700],
-//     },
-//   },
-// })(Button);
+const useStyles = makeStyles(() =>
+  createStyles({
+    content2: {
+      display: "flex",
+      marginTop: "25px",
+      columnWidth: 500,
+      flexGrow: 2,
+    },
+    card: {
+      backgroundColor: "#FFFFFF",
+      align: "inherit",
+      minWidth: "90%",
+      color: "#000000",
+      textAlign: "center",
+      borderRadius: "20px",
+    },
+    header: {
+      fontWeight: "bold",
+      fontSize: "10rem",
+    },
+})
+);
 
 const EmployeesAnalytics = () => {
-  const average = (arr: any) =>
-    arr.reduce((a: any, b: any) => a + b, 0) / arr.length;
+  const classes = useStyles();
   //state variables
-  const [id, setId] = useState("15");
-  const [tws, setTws] = useState("0");
-  const [hrs, setHrs] = useState("15");
-  const [comments, setComments] = useState<any[]>([]);
-
+  const [stats, setStats] = useState<any[]>([]);
+  const [id, setId] = useState("22100270");
+  const [tws, setTws] = useState([]);
+  const [hrs, setHrs] = useState([]);
+  const [comments, setComments] = useState([]); 
   const link = "http://localhost:5001/getstats/" + id;
 
   const getStats = async () => {
-    //
-    const result = await axios.get(link);
-    const data = result.data.Items[0];
-    console.log(data);
-    console.log(new Date());
-
-    // hoursworked
-    //team score
-    const teamscore = data.teamworkScore;
-    // console.log(teamscore);
-    setTws(average(teamscore.map((i: string) => Number(i))).toFixed(2));
-    // console.log(teamwork);
-
-    const hoursworked = data.hoursworked;
-    setHrs(average(hoursworked.map((i: string) => Number(i))).toFixed(2));
-    setComments(data.comments);
-
-    // let abc = ["1", "2", "3", "4"].map((i) => Number(i));
-    // console.log(abc);
-    // rating
+    try {
+      const result = await axios.get(link);
+      const data_points = result.data.Items;
+      console.log(data_points[0], "EA");
+      setStats(data_points);
+      setHrs(data_points.map((item) => item.hoursworked));
+      setTws(data_points.map((item) => item.teamworkScore));
+      setComments(data_points.map((item) => item.comments));
+      console.log(stats,"com");
+    } catch (error) {
+      console.error(error);
+    }
   };
-  getStats();
-  const EmployeeData = [
-    [
-      "Month",
-      "Incomplete Tasks",
-      { role: "annotation" },
-      "Completed Tasks",
-      { role: "annotation" },
-    ],
-    ["June", 8.94, 5, 9.94, 2],
-    ["July", 10.49, 7, 11.49, 3],
-    ["Aug", 24.45, 3, 25.45, 10],
-    ["Sept", 21.45, 4, 22.45, 4],
-    ["Oct", 19.3, 6, 20.3, 7],
-  ];
+useEffect(() => {
+    getStats();
+  }, []);
 
-  const EmployeeOptions = {
-    bar: { groupWidth: "20%" },
-    colors: ["#EB4D47", "#46B988"],
-    title: "Employee Effenciency",
-    vAxis: {
-      title: "Tasks completed",
-    },
-    hAxis: {
-      title: "Month",
-    },
-  };
+  const avg = arr => {
+   
+    let sum=0;
+    let array=arr.map(i=>Number(i));
+    array.forEach(value => {
+      sum += value;
+    });
+     
+  const avg_hrs= Math.round(sum/array.length)
+  return avg_hrs;
 
-  const WeeklyData = [
-    [
-      "Days",
-      "Overtime",
-      { role: "annotation" },
-      "Regular",
-      { role: "annotation" },
-      "Early Leave",
-      { role: "annotation" },
-    ],
-    ["Mon", 8.94, 4, 40.94, null, 0, null],
-    ["Tue", null, null, 31.49, null, 10.45, 2],
-    ["Wed", 24.45, 7, 45.45, null, 0, null],
-    ["Thu", null, null, 52.45, null, 0, null],
-    ["Fri", 19.3, 5, 50.3, null, null, null],
-  ];
+  }
 
-  const WeeklyOptions = {
-    bar: { groupWidth: "25%" },
-    colors: ["#EBC747", "#46B988", "#EB4D47"],
-    title: "Weekly Hours Summary",
-    vAxis: {
-      title: "Hours",
-    },
-    hAxis: {
-      title: "Day",
-    },
-  };
+
+  let avg_hrs=avg(hrs); 
+  let avg_tws=avg(tws)
+ 
+  console.log("summ",avg_hrs)
+  
+  
 
   return (
     <React.Fragment>
@@ -127,99 +91,72 @@ const EmployeesAnalytics = () => {
       >
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Recruitment Date"}
+            cardTitle={"Recruitment Date"+" "}
             cardIconBG={"rgba(210,239,243,255)"}
-            cardDescription={"10th June '16"}
+            cardDescription={"  10th June '16"}
             cardIcon={<EmployeeIcon size="1.5em" color="#368292" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Vacation Days Used"}
+            cardTitle={"Vacation Days Used "+" "}
             cardIconBG={"rgba(255,244,245,255)"}
-            cardDescription={"8/10"}
+            cardDescription={"  8/10 "}
             cardIcon={<EmployeeVacationsIcon size="1.5em" color="#bb5c5a" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average hours worked"}
+            cardTitle={"Average hours worked "+" "}
             cardIconBG={"rgba(254,248,230,255)"}
-            cardDescription={hrs}
+            cardDescription={avg_hrs}
             cardIcon={<EmployeeSickIcon size="1.5em" color="#a79048" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average Teamwork score"}
+            cardTitle={"Average Teamwork score"+" "}
             cardIconBG={"rgba(240,250,245,255)"}
-            cardDescription={tws}
+            cardDescription={avg_tws}
             cardIcon={<EmployeeTasksIcon size="1.5em" color="#3f8a67" />}
           />
         </Grid>
-      </Grid>
-
-      <Container maxWidth={"xl"}>
-        <Grid
-          container
-          spacing={3}
-          alignItems="center"
-          justifyContent="center"
-          style={{ marginTop: "3rem" }}
-        >
-          <Grid item lg={6} xs={12}>
-            <DashCharts data={EmployeeData} options={EmployeeOptions} />
+        <Grid container spacing={1} className={classes.content2}>
+          <Grid item lg={6}>
+             <EmployeeWorkingHoursGraph/>
           </Grid>
-          <Grid item lg={6} xs={12}>
-            <DashCharts data={WeeklyData} options={WeeklyOptions} />
+          <Grid item lg={6}>
+              <EmployeeRatingsGraph/>
+          </Grid>
+          <Grid item lg={6}>
+              <EmployeeTeamWorkScoreGraph/>
           </Grid>
         </Grid>
-      </Container>
 
-      {/* <EmployeeReview
-        variant="contained"
-        color="primary"
-        disableElevation
-        style={{ position: "fixed", bottom: "2%", right: "1%" }}
-      >
-        View Employee Review
-      </EmployeeReview> */}
-      <Typography variant="h5">Comments:</Typography>
+        <Typography sx={{ p: 5 }}>Comments:</Typography>
+        {/* { 
+    stats.map( customer => {
+        console.log(customer.comments);
+    })
+} */}
+        {stats.map(item => (
+            <ListItem key={item}>
+              <Card className={classes.card}>
+                <CardContent>
+                  {/* <ListItemText className={classes.header}> */}
+                  <Typography sx={{ p: 5 }}>
+                    {item.comments}
+                  </Typography>
+                  {/* </ListItemText> */}
+                </CardContent>
+              </Card>
+            </ListItem>
+          ))}
 
-      <div style={{ width: "100%" }}>
-        {comments.map((item: string) => (
-          <ul>
-            <List
-              sx={{
-                position: "relative",
-                // maxHeight: 300,
-                "& ul": { padding: 0 },
-              }}
-            >
-              <Box
-                component="span"
-                sx={{
-                  display: "block",
-                  p: 1,
-                  m: 1,
-                  bgcolor: (theme) =>
-                    theme.palette.mode === "dark" ? "#101010" : "#fff",
-                  color: (theme) =>
-                    theme.palette.mode === "dark" ? "grey.300" : "grey.800",
-                  border: "1px solid",
-                  borderColor: (theme) =>
-                    theme.palette.mode === "dark" ? "grey.800" : "grey.300",
-                  borderRadius: 2,
-                  fontSize: "0.875rem",
-                  fontWeight: "700",
-                }}
-              >
-                {item}
-              </Box>
-            </List>
-          </ul>
-        ))}
-      </div>
+                  
+      </Grid>
+
+   
     </React.Fragment>
   );
 };

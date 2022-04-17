@@ -17,6 +17,8 @@ import EmployeeGenderCard from "./EmployeeGenderCard";
 import ToDo from "../../components/ToDo/ToDo";
 import EmployeeTurnoverCard from "./EmployeeTurnoverCard";
 import EmployeeRetentionCard from "./EmployeeRetentionCard";
+import EmployeeHoursWorkedCard from "./EmployeeHoursWorkedCard";
+import WorkingMode from "../../components/WorkingMode";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -35,10 +37,15 @@ const useStyles = makeStyles(() =>
       // justifyContent: "stretch",
     },
     content: {
-      // backgroundColor: "red",
       display: "flex",
-      flexGrow: 1,
       marginTop: "25px",
+      flexGrow: 1,
+    },
+    content2: {
+      display: "flex",
+      marginTop: "25px",
+      columnWidth: 500,
+      flexGrow: 2,
     },
   })
 );
@@ -79,21 +86,21 @@ const HomePage = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={1} className={classes.stats}>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <StatCard
             icon={<GroupIcon />}
             title="Number of Employees"
             data={EmployeeNumber}
           />
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <StatCard
             icon={<PersonOffIcon />}
             title="Number on Leave"
             data="32"
           />
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <Link
             to="/hiringportal"
             style={{
@@ -108,7 +115,7 @@ const HomePage = () => {
             />
           </Link>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <StatCard
             icon={<MonetizationOnIcon />}
             title="Next payroll"
@@ -116,8 +123,9 @@ const HomePage = () => {
           />
         </Grid>
       </Grid>
+
       <Grid container spacing={1} className={classes.content}>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
           <Link
             to="/employeerequests"
             style={{ textDecoration: "none", textDecorationColor: "white" }}
@@ -127,49 +135,37 @@ const HomePage = () => {
             </EnhancedCard>
           </Link>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
           <EnhancedCard title="New Announcements">
             <AnnouncementsCard />
           </EnhancedCard>
         </Grid>
-
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <EnhancedCard title="To Do List">
             <ToDo />
           </EnhancedCard>
         </Grid>
-
-        <Grid item lg={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <EnhancedCard title="Employee Gender">
             <EmployeeGenderCard />
           </EnhancedCard>
         </Grid>
-        <Grid item lg={3}>
-          <EnhancedCard title="Employee Turnover">
-            <EmployeeTurnoverCard />
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+          <EnhancedCard title="Working Mode">
+            <WorkingMode />
           </EnhancedCard>
         </Grid>
-
-        <Grid item lg={3}>
-          <EnhancedCard title="Employee Retention">
-            <EmployeeRetentionCard />
-          </EnhancedCard>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <EmployeeHoursWorkedCard />
         </Grid>
+      </Grid>
 
-        <Grid item lg={3}>
-          <Link
-            to="/empstats"
-            style={{
-              textDecoration: "none",
-              color: "white",
-            }}
-          >
-            <StatCard
-              icon={<GroupIcon />}
-              title="Add Employee Statics"
-            
-            />
-          </Link>
+      <Grid container spacing={1} className={classes.content2}>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <EmployeeTurnoverCard />
+        </Grid>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <EmployeeRetentionCard />
         </Grid>
       </Grid>
     </div>
