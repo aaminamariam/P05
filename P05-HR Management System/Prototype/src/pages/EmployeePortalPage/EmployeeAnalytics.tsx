@@ -1,164 +1,68 @@
 import React from "react";
-import {
-  makeStyles,
-  createStyles,
-  Grid,
-  Typography,
-  Button,
-  Container,
-} from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
-import { green } from "@material-ui/core/colors";
+import {Grid} from "@material-ui/core";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
+import { createStyles, makeStyles } from "@mui/styles";
 import DashCard from "../../components/DashCard";
-import List from "@mui/material/List";
-import DashCharts from "../../components/DashCharts";
-import { Bar } from "react-chartjs-2";
-import BarChart from "./EmployeeGraphs";
-import { hslToRgb } from "@mui/material";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
-import Card from "@material-ui/core/Card";
-import { CanvasJSChart } from "canvasjs-react-charts";
+import EmployeeWorkingHoursGraph from "../../components/EmployeeWorkingHoursGraph";
+import EmployeeRatingsGraph from "../../components/EmployeeRatingsGraph";
+import EmployeeTeamWorkScoreGraph from "../../components/EmployeeTeamWorkScoreGraph";
 
 const useStyles = makeStyles(() =>
   createStyles({
-    root: {
-      height: 400,
-      paddingBottom: 20,
-      paddingTop: 60,
-      width: "572px",
+    content2: {
       display: "flex",
-      flexDirection: "column",
+      marginTop: "25px",
+      columnWidth: 500,
+      flexGrow: 2,
     },
-
-    title: {
-      fontSize: 14,
-      fontWeight: 600,
-      color: "rgba(0, 82, 204, 1)",
-    },
-    select: {
-      minWidth: "100px",
-    },
-
-    divider: {
-      width: "95%",
-    },
-    contentsub: {
-      display: "flex",
-      padding: 0,
-    },
-    contentgraph: {},
-  })
+})
 );
 
 const EmployeesAnalytics = () => {
-  //state variables
   const classes = useStyles();
+  //state variables
   const [stats, setStats] = useState<any[]>([]);
   const [id, setId] = useState("22100270");
   const [tws, setTws] = useState([]);
   const [hrs, setHrs] = useState([]);
-  const [rating, setRating] = useState([]);
-  const [comments, setComments] = useState([]);
-  const [postdate, setPostdate] = useState([]);
   const link = "http://localhost:5001/getstats/" + id;
-  //    const avg = arr => {
-  //    let total=0
-  //    var array = arr.map(Number);
-  //    for ( let i = 0; i < array.length; i++ ) {
-  //      total += array[i];
-  //    }
-  //    return (total/array.length);
-  //  }
 
   const getStats = async () => {
     try {
       const result = await axios.get(link);
       const data_points = result.data.Items;
       setStats(data_points);
-      // console.log("DATAPOINTS", data_points);
       setHrs(data_points.map((item) => item.hoursworked));
       setTws(data_points.map((item) => item.teamworkScore));
-      setRating(data_points.map((item) => item.rating));
-      setComments(data_points.map((item) => item.comments));
-      setPostdate(data_points.map((item) => item.postdate));
-      console.log(
-        new Date(2017, 1),
-        stats.map((item) => ({
-          x: item.postdate,
-          y: item.hoursworked,
-        }))
-      );
-
-      // setHrs(data_points.map((item) => console.log(item)));
-
-      // for (var i = 0; i < data_points.length; i++) {
-      //   // eslint-disable-next-line no-loop-func
-      //   // setTws((tws) => [...tws, data_points[i].teamworkScore]);
-      //   // eslint-disable-next-line no-loop-func
-      //   setHrs(data_points[i].hoursworked);
-      //   // setRating((rating) => [...rating, data_points[i].rating]);
-      //   // setComments((comments) => [...comments, data_points[i].comments]);
-      //   // setPostdate((postdate) => [...postdate, data_points[i].postdate]);
-      // }
     } catch (error) {
       console.error(error);
     }
   };
-
-  // hoursworked
-  //team score
-  //const teamscore = data.teamworkScore;
-  //console.log(teamscore);
-  //setTws(average(teamscore.map((i: string) => Number(i))).toFixed(2));
-
-  //const hoursworked = data.hoursworked;
-  //console.log(hoursworked)
-  // setHrs(average(hoursworked.map((i: string) => Number(i))).toFixed(2));
-  //setComments(data.comments);
-
-  // rating
-
-  useEffect(() => {
+useEffect(() => {
     getStats();
-    // console.log("hrs", hrs);
   }, []);
-  //let hours=hrs.map((i) => Number(i));
-  //console.log("hrs")
-  //const avg_hrs=avg({hours})
 
-  const options = {
-    animationEnabled: true,
-    // title: {
-    //   text: "Monthly Sales - 2017",
-    // },
-    axisX: {
-      valueFormatString: "MMM",
-      // interval: 100,
-    },
-    axisY: {
-      title: "",
-      // prefix: "$",
-    },
-    data: [
-      {
-        yValueFormatString: "#.##",
-        xValueFormatString: "MMMM",
-        type: "line",
-        dataPoints: stats.map((item) => ({
-          // x: item.postdate[0],
-          x: new Date(item.postdate.substr(0, 4), item.postdate.substr(5, 2)),
-          y: parseInt(item.hoursworked),
-        })),
-      },
-    ],
-    theme: "light2",
-    colorSet: "greenShades",
-  };
+  const avg = arr => {
+   
+    let sum=0;
+    let array=arr.map(i=>Number(i));
+    array.forEach(value => {
+      sum += value;
+    });
+     
+  const avg_hrs= Math.round(sum/array.length)
+  return avg_hrs;
+
+  }
+
+
+  let avg_hrs=avg(hrs); 
+  let avg_tws=avg(tws)
+ 
+  console.log("summ",avg_hrs)
+  
+  
 
   return (
     <React.Fragment>
@@ -170,57 +74,51 @@ const EmployeesAnalytics = () => {
       >
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Recruitment Date"}
+            cardTitle={"Recruitment Date"+" "}
             cardIconBG={"rgba(210,239,243,255)"}
-            cardDescription={"10th June '16"}
+            cardDescription={"  10th June '16"}
             cardIcon={<EmployeeIcon size="1.5em" color="#368292" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Vacation Days Used"}
+            cardTitle={"Vacation Days Used "+" "}
             cardIconBG={"rgba(255,244,245,255)"}
-            cardDescription={"8/10"}
+            cardDescription={"  8/10 "}
             cardIcon={<EmployeeVacationsIcon size="1.5em" color="#bb5c5a" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average hours worked"}
+            cardTitle={"Average hours worked "+" "}
             cardIconBG={"rgba(254,248,230,255)"}
-            cardDescription={""}
+            cardDescription={avg_hrs}
             cardIcon={<EmployeeSickIcon size="1.5em" color="#a79048" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average Teamwork score"}
+            cardTitle={"Average Teamwork score"+" "}
             cardIconBG={"rgba(240,250,245,255)"}
-            cardDescription={tws}
+            cardDescription={avg_tws}
             cardIcon={<EmployeeTasksIcon size="1.5em" color="#3f8a67" />}
           />
         </Grid>
+        <Grid container spacing={1} className={classes.content2}>
+          <Grid item lg={6}>
+             <EmployeeWorkingHoursGraph/>
+          </Grid>
+          <Grid item lg={6}>
+              <EmployeeRatingsGraph/>
+          </Grid>
+          <Grid item lg={6}>
+              <EmployeeTeamWorkScoreGraph/>
+          </Grid>
+      
+        </Grid>
       </Grid>
-      <div>
-        <Card className={classes.root} data-testid="card">
-          <CardHeader
-            title={
-              //typography was used to override the default typography here because we cant target the header class or id and change fontSize or pass as props
-              <Typography className={classes.title}>
-                Worked Hours Summary
-              </Typography>
-            }
-            data-testid="card-title"
-          />
-          <Divider className={classes.divider} />
-          <CardContent className={classes.contentsub}></CardContent>
 
-          <CanvasJSChart
-            options={options}
-            /* onRef={ref => this.chart = ref} */
-          />
-        </Card>
-      </div>
+   
     </React.Fragment>
   );
 };
