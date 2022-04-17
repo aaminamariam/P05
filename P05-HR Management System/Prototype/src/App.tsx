@@ -23,6 +23,7 @@ import EmpStatsForm from "./components/empStatsForm";
 import AddReq from "./pages/addrequest/addrequest";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ChangePassword from "./pages/changepassword/changePassword";
+import EmployeeNavBar from "./navigation/EmployeeNavBar";
 
 const drawerWidth = 240;
 const parseJwt = (token) => {
@@ -119,6 +120,14 @@ function App() {
           mobileOpen={mobileOpen}
         />
       )}
+      {loggedIn && ( 
+        <EmployeeNavBar
+          customClass={classes}
+          handleDrawerToggle={handleDrawerToggle}
+          mobileOpen={mobileOpen}
+      />
+      )}
+
       <main className={classes.content}>
         <Toolbar />
         <Routes>
