@@ -1,5 +1,5 @@
 import React from "react";
-import {Grid} from "@material-ui/core";
+import {Card, CardContent, Grid, ListItem, ListItemText} from "@material-ui/core";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { createStyles, makeStyles } from "@mui/styles";
@@ -7,6 +7,7 @@ import DashCard from "../../components/DashCard";
 import EmployeeWorkingHoursGraph from "../../components/EmployeeWorkingHoursGraph";
 import EmployeeRatingsGraph from "../../components/EmployeeRatingsGraph";
 import EmployeeTeamWorkScoreGraph from "../../components/EmployeeTeamWorkScoreGraph";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -15,6 +16,18 @@ const useStyles = makeStyles(() =>
       marginTop: "25px",
       columnWidth: 500,
       flexGrow: 2,
+    },
+    card: {
+      backgroundColor: "#FFFFFF",
+      align: "inherit",
+      minWidth: "90%",
+      color: "#000000",
+      textAlign: "center",
+      borderRadius: "20px",
+    },
+    header: {
+      fontWeight: "bold",
+      fontSize: "10rem",
     },
 })
 );
@@ -26,15 +39,19 @@ const EmployeesAnalytics = () => {
   const [id, setId] = useState("22100270");
   const [tws, setTws] = useState([]);
   const [hrs, setHrs] = useState([]);
+  const [comments, setComments] = useState([]); 
   const link = "http://localhost:5001/getstats/" + id;
 
   const getStats = async () => {
     try {
       const result = await axios.get(link);
       const data_points = result.data.Items;
+      console.log(data_points[0], "EA");
       setStats(data_points);
       setHrs(data_points.map((item) => item.hoursworked));
       setTws(data_points.map((item) => item.teamworkScore));
+      setComments(data_points.map((item) => item.comments));
+      console.log(stats,"com");
     } catch (error) {
       console.error(error);
     }
@@ -114,8 +131,29 @@ useEffect(() => {
           <Grid item lg={6}>
               <EmployeeTeamWorkScoreGraph/>
           </Grid>
-      
         </Grid>
+
+        <Typography sx={{ p: 5 }}>Comments:</Typography>
+        {/* { 
+    stats.map( customer => {
+        console.log(customer.comments);
+    })
+} */}
+        {stats.map(item => (
+            <ListItem key={item}>
+              <Card className={classes.card}>
+                <CardContent>
+                  {/* <ListItemText className={classes.header}> */}
+                  <Typography sx={{ p: 5 }}>
+                    {item.comments}
+                  </Typography>
+                  {/* </ListItemText> */}
+                </CardContent>
+              </Card>
+            </ListItem>
+          ))}
+
+                  
       </Grid>
 
    

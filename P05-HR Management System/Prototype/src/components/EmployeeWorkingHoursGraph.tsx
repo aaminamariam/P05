@@ -114,7 +114,7 @@ return (
             }
             data-testid="card-title"
           />
-         
+        
          <CardContent className={classes.contentsub}>
 
               <CanvasJSChart
