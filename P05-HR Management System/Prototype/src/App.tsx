@@ -25,6 +25,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
 // import AddAnnouncements from "./pages/AnnouncementsPage/addAnnouncements";
 import ChangePassword from "./pages/changepassword/changePassword";
+import EmployeeNavBar from "./navigation/EmployeeNavBar";
 
 const drawerWidth = 240;
 const parseJwt = (token) => {
@@ -120,6 +121,13 @@ function App() {
           handleDrawerToggle={handleDrawerToggle}
           mobileOpen={mobileOpen}
         />
+      )}
+      {loggedIn && ( 
+        <EmployeeNavBar
+          customClass={classes}
+          handleDrawerToggle={handleDrawerToggle}
+          mobileOpen={mobileOpen}
+      />
       )}
       <main className={classes.content}>
         <Toolbar />
