@@ -18,7 +18,7 @@ import { CanvasJSChart } from "canvasjs-react-charts";
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      height: 400,
+      height: 530,
       paddingBottom: 20,
       paddingTop: 60,
       width: "472px",
@@ -83,14 +83,16 @@ const options = {
      
     },
     axisY: {
-      title: "",
+      title: "Ratings",
      
     },
     data: [
       {
         yValueFormatString: "#.##",
         xValueFormatString: "MMMM",
-        type: "line",
+        type: "splineArea",
+        showInLegend: true,
+				legendText: "Months",
         dataPoints: stats.map((item) => ({
 
           x: new Date(item.postdate.substr(0, 4), item.postdate.substr(5, 2)),

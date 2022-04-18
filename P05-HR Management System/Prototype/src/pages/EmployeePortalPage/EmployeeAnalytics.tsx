@@ -74,7 +74,7 @@ useEffect(() => {
       >
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Recruitment Date"+" "}
+            cardTitle={"Recruitment Date  :"}
             cardIconBG={"rgba(210,239,243,255)"}
             cardDescription={"  10th June '16"}
             cardIcon={<EmployeeIcon size="1.5em" color="#368292" />}
@@ -82,7 +82,7 @@ useEffect(() => {
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Vacation Days Used "+" "}
+            cardTitle={"Vacation Days Used  :"}
             cardIconBG={"rgba(255,244,245,255)"}
             cardDescription={"  8/10 "}
             cardIcon={<EmployeeVacationsIcon size="1.5em" color="#bb5c5a" />}
@@ -90,7 +90,7 @@ useEffect(() => {
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average hours worked "+" "}
+            cardTitle={"Average hours worked  :"}
             cardIconBG={"rgba(254,248,230,255)"}
             cardDescription={avg_hrs}
             cardIcon={<EmployeeSickIcon size="1.5em" color="#a79048" />}
@@ -98,7 +98,7 @@ useEffect(() => {
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average Teamwork score"+" "}
+            cardTitle={"Average Teamwork score  :"}
             cardIconBG={"rgba(240,250,245,255)"}
             cardDescription={avg_tws}
             cardIcon={<EmployeeTasksIcon size="1.5em" color="#3f8a67" />}
