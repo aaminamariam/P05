@@ -108,26 +108,40 @@ function App() {
     setMobileOpen(!mobileOpen);
   };
   const token = getJwtToken();
+  const role_HR = () => {
+    if (!!user && user.role.includes("HR")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
+  const role_emp = () => {
+    if (!!user && user.role.includes("Employee")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <div className={classes.root}>
       <HeaderBar
         customClass={classes}
         handleDrawerToggle={handleDrawerToggle}
       />
-      {loggedIn && (
+      {role_HR() && (
         <NavBar
           customClass={classes}
           handleDrawerToggle={handleDrawerToggle}
           mobileOpen={mobileOpen}
         />
       )}
-      {loggedIn && ( 
+      {role_emp() && (
         <EmployeeNavBar
           customClass={classes}
           handleDrawerToggle={handleDrawerToggle}
           mobileOpen={mobileOpen}
-      />
+        />
       )}
       <main className={classes.content}>
         <Toolbar />

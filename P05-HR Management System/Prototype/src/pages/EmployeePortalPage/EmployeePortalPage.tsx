@@ -85,9 +85,9 @@ const EmployeePortalPage = () => {
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.content}>
-        <Grid item>
+        {/* <Grid item>
           <EnhancedCard title="Employee Gender">SHOW</EnhancedCard>
-        </Grid>
+        </Grid> */}
         <Grid item>
           <Link
             to="/reqhist"

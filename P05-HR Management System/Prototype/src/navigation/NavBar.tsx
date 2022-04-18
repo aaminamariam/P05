@@ -13,38 +13,38 @@ import {
   // ListItemText,
 } from "@material-ui/core";
 import React from "react";
+import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import { deepOrange, deepPurple } from "@mui/material/colors";
 import { Link } from "react-router-dom";
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const name: string = token as string;
+  return name;
+}
+const useStyles = makeStyles((theme) => ({
+  title: {
+    flexGrow: 1,
+    padding: theme.spacing(2),
+  },
+  avatar: {
+    padding: theme.spacing(2),
+  },
+}));
 
-// const drawerWidth = 240;
-
-// const useStyles = makeStyles(() =>
-//   createStyles({
-//     heading: {
-//       flexGrow: 1,
-//     },
-//     white: {
-//       color: "white",
-//     },
-//     navbar_items: {
-//       textDecoration: "none",
-//       color: "white",
-//     },
-//     paper: {
-//       background: "#371bb1",
-//       // color: "white",
-//       width: drawerWidth,
-//       flexShrink: 0,
-//     },
-//     drawerPaper: {
-//       width: drawerWidth,
-//     },
-//   })
-// );
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
 const NavBar = (props: any) => {
   const { window, customClass, handleDrawerToggle, mobileOpen } = props;
-  // const classes = useStyles();
+  const classes = useStyles();
 
   // const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -111,9 +111,16 @@ const NavBar = (props: any) => {
       </List> */}
 
       <Toolbar>
-        <div className="navbar">
-          <AccountCircle />
-        </div>
+        {/* <div className="navbar"> */}
+        <Stack direction="row" mt={2}>
+          <Avatar className={classes.avatar} sx={{ bgcolor: deepOrange[500] }}>
+            HR
+          </Avatar>
+          <Typography variant="h6" className={classes.title}>
+            {parseJwt(getJwtToken()).name}
+          </Typography>
+        </Stack>
+        {/* </div> */}
       </Toolbar>
       <Divider />
       <List>{links}</List>
