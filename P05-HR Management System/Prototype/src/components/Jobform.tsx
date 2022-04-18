@@ -3,8 +3,9 @@ import { makeStyles, Drawer } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
+import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
@@ -20,11 +21,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     alignItems: "center",
     padding: theme.spacing(2),
-    top: "7%",
-    left: "12%",
+
+    // left: "18%",
     "& .MuiTextField-root": {
       margin: theme.spacing(2),
-      width: "600px",
+      width: "100%",
+      alignItems: "left",
     },
     "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
@@ -37,11 +39,11 @@ const useStyles = makeStyles((theme) => ({
   },
   sqr: {
     color: "black",
-    position: "absolute",
+    display: "flex",
     left: "12%",
-    top: "10%",
-    width: "75%",
-    height: "100%",
+    right: "12%",
+
+    // width: "75%",
     boxSizing: "border-box",
   },
   text: {
@@ -79,6 +81,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const Form = () => {
+  const Navigate = useNavigate();
   const classes = useStyles();
   const [name, setname] = useState("");
   const [phoneno, setphoneno] = useState("");
@@ -149,12 +152,12 @@ const Form = () => {
               Job:{location.state.title}
             </Typography>
             <Typography variant="h6" className={classes.footer}>
-              Location:{location.state.location}
+              Location:{location.state.location}({location.state.type})
             </Typography>
           </Toolbar>
         </AppBar>
-        <Box>
-          <Paper elevation={5} className={classes.sqr}>
+        <Box mt={10} className={classes.rot}>
+          <Paper elevation={5}>
             <Typography variant="h5" className={classes.footer}>
               Job Description
             </Typography>
@@ -162,8 +165,9 @@ const Form = () => {
               {location.state.description}
             </Typography>
             <Divider variant="middle" />
-            <form className={classes.rot}>
-              <Box mt={3}>
+
+            <Box mt={5} className={classes.rot}>
+              <form>
                 <Typography variant="h5" className={classes.footer}>
                   Job Application
                 </Typography>
@@ -216,23 +220,6 @@ const Form = () => {
                   onChange={(e) => setstate(e.target.value)}
                 />
 
-                {/* <Button
-          variant="contained"
-          component="label"
-          style={{
-            borderRadius: "50px",
-            maxWidth: "270px",
-            maxHeight: "50px",
-            minWidth: "30px",
-            minHeight: "30px",
-            backgroundColor: "#ffffff",
-            color: "grey",
-          }}
-        >
-          Upload Cover Letter
-          <input type="file" hidden />
-        </Button> */}
-
                 <Button
                   variant="contained"
                   component="label"
@@ -254,10 +241,23 @@ const Form = () => {
                     required
                   />
                 </Button>
-                <div>
+                <Stack direction="row">
                   <Button
                     style={{
-                      backgroundColor: "#46b988",
+                      backgroundColor: "#fc6404",
+                      color: "#FFFFFF",
+                      maxWidth: "170px",
+                      minWidth: "100px",
+                      borderRadius: "5px",
+                    }}
+                    variant="outlined"
+                    onClick={() => Navigate(-1)}
+                  >
+                    back
+                  </Button>
+                  <Button
+                    style={{
+                      backgroundColor: "#fc6404",
                       color: "#FFFFFF",
                       maxWidth: "170px",
                       minWidth: "100px",
@@ -268,7 +268,9 @@ const Form = () => {
                   >
                     Submit
                   </Button>
-                </div>
+
+                  {/* <div> */}
+                </Stack>
                 <Snackbar
                   open={open}
                   autoHideDuration={6000}
@@ -282,8 +284,8 @@ const Form = () => {
                     Your Application has been successfully submitted.
                   </Alert>
                 </Snackbar>
-              </Box>
-            </form>
+              </form>
+            </Box>
           </Paper>
         </Box>
       </Drawer>

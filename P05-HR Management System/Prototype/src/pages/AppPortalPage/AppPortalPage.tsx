@@ -127,10 +127,16 @@ const AppPortalPage = () => {
   const toComponentB = (
     title: string,
     description: string,
-    location: string
+    location: string,
+    type: string
   ) => {
     Navigate("/jobapplication", {
-      state: { title: title, description: description, location: location },
+      state: {
+        title: title,
+        description: description,
+        location: location,
+        type: type,
+      },
     });
   };
 
@@ -182,7 +188,8 @@ const AppPortalPage = () => {
                         toComponentB(
                           item.title,
                           item.description,
-                          item.location
+                          item.location,
+                          item.type
                         );
                       }}
                     >
@@ -191,6 +198,7 @@ const AppPortalPage = () => {
                           {item.title}
                         </ListItemText>
                         <ListItemText>{item.location}</ListItemText>
+                        <ListItemText>{item.type}</ListItemText>
                       </CardContent>
                     </Card>
                   </ListItem>

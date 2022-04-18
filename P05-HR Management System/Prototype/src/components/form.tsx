@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
 import axios from "axios";
 import Stack from "@mui/material/Stack";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -69,7 +69,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 const Form = () => {
   const classes = useStyles();
 
-  // let history = useHistory();
+  const Navigate = useNavigate();
 
   // create state variables for each input
   const [jobtitle, setJobtitle] = useState("");
@@ -167,7 +167,9 @@ const Form = () => {
                 to="/employeedash"
                 style={{ textDecoration: "none", textDecorationColor: "white" }} */}
               {/* > */}
-              <BootstrapButton variant="contained">Back</BootstrapButton>
+              <BootstrapButton onClick={() => Navigate(-1)} variant="contained">
+                Back
+              </BootstrapButton>
               {/* </Link> */}
               {/* <BootstrapButton
             variant="contained"
