@@ -192,14 +192,14 @@ const HomePage = () => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} className={classes.content2}>
+      {/* <Grid container spacing={1} className={classes.content2}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <EmployeeTurnoverCard />
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <EmployeeRetentionCard />
         </Grid>
-      </Grid>
+      </Grid> */}
     </div>
   );
 };
