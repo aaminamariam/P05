@@ -42,8 +42,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     left: "12%",
     right: "12%",
-
-    // width: "75%",
     boxSizing: "border-box",
   },
   text: {
@@ -94,11 +92,10 @@ const Form = () => {
   const location = useLocation();
 
   const submission = async () => {
-    let formField = new FormData();
-    // formField.append("title", "CV");
-    formField.append("document", uploadFile[0]);
     const name =
       Math.random().toString(36).substring(2, 7) + uploadFile[0].name;
+    let formField = new FormData();
+    formField.append("file", uploadFile[0]);
     const link =
       "https://yw2d4umwc5.execute-api.us-east-1.amazonaws.com/devdep/mycvandresumebucket/" +
       name;
@@ -118,17 +115,7 @@ const Form = () => {
         sp: state,
         job: location.state.title,
       },
-    }).then(() => {
-      setOpen(true);
     });
-
-    // pdf_parser(uploadFile[0]);
-    //   console.log(uploadFile[0]);
-    //   axios({
-    //     method: "post",
-    //     url: "http://localhost:8000/parsedcv",
-    //     data: formField,
-    //   });
   };
 
   const handleClose = (
