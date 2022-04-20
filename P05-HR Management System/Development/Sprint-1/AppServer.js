@@ -3,6 +3,10 @@ const app = express();
 const fs = require("fs");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const { get_match } = require("./findwords");
+const { pdf_parser } = require("./parser");
+const { exctractor } = require("./data");
+const decompress = require("decompress");
 
 const {
   addJob,
@@ -12,12 +16,14 @@ const {
   addJobApplication,
 } = require("./AppDynamo");
 const { createTokens, validateToken } = require("./jwt");
+let name = "";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, file.originalname);
+    name = file.originalname;
   },
 });
 
@@ -32,19 +38,30 @@ app.use(
 
 app.use(express.json());
 //upload cv
-app.post("/parsedcv", uploadStorage.single("file"), (req, res) => {
-  console.log(req.body);
-  return res.send("Single file");
+app.post("/parsedcv", uploadStorage.single("file"), async (req, res) => {
+  path = "./uploads/" + name;
+  const data = "./uploads/ExtractTextInfoFromPDF.json";
+
+  // try {
+  const folder = "./uploads/";
+  const result = await exctractor(path);
+  // const ready = await decompress(result, folder);
+
+  // await decompress(data, folder);
+  return res.send("hi");
 });
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
-app.post("/f", upload.any(), (req, res) => {
-  if (req.files) {
-    console.log(req.files);
-    res.send("File uploaded");
-  }
-  console.log(req.body);
+
+app.get("/keywords", async (req, res) => {
+  const data = req.body;
+  // const cvname = data.cvname;
+  const storage = "./uploads/sample.pdf.zip";
+  const ready = await decompress(storage, "./uploads/").then((mat) => {
+    const matches = get_match(
+      ["Performed", "text"],
+      "./uploads/structuredData.json"
+    );
+    res.send(matches);
+  });
 });
 
 //post new job

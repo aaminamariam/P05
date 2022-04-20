@@ -60,7 +60,7 @@ const pdf_parser = (filename) => {
     let text = data.toString();
     Str_txt = JSON.stringify({ data: text });
 
-    fs.writeFile("resume.json", Str_txt, function (err) {
+    fs.writeFile("./uploads/resume.json", Str_txt, function (err) {
       if (err) {
         console.log(err);
       }

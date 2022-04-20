@@ -27,6 +27,7 @@ const View_Resumes = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [flag, setFlag] = useState(false);
   const [rows, setRows] = useState<any[]>([]);
+  const [matches, setMatches] = useState<any[]>([]);
   const [words, setWords] = useState("");
   const selected_cvs = (row) => {
     console.log(row.cv);
@@ -107,9 +108,16 @@ const View_Resumes = () => {
   ];
 
   const getCVs = async () => {
-    const response = await axios.get("http://localhost:5001/getcvs", {
-      headers: { "access-token": getJwtToken() },
-    });
+    const response = await axios.get(
+      "http://localhost:5001/getcvs"
+      // {
+      //   // headers: { "access-token": getJwtToken() },
+      // }
+    );
+    const response2 = await axios.get("http://localhost:8000/keywords");
+    setMatches(response2.data.score);
+    console.log("matches", response2.data);
+    setWords(response2.data.listwords[0][0]);
     const li = response.data.Items;
     console.log(li);
     for (let i = 0; i < li.length; i++) {
@@ -164,6 +172,8 @@ const View_Resumes = () => {
           console.log(selected_cvs(rows[ids[0]]))
         }
       />
+      <h2>Match {matches} %</h2>
+      <h3>words matched {words}</h3>
     </div>
   );
 };
