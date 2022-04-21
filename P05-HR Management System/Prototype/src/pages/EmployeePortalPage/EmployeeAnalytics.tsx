@@ -1,5 +1,11 @@
 import React from "react";
-import {Card, CardContent, Grid, ListItem, ListItemText} from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  Grid,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { createStyles, makeStyles } from "@mui/styles";
@@ -8,6 +14,14 @@ import EmployeeWorkingHoursGraph from "../../components/EmployeeWorkingHoursGrap
 import EmployeeRatingsGraph from "../../components/EmployeeRatingsGraph";
 import EmployeeTeamWorkScoreGraph from "../../components/EmployeeTeamWorkScoreGraph";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+
+export function getJwtToken() {
+  const token = sessionStorage.getItem("jwt");
+  const id: string = token as string;
+  return id;
+}
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -29,18 +43,30 @@ const useStyles = makeStyles(() =>
       fontWeight: "bold",
       fontSize: "10rem",
     },
-})
+  })
 );
 
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
 const EmployeesAnalytics = () => {
   const classes = useStyles();
   //state variables
   const [stats, setStats] = useState<any[]>([]);
-  const [id, setId] = useState("22100270");
+  const [id, setId] = useState(parseJwt(getJwtToken()).id);
   const [tws, setTws] = useState([]);
   const [hrs, setHrs] = useState([]);
-  const [comments, setComments] = useState([]); 
+  const [comments, setComments] = useState([]);
+  const [dateJoined, setDateJoined] = useState("");
+  const [dept, setDept] = useState();
+
+  // setId( parseJwt(getJwtToken()).id);
   const link = "http://localhost:5001/getstats/" + id;
+  const datedept_link = "http://localhost:5001/datedept/" + id;
 
   const getStats = async () => {
     try {
@@ -51,35 +77,44 @@ const EmployeesAnalytics = () => {
       setHrs(data_points.map((item) => item.hoursworked));
       setTws(data_points.map((item) => item.teamworkScore));
       setComments(data_points.map((item) => item.comments));
-      console.log(stats,"com");
+      console.log(stats, "com");
     } catch (error) {
       console.error(error);
     }
   };
-useEffect(() => {
+
+  const getDateDept = async () => {
+    try {
+      const datedept = await axios.get(datedept_link, {
+        headers: { "access-token": getJwtToken() },
+      });
+      const data = datedept.data.Items[0];
+      setDateJoined(data.dateJoined);
+      setDept(data.department);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
     getStats();
+    getDateDept();
   }, []);
 
-  const avg = arr => {
-   
-    let sum=0;
-    let array=arr.map(i=>Number(i));
-    array.forEach(value => {
+  const avg = (arr) => {
+    let sum = 0;
+    let array = arr.map((i) => Number(i));
+    array.forEach((value) => {
       sum += value;
     });
-     
-  const avg_hrs= Math.round(sum/array.length)
-  return avg_hrs;
 
-  }
+    const avg_hrs = Math.round(sum / array.length);
+    return avg_hrs;
+  };
 
+  let avg_hrs = avg(hrs);
+  let avg_tws = avg(tws);
 
-  let avg_hrs=avg(hrs); 
-  let avg_tws=avg(tws)
- 
-  console.log("summ",avg_hrs)
-  
-  
+  console.log("summ", avg_hrs);
 
   return (
     <React.Fragment>
@@ -91,23 +126,23 @@ useEffect(() => {
       >
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Recruitment Date  :"}
+            cardTitle={"Recruitment Date  : "}
             cardIconBG={"rgba(210,239,243,255)"}
-            cardDescription={"  10th June '16"}
-            cardIcon={<EmployeeIcon size="1.5em" color="#368292" />}
+            cardDescription={dateJoined}
+            cardIcon={<EmployeeVacationsIcon size="1.5em" color="#368292" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Vacation Days Used  :"}
+            cardTitle={"Department : "}
             cardIconBG={"rgba(255,244,245,255)"}
-            cardDescription={"  8/10 "}
-            cardIcon={<EmployeeVacationsIcon size="1.5em" color="#bb5c5a" />}
+            cardDescription={dept}
+            cardIcon={<EmployeeIcon size="1.5em" color="#bb5c5a" />}
           />
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average hours worked  :"}
+            cardTitle={"Average hours worked  : "}
             cardIconBG={"rgba(254,248,230,255)"}
             cardDescription={avg_hrs}
             cardIcon={<EmployeeSickIcon size="1.5em" color="#a79048" />}
@@ -115,7 +150,7 @@ useEffect(() => {
         </Grid>
         <Grid item xl={3} lg={4} md={6} xs={12}>
           <DashCard
-            cardTitle={"Average Teamwork score  :"}
+            cardTitle={"Average Teamwork score  : "}
             cardIconBG={"rgba(240,250,245,255)"}
             cardDescription={avg_tws}
             cardIcon={<EmployeeTasksIcon size="1.5em" color="#3f8a67" />}
@@ -123,13 +158,13 @@ useEffect(() => {
         </Grid>
         <Grid container spacing={1} className={classes.content2}>
           <Grid item lg={6}>
-             <EmployeeWorkingHoursGraph/>
+            <EmployeeWorkingHoursGraph />
           </Grid>
           <Grid item lg={6}>
-              <EmployeeRatingsGraph/>
+            <EmployeeRatingsGraph />
           </Grid>
           <Grid item lg={6}>
-              <EmployeeTeamWorkScoreGraph/>
+            <EmployeeTeamWorkScoreGraph />
           </Grid>
         </Grid>
 
@@ -139,24 +174,18 @@ useEffect(() => {
         console.log(customer.comments);
     })
 } */}
-        {stats.map(item => (
-            <ListItem key={item}>
-              <Card className={classes.card}>
-                <CardContent>
-                  {/* <ListItemText className={classes.header}> */}
-                  <Typography sx={{ p: 5 }}>
-                    {item.comments}
-                  </Typography>
-                  {/* </ListItemText> */}
-                </CardContent>
-              </Card>
-            </ListItem>
-          ))}
-
-                  
+        {stats.map((item) => (
+          <ListItem key={item}>
+            <Card className={classes.card}>
+              <CardContent>
+                {/* <ListItemText className={classes.header}> */}
+                <Typography sx={{ p: 5 }}>{item.comments}</Typography>
+                {/* </ListItemText> */}
+              </CardContent>
+            </Card>
+          </ListItem>
+        ))}
       </Grid>
-
-   
     </React.Fragment>
   );
 };

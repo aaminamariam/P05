@@ -258,6 +258,24 @@ const employeecount = async () => {
     .promise();
   return data;
 };
+const date_dept = async (id) => {
+  const params = {
+    TableName: EMPLOYEE_TABLE,
+    KeyConditionExpression: "#ids = :id",
+    ProjectionExpression: "#dateJoined, #department",
+    ExpressionAttributeNames: {
+      "#ids": "id",
+      "#department": "department",
+      "#dateJoined": "dateJoined",
+    },
+    ExpressionAttributeValues: {
+      ":id": id,
+    },
+  };
+
+  const loginpass = await dynamoClient.query(params).promise();
+  return loginpass;
+};
 
 // add to database
 const addOrUpdateEmployee = async (employee, name, password, role) => {
@@ -441,7 +459,7 @@ module.exports = {
   getEmployeeRequests,
   getEmployeeReqbyID,
 
-  //getEmployeeReqbystatus,
+  date_dept,
   getEmployeeGenderMale,
   getEmployeeGenderFemale,
 

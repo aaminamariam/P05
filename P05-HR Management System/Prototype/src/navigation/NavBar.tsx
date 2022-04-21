@@ -3,7 +3,6 @@ import {
   // Box,
   Drawer,
   makeStyles,
-  createStyles,
   List,
   ListItem,
   Toolbar,
@@ -14,7 +13,6 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import { deepOrange, deepPurple } from "@mui/material/colors";
@@ -72,19 +70,19 @@ const NavBar = (props: any) => {
       <ListItem button component={Link} to="/hiringportal">
         Hiring Portal
       </ListItem>
-      <ListItem button component={Link} to="/apportal">
+      {/* <ListItem button component={Link} to="/apportal">
         App Portal
-      </ListItem>
+      </ListItem> */}
       <ListItem button component={Link} to="/jobapplication">
         Job Application
       </ListItem>
-      <ListItem button component={Link} to="/employeedash">
+      {/* <ListItem button component={Link} to="/employeedash">
         Employee Dash
-      </ListItem>
+      </ListItem> */}
 
-      <ListItem button component={Link} to="/employeesanalytics">
+      {/* <ListItem button component={Link} to="/employeesanalytics">
         Employee Analytics
-      </ListItem>
+      </ListItem> */}
 
       <ListItem button component={Link} to="/view_resumes">
         View Applications

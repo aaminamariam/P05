@@ -93,7 +93,7 @@ export default function EmployeeHoursWorkedCard(
   ];
 
   const [hoursWorked, sethoursWorked] = useState({
-    "january": [
+    january: [
       { day: 0, hours: 7 },
       { day: 2, hours: 5 },
       { day: 3, hours: 4 },
