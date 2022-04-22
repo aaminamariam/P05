@@ -27,14 +27,15 @@ const useStyles = makeStyles(() =>
   createStyles({
     content2: {
       display: "flex",
-      marginTop: "25px",
-      columnWidth: 500,
-      flexGrow: 2,
+      // marginTop: "25px",
+      // columnWidth: 500,
+      // flexGrow: 1,
+      // maxWidth: "100vh",
     },
     card: {
       backgroundColor: "#FFFFFF",
       align: "inherit",
-      minWidth: "90%",
+      // minWidth: "90%",
       color: "#000000",
       textAlign: "center",
       borderRadius: "20px",
@@ -120,11 +121,11 @@ const EmployeesAnalytics = () => {
     <React.Fragment>
       <Grid
         container
-        spacing={2}
+        spacing={1}
         alignItems="center"
         style={{ marginTop: "3rem" }}
       >
-        <Grid item xl={3} lg={4} md={6} xs={12}>
+        <Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
           <DashCard
             cardTitle={"Recruitment Date  : "}
             cardIconBG={"rgba(210,239,243,255)"}
@@ -132,7 +133,7 @@ const EmployeesAnalytics = () => {
             cardIcon={<EmployeeVacationsIcon size="1.5em" color="#368292" />}
           />
         </Grid>
-        <Grid item xl={3} lg={4} md={6} xs={12}>
+        <Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
           <DashCard
             cardTitle={"Department : "}
             cardIconBG={"rgba(255,244,245,255)"}
@@ -140,7 +141,7 @@ const EmployeesAnalytics = () => {
             cardIcon={<EmployeeIcon size="1.5em" color="#bb5c5a" />}
           />
         </Grid>
-        <Grid item xl={3} lg={4} md={6} xs={12}>
+        <Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
           <DashCard
             cardTitle={"Average hours worked  : "}
             cardIconBG={"rgba(254,248,230,255)"}
@@ -148,7 +149,7 @@ const EmployeesAnalytics = () => {
             cardIcon={<EmployeeSickIcon size="1.5em" color="#a79048" />}
           />
         </Grid>
-        <Grid item xl={3} lg={4} md={6} xs={12}>
+        <Grid item xl={3} lg={3} md={6} sm={12} xs={12}>
           <DashCard
             cardTitle={"Average Teamwork score  : "}
             cardIconBG={"rgba(240,250,245,255)"}
@@ -157,13 +158,13 @@ const EmployeesAnalytics = () => {
           />
         </Grid>
         <Grid container spacing={1} className={classes.content2}>
-          <Grid item lg={6}>
+          <Grid item xl={4} lg={4} md={6} sm={12} xs={12}>
             <EmployeeWorkingHoursGraph />
           </Grid>
-          <Grid item lg={6}>
+          <Grid item xl={4} lg={4} md={6} sm={12} xs={12}>
             <EmployeeRatingsGraph />
           </Grid>
-          <Grid item lg={6}>
+          <Grid item xl={4} lg={4} md={12} sm={12} xs={12}>
             <EmployeeTeamWorkScoreGraph />
           </Grid>
         </Grid>

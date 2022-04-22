@@ -177,7 +177,7 @@ const AppPortalPage = () => {
                   bgcolor: "background.paper",
                   position: "relative",
                   overflow: "hidden",
-                  maxWidth: "80%",
+                  maxWidth: "100%",
                   // maxHeight: window.innerHeight - 150,
                   "& ul": { padding: 1 },
                 }}

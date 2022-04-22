@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexGrow: 1,
     textAlign: "center",
+    justifyContent: "center",
+    justifyItems: "center",
   },
   bullet: {
     display: "inline-block",
@@ -52,13 +54,13 @@ const DashCard = (props: any) => {
     <Card className={classes.root}>
       <CardContent>
         <Box textAlign={"end"}>
-          <Typography
+          {/* <Typography
             className={classes.title}
             color="textSecondary"
             gutterBottom
           >
             2022
-          </Typography>
+          </Typography> */}
         </Box>
         <Box>
           <Avatar

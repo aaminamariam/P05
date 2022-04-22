@@ -108,7 +108,7 @@ const EmployeeNavBar = (props: any) => {
         {/* <div className="navbar"> */}
         <Stack direction="row" mt={2}>
           <Avatar className={classes.avatar} sx={{ bgcolor: deepOrange[500] }}>
-            Employee
+            {parseJwt(getJwtToken()).name[0]}
           </Avatar>
           <Typography variant="h6" className={classes.title}>
             {parseJwt(getJwtToken()).name}

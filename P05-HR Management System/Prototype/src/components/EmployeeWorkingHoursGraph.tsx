@@ -1,10 +1,5 @@
 import React from "react";
-import {
-    makeStyles,
-    createStyles,
-    Typography,
-  
-  } from "@material-ui/core";
+import { makeStyles, createStyles, Typography } from "@material-ui/core";
 
 import { green } from "@material-ui/core/colors";
 import axios from "axios";
@@ -20,7 +15,7 @@ const useStyles = makeStyles(() =>
       height: 530,
       paddingBottom: 20,
       paddingTop: 60,
-      width: "472px",
+      // width: "472px",
       display: "flex",
       flexDirection: "column",
     },
@@ -34,23 +29,22 @@ const useStyles = makeStyles(() =>
       display: "flex",
       padding: 0,
     },
-
   })
 );
 
 const EmployeeWorkingHoursGraph = () => {
-    //state variables
-    const classes = useStyles();
-    const [stats, setStats] = useState<any[]>([]);
-    const [id, setId] = useState("22100270");
-    const [tws, setTws] = useState([]);
-    const [hrs, setHrs] = useState([]);
-    const [rating, setRating] = useState([]);
-    const [comments, setComments] = useState([]);
-    const [postdate, setPostdate] = useState([]);
-    const link = "http://localhost:5001/getstats/" + id;
+  //state variables
+  const classes = useStyles();
+  const [stats, setStats] = useState<any[]>([]);
+  const [id, setId] = useState("22100270");
+  const [tws, setTws] = useState([]);
+  const [hrs, setHrs] = useState([]);
+  const [rating, setRating] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [postdate, setPostdate] = useState([]);
+  const link = "http://localhost:5001/getstats/" + id;
 
-const getStats = async () => {
+  const getStats = async () => {
     try {
       const result = await axios.get(link);
       const data_points = result.data.Items;
@@ -71,19 +65,17 @@ const getStats = async () => {
       console.error(error);
     }
   };
-useEffect(() => {
+  useEffect(() => {
     getStats();
   }, []);
-const options = {
+  const options = {
     animationEnabled: true,
-    
+
     axisX: {
       valueFormatString: "MMM",
-     
     },
     axisY: {
       title: "Working Hours",
-     
     },
     data: [
       {
@@ -91,9 +83,8 @@ const options = {
         xValueFormatString: "MMMM",
         type: "splineArea",
         showInLegend: true,
-				legendText: "Months",
+        legendText: "Months",
         dataPoints: stats.map((item) => ({
-
           x: new Date(item.postdate.substr(0, 4), item.postdate.substr(5, 2)),
           y: parseInt(item.hoursworked),
         })),
@@ -102,29 +93,24 @@ const options = {
     theme: "light2",
     colorSet: "greenShades",
   };
-return (
-<div>
-        <Card className={classes.root} data-testid="card" >
-          <CardHeader
-            title={
-              //typography was used to override the default typography here because we cant target the header class or id and change fontSize or pass as props
-              <Typography className={classes.title}>
-                Worked Hours Summary
-              </Typography>
-            }
-            data-testid="card-title"
-          />
-        
-         <CardContent className={classes.contentsub}>
+  return (
+    <div>
+      <Card className={classes.root} data-testid="card">
+        <CardHeader
+          title={
+            //typography was used to override the default typography here because we cant target the header class or id and change fontSize or pass as props
+            <Typography className={classes.title}>
+              Worked Hours Summary
+            </Typography>
+          }
+          data-testid="card-title"
+        />
 
-              <CanvasJSChart
-                 options={options}
- 
-              />
-          </CardContent>
-
-        </Card>
-      </div>
-        );
-    };
-    export default EmployeeWorkingHoursGraph;
+        <CardContent className={classes.contentsub}>
+          <CanvasJSChart options={options} />
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+export default EmployeeWorkingHoursGraph;
