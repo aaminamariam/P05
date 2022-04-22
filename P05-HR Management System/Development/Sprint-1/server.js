@@ -224,8 +224,8 @@ app.post("/addnewemployee", async (req, res) => {
   const email = data.email;
   const contact = data.contact;
   const address = data.address;
-  const gender = data.gender;
-  //const dateOfBirth = data.dateOfBirth;
+  const gender = data.Gender;
+  const WorkingMode = data.WorkingMode;
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(data.password, salt);
@@ -243,7 +243,8 @@ app.post("/addnewemployee", async (req, res) => {
       email,
       contact,
       address,
-      gender
+      gender,
+      WorkingMode
       //dateOfBirth
     );
     res.json(newEmployee);
@@ -439,15 +440,16 @@ app.put("/addresume_info", async (req, res) => {
   job = data.job;
   const today = new Date().toISOString().slice(0, 19);
   const id = today;
+  const fname = data.fname;
 
   try {
     res.json(
-      await add_cv_data(name, city, linkedin, phone, email, cv, sp, job)
+      await add_cv_data(name, city, linkedin, phone, email, cv, sp, job, fname)
     );
   } catch (err) {
     console.error(err);
     res.status(500).json({
-      err: "Something went wrong while adding announcements in server",
+      err: "Something went wrong while adding resume information in server",
     });
   }
 });

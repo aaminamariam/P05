@@ -228,7 +228,8 @@ const addNewEmployee = async (
   _email,
   _contact,
   _address,
-  _gender
+  _gender,
+  _workingmode
 ) => {
   const params = {
     TableName: EMPLOYEE_TABLE,
@@ -244,7 +245,8 @@ const addNewEmployee = async (
       email: _email,
       contact: _contact,
       address: _address,
-      gender: _gender,
+      Gender: _gender,
+      WorkingMode: _workingmode,
       //dateOfBirth: _dateOfBirth
       //twRating: _twRating,
     },

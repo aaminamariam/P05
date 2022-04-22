@@ -3,6 +3,10 @@ const app = express();
 const fs = require("fs");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const { get_match } = require("./findwords");
+const { pdf_parser } = require("./parser");
+const { exctractor } = require("./data");
+const decompress = require("decompress");
 
 const {
   addJob,
@@ -12,12 +16,14 @@ const {
   addJobApplication,
 } = require("./AppDynamo");
 const { createTokens, validateToken } = require("./jwt");
+let name = "";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, file.originalname);
+    name = file.originalname;
   },
 });
 
@@ -32,25 +38,33 @@ app.use(
 
 app.use(express.json());
 //upload cv
-app.post("/parsedcv", uploadStorage.single("file"), (req, res) => {
-  console.log(req.body);
-  return res.send("Single file");
-});
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
-app.post("/f", upload.any(), (req, res) => {
-  if (req.files) {
-    console.log(req.files);
-    res.send("File uploaded");
+app.post("/parsedcv", uploadStorage.single("file"), async (req, res) => {
+  path = "./uploads/" + name;
+  const data = "./uploads/ExtractTextInfoFromPDF.json";
+  const fn = req.body.filename;
+  try {
+    const folder = "./uploads/";
+    const result = await exctractor(path);
+  } catch (err) {
+    console.log(err);
   }
-  console.log(req.body);
+  return res.send("hi");
+});
+
+app.post("/keywords", async (req, res) => {
+  const data = req.body;
+  const wordlist = data.keywords;
+  const fname = data.fname.slice(0, -4);
+  const storage = "./uploads/" + fname + ".zip";
+  const ready = await decompress(storage, "./uploads/parsed").then((mat) => {
+    const matches = get_match(wordlist, "./uploads/parsed/structuredData.json");
+    res.send(matches);
+  });
 });
 
 //post new job
 app.post("/addnewposting", async (req, res) => {
   const data = req.body;
-
   const title = data.title;
   const description = data.description;
   const dept = data.dept;
@@ -123,15 +137,6 @@ app.post("/jobapplication", async (req, res) => {
   location;
 });
 
-// app.post("/parsedcv", upload.any(), async (req, res) => {
-//   const data = req.files;
-//   const { file } = req.body;
-//   res.json("best");
-//   console.log(req.files, req.body);
-//   fs.writeFileSync("uploads/test.pdf", file);
-// });
-// app.post("/parsedcv", upload.any(), handleUpload);
-// start the server in the port 5000!
 app.listen(process.env.PORT || 8000, function () {
   console.log("Example app listening on port 8000.");
 });

@@ -52,6 +52,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
   const [gender, setGender] = useState("");
   const [employeeID, setEmployeeID] = useState("");
   const [value, setValue] = useState<Date | null>(new Date());
+  const [WorkingMode, setWorkingMode] = useState("");
   const classes = useStyles();
 
   const handleAddEmployee = async () => {
@@ -73,7 +74,8 @@ export default function AddEmployee(props: IAddEmployeeProps) {
         email: email,
         contact: contact,
         address: address,
-        gender: gender,
+        Gender: gender,
+        WorkingMode: WorkingMode,
       },
     });
     props.setOpen(false);
@@ -85,6 +87,9 @@ export default function AddEmployee(props: IAddEmployeeProps) {
   };
   const handlechangegender = (event: SelectChangeEvent) => {
     setGender(event.target.value as string);
+  };
+  const handlechangeworkingmode = (event: SelectChangeEvent) => {
+    setWorkingMode(event.target.value as string);
   };
   return (
     <div>
@@ -196,14 +201,7 @@ export default function AddEmployee(props: IAddEmployeeProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {/* <TextField
-              id="Gender"
-              label="Gender"
-              required
-              variant="standard"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            /> */}
+
             <Box sx={{ minWidth: 120 }}>
               <InputLabel id="demo-simple-select-label">Gender</InputLabel>
               <Select
@@ -218,6 +216,23 @@ export default function AddEmployee(props: IAddEmployeeProps) {
                 <MenuItem value={"Male"}>Male</MenuItem>
                 <MenuItem value={"Female"}>Female</MenuItem>
                 <MenuItem value={"Other"}>Other</MenuItem>
+              </Select>
+            </Box>
+            <Box sx={{ minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-label">
+                Working mode
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={WorkingMode}
+                label="Working mode"
+                sx={{ minWidth: 200 }}
+                variant="standard"
+                onChange={handlechangeworkingmode}
+              >
+                <MenuItem value={"OnSite"}>OnSite</MenuItem>
+                <MenuItem value={"Remote"}>Remote</MenuItem>
               </Select>
             </Box>
             <Button onClick={handleAddEmployee}>ADD</Button>

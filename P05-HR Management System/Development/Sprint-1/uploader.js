@@ -12,7 +12,17 @@ const dynamoClient = new AWS.DynamoDB.DocumentClient();
 
 const CV_TABLE = "cv_table";
 
-const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp, job) => {
+const add_cv_data = async (
+  Name,
+  city,
+  Linkedin,
+  phone,
+  email,
+  cv,
+  sp,
+  job,
+  filename
+) => {
   date = new Date();
   //sp is for state/province
   let dt = date.toString();
@@ -20,7 +30,7 @@ const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp, job) => {
     TableName: "cv_table",
     Key: { date: dt },
     UpdateExpression:
-      "SET #name = :name, #city = :city, #linkedin = :linkedin, #phone = :phone, #email = :email, #cv = :cv, #sp = :sp,#job = :job",
+      "SET #name = :name, #city = :city,#filename = :filename, #linkedin = :linkedin, #phone = :phone, #email = :email, #cv = :cv, #sp = :sp,#job = :job",
     ExpressionAttributeNames: {
       "#name": "name",
       "#city": "city",
@@ -30,6 +40,7 @@ const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp, job) => {
       "#cv": "cv",
       "#sp": "sp",
       "#job": "job_applied",
+      "#filename": "filename",
     },
     ExpressionAttributeValues: {
       ":name": Name,
@@ -40,6 +51,7 @@ const add_cv_data = async (Name, city, Linkedin, phone, email, cv, sp, job) => {
       ":cv": cv,
       ":sp": sp,
       ":job": job,
+      ":filename": filename,
     },
   };
   return await dynamoClient.update(params).promise();
@@ -53,5 +65,23 @@ const getapplications = async () => {
   return await dynamoClient.scan(params).promise();
 };
 
+const getfnames = async () => {
+  const params = {
+    TableName: CV_TABLE,
+  };
+  return await dynamoClient.scan(params).promise();
+};
+
+const paramsFemale = async () => {
+  const params = {
+    TableName: CV_TABLE,
+    FilterExpression: "#fname = :fname",
+    ProjectionExpression: "#fname",
+    ExpressionAttributeNames: {
+      "#fname": "fname",
+    },
+  };
+  const getannoun = await dynamoClient.scan(params).promise();
+  return getannoun;
+};
 module.exports = { add_cv_data, getapplications };
-// console.log(getapplications());

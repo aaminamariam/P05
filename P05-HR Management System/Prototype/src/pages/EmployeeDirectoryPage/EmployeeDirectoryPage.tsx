@@ -60,22 +60,6 @@ export default function EmployeeDirectoryPage() {
     // { field: "twRating", headerName: "TW Rating", width: 100 },
     { field: "dateJoined", headerName: "Date Joined", width: 130 },
     { field: "onLeave", headerName: "On Leave", width: 130 },
-
-    // {
-    //   field: "age",
-    //   headerName: "Age",
-    //   type: "number",
-    //   width: 90,
-    // },
-    // {
-    //   field: "fullName",
-    //   headerName: "Full name",
-    //   description: "This column has a value getter and is not sortable.",
-    //   sortable: true,
-    //   width: 160,
-    //   valueGetter: (params: GridValueGetterParams) =>
-    //     `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    // },
   ];
 
   const handleGetEmployees = async () => {
@@ -87,7 +71,7 @@ export default function EmployeeDirectoryPage() {
       const li = response.data.Items;
       x = li;
       setList(x);
-      console.log("Employee directory REQ IETMSSSSSSSS", li);
+      // console.log("Employee directory REQ IETMSSSSSSSS", li);
       setfirstRender(false);
       setloader(false);
     } catch (error) {

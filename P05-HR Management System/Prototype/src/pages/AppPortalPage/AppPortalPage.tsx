@@ -55,11 +55,13 @@ const useStyles = makeStyles(() =>
 
     card: {
       backgroundColor: "#371BB1",
-      align: "inherit",
+      align: "center",
+      display: "flex",
       minWidth: "100%",
       color: "#FFFFFF",
       textAlign: "center",
-      borderRadius: "20px",
+      borderRadius: "5px",
+      justifyContent: "space-around",
     },
 
     del: {
@@ -175,7 +177,7 @@ const AppPortalPage = () => {
                   bgcolor: "background.paper",
                   position: "relative",
                   overflow: "hidden",
-                  // maxWidth: window.innerWidth - 150,
+                  maxWidth: "80%",
                   // maxHeight: window.innerHeight - 150,
                   "& ul": { padding: 1 },
                 }}

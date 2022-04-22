@@ -96,15 +96,22 @@ const Form = () => {
   const submission = async () => {
     let formField = new FormData();
     // formField.append("title", "CV");
-    formField.append("document", uploadFile[0]);
-    const name =
+
+    const fname =
       Math.random().toString(36).substring(2, 7) + uploadFile[0].name;
     const link =
       "https://yw2d4umwc5.execute-api.us-east-1.amazonaws.com/devdep/mycvandresumebucket/" +
-      name;
-    console.log(uploadFile[0]);
+      fname;
+
+    formField.append("file", uploadFile[0]);
+    formField.append("filename", fname);
     const cv_link = "https://mycvandresumebucket.s3.amazonaws.com/" + name;
     await axios({ method: "put", url: link, data: uploadFile[0] });
+    await axios({
+      method: "post",
+      url: "http://localhost:8000/parsedcv",
+      data: formField,
+    });
     await axios({
       method: "put",
       url: "http://localhost:5001/addresume_info",
@@ -117,6 +124,7 @@ const Form = () => {
         cv: cv_link,
         sp: state,
         job: location.state.title,
+        fname: uploadFile[0].name,
       },
     }).then(() => {
       setOpen(true);
@@ -124,11 +132,6 @@ const Form = () => {
 
     // pdf_parser(uploadFile[0]);
     //   console.log(uploadFile[0]);
-    //   axios({
-    //     method: "post",
-    //     url: "http://localhost:8000/parsedcv",
-    //     data: formField,
-    //   });
   };
 
   const handleClose = (
@@ -136,6 +139,7 @@ const Form = () => {
     reason?: string
   ) => {
     if (reason === "clickaway") {
+      setOpen(false);
       return;
     }
   };
@@ -253,7 +257,7 @@ const Form = () => {
                     variant="outlined"
                     onClick={() => Navigate(-1)}
                   >
-                    back
+                    Back
                   </Button>
                   <Button
                     style={{

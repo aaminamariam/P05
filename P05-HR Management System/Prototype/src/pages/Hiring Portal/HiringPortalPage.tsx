@@ -51,11 +51,13 @@ const useStyles = makeStyles((theme) =>
 
     card: {
       backgroundColor: "#371BB1",
-      align: "inherit",
-      minWidth: "100%",
+      // display: "flex",
+      left: "35%",
+      align: "center",
+      minWidth: "80%",
       color: "#FFFFFF",
       textAlign: "center",
-      borderRadius: "20px",
+      borderRadius: "5px",
     },
 
     del: {
@@ -123,7 +125,7 @@ const Hiringportal = () => {
             bgcolor: "background.paper",
             position: "relative",
             overflow: "auto",
-            // maxHeight: window.innerHeight - 150,
+            // maxHeight: window.innerHeight - 300,
             "& ul": { padding: 0 },
           }}
         >

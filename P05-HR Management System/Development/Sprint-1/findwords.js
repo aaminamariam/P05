@@ -1,14 +1,14 @@
 const { pdf_parser } = require("./parser");
 const fs = require("fs");
 
-let keywords = ["Performed", "experience", "sleepy"];
-listwords = [];
+// let keywords = ["Performed", "experience", "sleepy"];
+// listwords = [];
 
 // returns the percentage of words matched with the keywords
 const get_match = (keywords, file) => {
-  const filedata = require(file);
+  const data = fs.readFileSync(file, "utf-8");
 
-  let data = filedata["data"];
+  // let data = filedata["data"];
   let listwords = [];
 
   const set_w = new Set();
@@ -33,8 +33,9 @@ const get_match = (keywords, file) => {
 
   //calculating the percentage of matches
   score = (set_w.size / keywords.length) * 100;
+  let arr = Array.from(set_w);
 
-  return { score, listwords };
+  return { score, arr };
 };
 module.exports = {
   get_match,
